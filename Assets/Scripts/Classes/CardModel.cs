@@ -2,21 +2,20 @@ using UnityEngine;
 
 public class CardModel
 {
-    public CardData cardData;
+    public CardInfo cardSuitValue;
     public bool reverse;
-    public Sprite texture;
 
-    public CardModel(CardData cardData)
+    public CardModel(CardInfo cardData)
     {
-        this.cardData = cardData;
+        this.cardSuitValue = cardData;
     }
 
     public CardModel CopyCard()
     {
-        return new CardModel(cardData)
+        return new CardModel(cardSuitValue)
         {               
-            reverse = this.reverse,
-            texture = this.texture
+            reverse = this.reverse        
         };
     }
 }
+

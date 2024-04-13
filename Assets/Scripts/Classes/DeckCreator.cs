@@ -3,23 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-public class GameDeckManager
-{
-    public List<CardData> cards;
-    public int score;
-    public IDeck deliveryDeck;
-    public IDeck discardDeck;
-    public List<IDeck> inGameDecks;
-    public List<IDeck> finishedDecks;
-
-    public GameDeckManager()
-    {  
-        CreateDeck();
-    }
-
-    private void CreateDeck()
+public static class DeckCreator
+{   
+    public static List<CardInfo> CreateDeck()
     {
-        cards = new List<CardData>();
+        var cards = new List<CardInfo>();
 
         var cardsSuits = (CardSuit[])Enum.GetValues(typeof(CardSuit));
         var cardsValues = (CardValue[])Enum.GetValues(typeof(CardValue));
@@ -28,7 +16,7 @@ public class GameDeckManager
         {
             foreach (var cardValue in cardsValues)
             {
-                var card = new CardData
+                var card = new CardInfo
                 {
                     value = cardValue,
                     suit = cardSuit,
@@ -38,12 +26,10 @@ public class GameDeckManager
             }
         }
 
-        SuffleDeck();
-    }
-
-    private void SuffleDeck()
-    {
         Random random = new Random();
         cards = cards.OrderBy(x => random.Next()).ToList();
+
+        return cards;
     }
+
 }
