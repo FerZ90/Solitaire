@@ -203,7 +203,6 @@ GameObject:
   - component: {fileID: 233226376}
   - component: {fileID: 233226378}
   - component: {fileID: 233226377}
-  - component: {fileID: 233226379}
   m_Layer: 5
   m_Name: InGameDeck5
   m_TagString: Untagged
@@ -268,18 +267,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 233226375}
   m_CullTransparentMesh: 1
---- !u!114 &233226379
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 233226375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ec59fa2bce4458479b347f2a8414eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -581,7 +568,6 @@ GameObject:
   - component: {fileID: 578114252}
   - component: {fileID: 578114254}
   - component: {fileID: 578114253}
-  - component: {fileID: 578114255}
   m_Layer: 5
   m_Name: InGameDeck6
   m_TagString: Untagged
@@ -646,18 +632,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 578114251}
   m_CullTransparentMesh: 1
---- !u!114 &578114255
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 578114251}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ec59fa2bce4458479b347f2a8414eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &749839837
 GameObject:
   m_ObjectHideFlags: 0
@@ -669,7 +643,6 @@ GameObject:
   - component: {fileID: 749839838}
   - component: {fileID: 749839840}
   - component: {fileID: 749839839}
-  - component: {fileID: 749839841}
   m_Layer: 5
   m_Name: FinishedDeck3
   m_TagString: Untagged
@@ -734,18 +707,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 749839837}
   m_CullTransparentMesh: 1
---- !u!114 &749839841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 749839837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8963e37ed8794d74795e103437fefc8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &764803674
 GameObject:
   m_ObjectHideFlags: 0
@@ -757,7 +718,6 @@ GameObject:
   - component: {fileID: 764803675}
   - component: {fileID: 764803677}
   - component: {fileID: 764803676}
-  - component: {fileID: 764803678}
   m_Layer: 5
   m_Name: InGameDeck4
   m_TagString: Untagged
@@ -822,18 +782,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 764803674}
   m_CullTransparentMesh: 1
---- !u!114 &764803678
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 764803674}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ec59fa2bce4458479b347f2a8414eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -883,6 +831,41 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &868498992
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 868498993}
+  m_Layer: 5
+  m_Name: CardStartedPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &868498993
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 868498992}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1021473504}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 1, y: 1}
 --- !u!1 &900276253
 GameObject:
   m_ObjectHideFlags: 0
@@ -894,7 +877,6 @@ GameObject:
   - component: {fileID: 900276254}
   - component: {fileID: 900276256}
   - component: {fileID: 900276255}
-  - component: {fileID: 900276257}
   m_Layer: 5
   m_Name: FinishedDeck2
   m_TagString: Untagged
@@ -959,18 +941,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 900276253}
   m_CullTransparentMesh: 1
---- !u!114 &900276257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 900276253}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8963e37ed8794d74795e103437fefc8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &946230649
 GameObject:
   m_ObjectHideFlags: 0
@@ -982,7 +952,6 @@ GameObject:
   - component: {fileID: 946230650}
   - component: {fileID: 946230652}
   - component: {fileID: 946230651}
-  - component: {fileID: 946230653}
   m_Layer: 5
   m_Name: FinishedDeck1
   m_TagString: Untagged
@@ -1047,18 +1016,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 946230649}
   m_CullTransparentMesh: 1
---- !u!114 &946230653
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 946230649}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8963e37ed8794d74795e103437fefc8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &994242287
 GameObject:
   m_ObjectHideFlags: 0
@@ -1070,7 +1027,6 @@ GameObject:
   - component: {fileID: 994242288}
   - component: {fileID: 994242290}
   - component: {fileID: 994242289}
-  - component: {fileID: 994242291}
   m_Layer: 5
   m_Name: FinishedDeck4
   m_TagString: Untagged
@@ -1135,18 +1091,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 994242287}
   m_CullTransparentMesh: 1
---- !u!114 &994242291
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 994242287}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8963e37ed8794d74795e103437fefc8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1021473500
 GameObject:
   m_ObjectHideFlags: 0
@@ -1241,6 +1185,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 868498993}
   - {fileID: 145038869}
   - {fileID: 1644744842}
   m_Father: {fileID: 0}
@@ -1281,21 +1226,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardPrefab: {fileID: 7840265329095936505, guid: 47e292ce390d9f7498f115ef3c6a4c8b,
     type: 3}
-  deliveryDeck: {fileID: 1543381212}
-  discardDeck: {fileID: 1961910627}
-  inGameDecks:
-  - {fileID: 946230653}
-  - {fileID: 900276257}
-  - {fileID: 749839841}
-  - {fileID: 994242291}
-  finishedDecks:
-  - {fileID: 1615700468}
-  - {fileID: 1528082673}
-  - {fileID: 1409241943}
-  - {fileID: 764803678}
-  - {fileID: 233226379}
-  - {fileID: 578114255}
-  - {fileID: 2064691351}
+  cardsInitialPoint: {fileID: 868498993}
+  deckInspectorData:
+    deliveryDeck: {fileID: 1543381209}
+    discardDeck: {fileID: 1961910624}
+    inGameDecks:
+    - {fileID: 1615700465}
+    - {fileID: 1528082670}
+    - {fileID: 1409241940}
+    - {fileID: 764803675}
+    - {fileID: 233226376}
+    - {fileID: 578114252}
+    - {fileID: 2064691348}
+    finishedDecks:
+    - {fileID: 946230650}
+    - {fileID: 900276254}
+    - {fileID: 749839838}
+    - {fileID: 994242288}
+  gameConfig: {fileID: 11400000, guid: e32879bc508e3d74fba4611ef46caf48, type: 2}
 --- !u!4 &1407119993
 Transform:
   m_ObjectHideFlags: 0
@@ -1322,7 +1270,6 @@ GameObject:
   - component: {fileID: 1409241940}
   - component: {fileID: 1409241942}
   - component: {fileID: 1409241941}
-  - component: {fileID: 1409241943}
   m_Layer: 5
   m_Name: InGameDeck3
   m_TagString: Untagged
@@ -1387,18 +1334,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1409241939}
   m_CullTransparentMesh: 1
---- !u!114 &1409241943
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1409241939}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ec59fa2bce4458479b347f2a8414eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1528082669
 GameObject:
   m_ObjectHideFlags: 0
@@ -1410,7 +1345,6 @@ GameObject:
   - component: {fileID: 1528082670}
   - component: {fileID: 1528082672}
   - component: {fileID: 1528082671}
-  - component: {fileID: 1528082673}
   m_Layer: 5
   m_Name: InGameDeck2
   m_TagString: Untagged
@@ -1475,18 +1409,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1528082669}
   m_CullTransparentMesh: 1
---- !u!114 &1528082673
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1528082669}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ec59fa2bce4458479b347f2a8414eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1543381208
 GameObject:
   m_ObjectHideFlags: 0
@@ -1498,7 +1420,6 @@ GameObject:
   - component: {fileID: 1543381209}
   - component: {fileID: 1543381211}
   - component: {fileID: 1543381210}
-  - component: {fileID: 1543381212}
   m_Layer: 5
   m_Name: DeliveryDeck
   m_TagString: Untagged
@@ -1563,18 +1484,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1543381208}
   m_CullTransparentMesh: 1
---- !u!114 &1543381212
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1543381208}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c8d63ca829b55046ad3569795fd4db4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1615700464
 GameObject:
   m_ObjectHideFlags: 0
@@ -1586,7 +1495,6 @@ GameObject:
   - component: {fileID: 1615700465}
   - component: {fileID: 1615700467}
   - component: {fileID: 1615700466}
-  - component: {fileID: 1615700468}
   m_Layer: 5
   m_Name: InGameDeck1
   m_TagString: Untagged
@@ -1651,18 +1559,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1615700464}
   m_CullTransparentMesh: 1
---- !u!114 &1615700468
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1615700464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ec59fa2bce4458479b347f2a8414eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1644744841
 GameObject:
   m_ObjectHideFlags: 0
@@ -1811,7 +1707,6 @@ GameObject:
   - component: {fileID: 1961910624}
   - component: {fileID: 1961910626}
   - component: {fileID: 1961910625}
-  - component: {fileID: 1961910627}
   m_Layer: 5
   m_Name: DiscardDeck
   m_TagString: Untagged
@@ -1876,18 +1771,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1961910623}
   m_CullTransparentMesh: 1
---- !u!114 &1961910627
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1961910623}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ea5b374774308f44ab7698220e815fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2064691347
 GameObject:
   m_ObjectHideFlags: 0
@@ -1899,7 +1782,6 @@ GameObject:
   - component: {fileID: 2064691348}
   - component: {fileID: 2064691350}
   - component: {fileID: 2064691349}
-  - component: {fileID: 2064691351}
   m_Layer: 5
   m_Name: InGameDeck7
   m_TagString: Untagged
@@ -1964,18 +1846,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2064691347}
   m_CullTransparentMesh: 1
---- !u!114 &2064691351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2064691347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ec59fa2bce4458479b347f2a8414eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -2,21 +2,19 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class Deck : MonoBehaviour
+public class Deck : IDeck
 {
+    private Transform _deckTransform;
     public List<CardView> DeckCards { get; set; }
-
-    //private CardAnimator _cardAnimator;
-
-    public void Initialize(/*CardAnimator cardAnimator*/)
-    {
+    public Deck(Transform deckTransform)
+    {     
         DeckCards = new List<CardView>();
-        //_cardAnimator = cardAnimator;
+        _deckTransform = deckTransform;
     }
 
-    public virtual Task AddCardToDeck(CardView card)
+    public Task AddCardToDeck(CardView card)
     {
-        card.transform.SetParent(transform);
+        card.transform.SetParent(_deckTransform);
 
         if (DeckCards.Contains(card))
             Debug.LogError("Card already exists in Deck !!!");
@@ -28,7 +26,7 @@ public class Deck : MonoBehaviour
         return CardAnimator.AnimateCardToPosition(card, position);
     }
 
-    public virtual void RemoveCardFromDeck(CardView card)
+    public void RemoveCardFromDeck(CardView card)
     {
         if (!DeckCards.Contains(card))
             Debug.LogError("Card does not exist in Deck !!!");
@@ -39,6 +37,9 @@ public class Deck : MonoBehaviour
 
     protected virtual Vector2 GetNewCardPosition()
     {
-        return transform.position;
+        return _deckTransform.position;
     }
+
 }
+
+

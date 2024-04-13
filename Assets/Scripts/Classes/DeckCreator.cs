@@ -3,11 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-public static class DeckCreator
-{   
-    public static List<CardInfo> CreateDeck()
+public class DeckCreator: IDeckCreator
+{
+    private List<CardInfo> _gameCards;
+
+    public List<CardInfo> GameCards => _gameCards;
+
+    public DeckCreator()
     {
-        var cards = new List<CardInfo>();
+        CreateDeck();
+    }
+
+    public List<CardInfo> CreateDeck()
+    {
+        _gameCards = new List<CardInfo>();
 
         var cardsSuits = (CardSuit[])Enum.GetValues(typeof(CardSuit));
         var cardsValues = (CardValue[])Enum.GetValues(typeof(CardValue));
@@ -22,14 +31,20 @@ public static class DeckCreator
                     suit = cardSuit,
                 };
 
-                cards.Add(card);
+                _gameCards.Add(card);
             }
         }
 
         Random random = new Random();
-        cards = cards.OrderBy(x => random.Next()).ToList();
+        _gameCards = _gameCards.OrderBy(x => random.Next()).ToList();
 
-        return cards;
+        return _gameCards;
     }
 
+}
+
+public interface IDeckCreator
+{
+    public List<CardInfo> GameCards { get; }
+    public List<CardInfo> CreateDeck();
 }

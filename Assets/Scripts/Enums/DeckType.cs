@@ -1,7 +1,7 @@
 
 public enum DeckType
 {
-    New,
+    Croupier,
     Finish,
     InGame,
     Discard

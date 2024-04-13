@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class FinishedDeck : Deck
 {
-    
-   
+    public FinishedDeck(Transform deckTransform) : base(deckTransform)
+    {
+
+    }
+
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InGameDeck : Deck
+public class InGameDeck
 {
     
 }
