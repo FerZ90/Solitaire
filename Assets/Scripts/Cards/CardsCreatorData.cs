@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-public class DeckCreator: IDeckCreator
+public class CardsCreatorData : ICardsCreatorData
 {
-    private List<CardInfo> _gameCards;
+    private List<CardInfo> _gameCards; 
 
     public List<CardInfo> GameCards => _gameCards;
 
-    public DeckCreator()
-    {
+    public CardsCreatorData()
+    {    
         CreateDeck();
     }
 
@@ -43,8 +43,10 @@ public class DeckCreator: IDeckCreator
 
 }
 
-public interface IDeckCreator
+public interface ICardsCreatorData
 {
     public List<CardInfo> GameCards { get; }
     public List<CardInfo> CreateDeck();
+
 }
+

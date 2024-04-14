@@ -1,11 +1,10 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler
+public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHandler
 {
     [SerializeField] private TextMeshProUGUI cardValueTxt;
     [SerializeField] private TextMeshProUGUI cardSuitTxt;
@@ -13,7 +12,7 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler
     private CardModel _cardModel;
     private Sprite _cardSprite;
     private Image _image;
-    private IDeck _cardDeck;
+    private ICardListener _cardListener;
 
     public CardModel CardModel => _cardModel;
 
@@ -22,10 +21,10 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler
         _image = GetComponent<Image>();
     }
 
-    public void Initialize(CardModel cardModel, Sprite cardSprite, Sprite reverseSprite)
+    public void Setup(CardModel cardModel, Sprite cardSprite, Sprite reverseSprite)
     {
         _cardModel = cardModel;
-        _cardSprite = cardSprite;      
+        _cardSprite = cardSprite;  
 
         if (reverseSprite != null)
         {
@@ -38,9 +37,9 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler
         UpdateCardInfo();
     }
 
-    public void SetCardDeck(IDeck cardDeck)
+    public void SetListener(ICardListener cardListener)
     {
-        _cardDeck = cardDeck;
+        _cardListener = cardListener;
     }
 
     public void UpdateCard()
@@ -67,7 +66,12 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler
             cardValueTxt.text = _cardModel.cardSuitValue.value.ToString();
             cardSuitTxt.text = _cardModel.cardSuitValue.suit.ToString();
         }
-    }  
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        //throw new System.NotImplementedException();
+    }
 
     public void OnDrag(PointerEventData eventData)
     {
@@ -76,7 +80,17 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        //_cardListener.AddCardToDeck(this);
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            var selectedGO = EventSystem.current.currentSelectedGameObject;
+            if (selectedGO != null && selectedGO.TryGetComponent<Deck>(out var newDeck))
+            {
+                _cardListener?.OnFinishDrag(newDeck, this);
+                return;
+            }          
+        }
+
+        _cardListener?.OnFinishDrag(null, this);
+
     }
-    
 }

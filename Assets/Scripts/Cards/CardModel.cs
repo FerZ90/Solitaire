@@ -7,8 +7,7 @@ public class CardModel
 
     public CardModel(CardInfo cardData)
     {
-        this.cardSuitValue = cardData;
-        this.deck = null;
+        this.cardSuitValue = cardData;     
     }
 
     public CardModel CopyCard()
@@ -18,5 +17,6 @@ public class CardModel
             reverse = this.reverse        
         };
     }
+
 }
 
