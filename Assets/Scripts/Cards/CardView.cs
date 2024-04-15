@@ -12,7 +12,7 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
     private CardModel _cardModel;
     private Sprite _cardSprite;
     private Image _image;
-    private ICardListener _cardListener;
+    private ICardInputHandlerListener _cardListener;
 
     public CardModel CardModel => _cardModel;
 
@@ -37,7 +37,7 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
         UpdateCardInfo();
     }
 
-    public void SetListener(ICardListener cardListener)
+    public void SetListener(ICardInputHandlerListener cardListener)
     {
         _cardListener = cardListener;
     }
@@ -70,27 +70,16 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        //throw new System.NotImplementedException();
+        _cardListener?.OnBeginDragCard(eventData, this);       
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        transform.position = eventData.position;
+        _cardListener?.OnDragCard(eventData, this);       
     }
 
     public void OnEndDrag(PointerEventData eventData)
-    {
-        if (EventSystem.current.IsPointerOverGameObject())
-        {
-            var selectedGO = EventSystem.current.currentSelectedGameObject;
-            if (selectedGO != null && selectedGO.TryGetComponent<Deck>(out var newDeck))
-            {
-                _cardListener?.OnFinishDrag(newDeck, this);
-                return;
-            }          
-        }
-
-        _cardListener?.OnFinishDrag(null, this);
-
+    {     
+        _cardListener?.OnEndDragCard(eventData, this);
     }
 }

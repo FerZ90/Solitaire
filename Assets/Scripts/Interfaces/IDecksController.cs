@@ -6,4 +6,6 @@ public interface IDecksController
     void InsertIntoDiscardDeck(CardView cardView);
     void InsertIntoFinishedDeck(CardView cardView);
     void InsertIntoInGameDeck(CardView cardView);
+    void InsertIntoDeck(IDeck deck, CardView cardView);
+
 }

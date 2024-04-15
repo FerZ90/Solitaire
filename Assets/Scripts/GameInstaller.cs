@@ -10,10 +10,12 @@ public class GameInstaller : MonoBehaviour, ICardsCreatorListener
 
     private DecksController _decksController;
     private CardsObjectCreator _cardsObjectCreator;
+    private CardInputHandler _cardsInputHandler;
 
     private void Awake()
-    {   
+    {
         _decksController = new DecksController();
+        _cardsInputHandler = new CardInputHandler(_decksController);
         _cardsObjectCreator = new CardsObjectCreator(cardsCreatorInspectorData, new CardsCreatorData(), this);
     }
 
@@ -28,7 +30,7 @@ public class GameInstaller : MonoBehaviour, ICardsCreatorListener
     {
         foreach (var card in deck)
         {
-            card.SetListener(_decksController);
+            card.SetListener(_cardsInputHandler);
             _decksController.InsertIntoCroupierDeck(card);
             await Task.Delay(100);
         }   

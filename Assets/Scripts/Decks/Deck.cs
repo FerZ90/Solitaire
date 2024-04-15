@@ -1,22 +1,29 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Deck : MonoBehaviour, IDeck
-{   
-    private List<CardView> DeckCards { get; set; }
+public class Deck : MonoBehaviour, IDeck, IDropHandler
+{
+    private List<CardView> _deckCards;
+    private IDecksController _decksController;
 
     public void Awake()
     {     
-        DeckCards = new List<CardView>();  
+        _deckCards = new List<CardView>();  
+    }
+
+    public void Initialize(IDecksController decksController)
+    {
+        _decksController = decksController;
     }
 
     public Task AddCardToDeck(CardView card)
     {
         card.transform.SetParent(transform);
 
-        if (!DeckCards.Contains(card))
-            DeckCards.Add(card);  
+        if (!_deckCards.Contains(card))
+            _deckCards.Add(card);  
 
         var position = GetNewCardPosition();
 
@@ -25,8 +32,8 @@ public class Deck : MonoBehaviour, IDeck
 
     public void RemoveCardFromDeck(CardView card)
     {
-        if (DeckCards.Contains(card)) 
-            DeckCards.Remove(card);  
+        if (_deckCards.Contains(card)) 
+            _deckCards.Remove(card);  
     }
 
     protected virtual Vector2 GetNewCardPosition()
@@ -36,8 +43,16 @@ public class Deck : MonoBehaviour, IDeck
 
     public bool TryInsertCard(CardView card)
     {
-        return true;
-        //throw new System.NotImplementedException();
+        return true;       
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        if (eventData.pointerDrag.TryGetComponent<CardView>(out var cardView))
+        {
+            if (TryInsertCard(cardView))
+                _decksController.InsertIntoDeck(this, cardView);
+        }
     }
 }
 
