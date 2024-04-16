@@ -1,11 +1,27 @@
+using System.Collections.Generic;
 
 public interface IDecksController
 {
-    void InitializeDecks(DeckInspectorData data);
+    public DecksData GameDecks { get; }
+    void PrepareDecks(DecksData data);
     void InsertIntoCroupierDeck(CardView cardView);
     void InsertIntoDiscardDeck(CardView cardView);
     void InsertIntoFinishedDeck(CardView cardView);
     void InsertIntoInGameDeck(CardView cardView);
     void InsertIntoDeck(IDeck deck, CardView cardView);
-
 }
+
+public class DeckModel
+{
+    public int Id { get; set; }
+    public DeckType deckType;
+    public IDeck deck;
+
+    public DeckModel(int Id, DeckType deckType, IDeck deck)
+    {
+        this.Id = Id;
+        this.deckType = deckType;
+        this.deck = deck;
+    } 
+}
+

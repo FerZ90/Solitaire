@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class Deck : MonoBehaviour, IDeck, IDropHandler
 {
-    private List<CardView> _deckCards;
+    protected List<CardView> _deckCards;
     private IDecksController _decksController;
 
     public void Awake()
@@ -22,10 +23,10 @@ public class Deck : MonoBehaviour, IDeck, IDropHandler
     {
         card.transform.SetParent(transform);
 
+        var position = GetNewCardPosition();
+
         if (!_deckCards.Contains(card))
             _deckCards.Add(card);  
-
-        var position = GetNewCardPosition();
 
         return CardAnimator.AnimateCardToPosition(card, position);
     }
@@ -34,6 +35,19 @@ public class Deck : MonoBehaviour, IDeck, IDropHandler
     {
         if (_deckCards.Contains(card)) 
             _deckCards.Remove(card);  
+    }
+
+    public CardView GetLastCard()
+    {
+        CardView card = null;
+
+        if (_deckCards != null && _deckCards.Count > 0)
+        {
+            card = _deckCards.Last();
+            RemoveCardFromDeck(card);
+        }
+
+        return card;
     }
 
     protected virtual Vector2 GetNewCardPosition()

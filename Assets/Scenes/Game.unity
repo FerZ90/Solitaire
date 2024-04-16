@@ -277,10 +277,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 233226375}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82f2377cc05bd194aa5a6de95f2c810c, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ec59fa2bce4458479b347f2a8414eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deckID: 11
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -656,10 +655,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 578114251}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82f2377cc05bd194aa5a6de95f2c810c, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ec59fa2bce4458479b347f2a8414eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deckID: 12
 --- !u!1 &749839837
 GameObject:
   m_ObjectHideFlags: 0
@@ -745,10 +743,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 749839837}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82f2377cc05bd194aa5a6de95f2c810c, type: 3}
+  m_Script: {fileID: 11500000, guid: 8963e37ed8794d74795e103437fefc8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deckID: 5
 --- !u!1 &764803674
 GameObject:
   m_ObjectHideFlags: 0
@@ -834,10 +831,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 764803674}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82f2377cc05bd194aa5a6de95f2c810c, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ec59fa2bce4458479b347f2a8414eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deckID: 10
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1007,10 +1003,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 900276253}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82f2377cc05bd194aa5a6de95f2c810c, type: 3}
+  m_Script: {fileID: 11500000, guid: 8963e37ed8794d74795e103437fefc8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deckID: 4
 --- !u!1 &946230649
 GameObject:
   m_ObjectHideFlags: 0
@@ -1096,10 +1091,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 946230649}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82f2377cc05bd194aa5a6de95f2c810c, type: 3}
+  m_Script: {fileID: 11500000, guid: 8963e37ed8794d74795e103437fefc8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deckID: 3
 --- !u!1 &994242287
 GameObject:
   m_ObjectHideFlags: 0
@@ -1185,10 +1179,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 994242287}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82f2377cc05bd194aa5a6de95f2c810c, type: 3}
+  m_Script: {fileID: 11500000, guid: 8963e37ed8794d74795e103437fefc8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deckID: 6
 --- !u!1 &1021473500
 GameObject:
   m_ObjectHideFlags: 0
@@ -1442,10 +1435,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1409241939}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82f2377cc05bd194aa5a6de95f2c810c, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ec59fa2bce4458479b347f2a8414eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deckID: 9
 --- !u!1 &1528082669
 GameObject:
   m_ObjectHideFlags: 0
@@ -1531,10 +1523,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1528082669}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82f2377cc05bd194aa5a6de95f2c810c, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ec59fa2bce4458479b347f2a8414eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deckID: 8
 --- !u!1 &1543381208
 GameObject:
   m_ObjectHideFlags: 0
@@ -1623,7 +1614,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82f2377cc05bd194aa5a6de95f2c810c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deckID: 1
 --- !u!1 &1615700464
 GameObject:
   m_ObjectHideFlags: 0
@@ -1709,10 +1699,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1615700464}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82f2377cc05bd194aa5a6de95f2c810c, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ec59fa2bce4458479b347f2a8414eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deckID: 7
 --- !u!1 &1644744841
 GameObject:
   m_ObjectHideFlags: 0
@@ -1938,7 +1927,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82f2377cc05bd194aa5a6de95f2c810c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deckID: 2
 --- !u!1 &2064691347
 GameObject:
   m_ObjectHideFlags: 0
@@ -2024,10 +2012,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2064691347}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82f2377cc05bd194aa5a6de95f2c810c, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ec59fa2bce4458479b347f2a8414eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deckID: 13
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

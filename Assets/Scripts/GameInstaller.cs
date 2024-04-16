@@ -3,38 +3,41 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class GameInstaller : MonoBehaviour, ICardsCreatorListener
+public class GameInstaller : MonoBehaviour, ICardsObjectCreatorListener
 {
     [SerializeField] private CardsCreatorInspectorData cardsCreatorInspectorData;
-    [SerializeField] private DeckInspectorData deckIspectorData;
+    [SerializeField] private DecksData deckIspectorData;
 
+    private Croupier _croupier;
     private DecksController _decksController;
     private CardsObjectCreator _cardsObjectCreator;
-    private CardInputHandler _cardsInputHandler;
+    private UserInputHandler _cardsInputHandler;
 
     private void Awake()
     {
         _decksController = new DecksController();
-        _cardsInputHandler = new CardInputHandler(_decksController);
+        _croupier = new Croupier(_decksController);
+        _cardsInputHandler = new UserInputHandler(_decksController);
         _cardsObjectCreator = new CardsObjectCreator(cardsCreatorInspectorData, new CardsCreatorData(), this);
     }
 
     private IEnumerator Start()
     {
         yield return new WaitForEndOfFrame();
-        _decksController.InitializeDecks(deckIspectorData);
-        _cardsObjectCreator.CreateCards();
+        _decksController.PrepareDecks(deckIspectorData);
+        _cardsObjectCreator.CreateCards(); 
     }
 
-    public async void OnCardsCreated(List<CardView> deck)
+    public async void OnCreateCardsViews(List<CardView> cardViews)
     {
-        foreach (var card in deck)
+        foreach (var cardView in cardViews)
         {
-            card.SetListener(_cardsInputHandler);
-            _decksController.InsertIntoCroupierDeck(card);
+            cardView.SetListener(_cardsInputHandler);
+            _decksController.InsertIntoCroupierDeck(cardView);
             await Task.Delay(100);
-        }   
-    }
+        }
 
+        _croupier.DealCards();
+    }
 
 }

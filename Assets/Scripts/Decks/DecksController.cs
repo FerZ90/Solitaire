@@ -1,28 +1,24 @@
 using System.Collections.Generic;
 
-public class DecksController : IDecksController
+public class DecksController : IDecksController, IUserInputHandlerListener
 {
-    private Dictionary<int, IDeck> _gameDecks;
+    private DecksData _gameDecks;
+    public DecksData GameDecks => _gameDecks;
 
-    public void InitializeDecks(DeckInspectorData data)
+    public void PrepareDecks(DecksData data)
     {
-        _gameDecks = new Dictionary<int, IDeck>();
+        _gameDecks = data;
 
-        data.deliveryDeck.Initialize(this);
-        data.discardDeck.Initialize(this);
+        _gameDecks.deliveryDeck.Initialize(this);
+        _gameDecks.discardDeck.Initialize(this);   
 
-        _gameDecks.Add(1, data.deliveryDeck);
-        _gameDecks.Add(2, data.discardDeck);
-
-        foreach (var gameDeck in data.inGameDecks)
-        {
-            _gameDecks.Add(_gameDecks.Count + 1, gameDeck);
+        foreach (var gameDeck in _gameDecks.inGameDecks)
+        {         
             gameDeck.Initialize(this);
         }
 
-        foreach (var finishedDeck in data.finishedDecks)
-        {
-            _gameDecks.Add(_gameDecks.Count + 1, finishedDeck);
+        foreach (var finishedDeck in _gameDecks.finishedDecks)
+        {       
             finishedDeck.Initialize(this);
         }
     }
@@ -34,7 +30,7 @@ public class DecksController : IDecksController
 
     public void InsertIntoCroupierDeck(CardView cardView)
     {
-        var croupierDeck = _gameDecks[Globals.CroupierDeckID];
+        var croupierDeck = _gameDecks.deliveryDeck;
         ChangeCardDeck(cardView, croupierDeck);
     }
 

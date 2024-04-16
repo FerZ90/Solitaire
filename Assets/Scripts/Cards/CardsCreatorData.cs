@@ -4,19 +4,10 @@ using System.Linq;
 
 
 public class CardsCreatorData : ICardsCreatorData
-{
-    private List<CardInfo> _gameCards; 
-
-    public List<CardInfo> GameCards => _gameCards;
-
-    public CardsCreatorData()
-    {    
-        CreateDeck();
-    }
-
+{   
     public List<CardInfo> CreateDeck()
     {
-        _gameCards = new List<CardInfo>();
+        var gameCards = new List<CardInfo>();
 
         var cardsSuits = (CardSuit[])Enum.GetValues(typeof(CardSuit));
         var cardsValues = (CardValue[])Enum.GetValues(typeof(CardValue));
@@ -31,21 +22,20 @@ public class CardsCreatorData : ICardsCreatorData
                     suit = cardSuit,
                 };
 
-                _gameCards.Add(card);
+                gameCards.Add(card);
             }
         }
 
         Random random = new Random();
-        _gameCards = _gameCards.OrderBy(x => random.Next()).ToList();
+        gameCards = gameCards.OrderBy(x => random.Next()).ToList();
 
-        return _gameCards;
+        return gameCards;
     }
 
 }
 
 public interface ICardsCreatorData
 {
-    public List<CardInfo> GameCards { get; }
     public List<CardInfo> CreateDeck();
 
 }

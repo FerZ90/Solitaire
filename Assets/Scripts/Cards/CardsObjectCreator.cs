@@ -1,40 +1,56 @@
-using System;
 using System.Collections.Generic;
 
 public class CardsObjectCreator : ICardsObjectCreator
 {  
     private CardsCreatorInspectorData _model;   
     private ICardsCreatorData _cardsCreator;
-    private ICardsCreatorListener _listener;
+    private ICardsObjectCreatorListener _listener;
 
-    public CardsObjectCreator(CardsCreatorInspectorData cardsObjectCreatorModel, ICardsCreatorData cardsCreator, ICardsCreatorListener listener)
+
+    private readonly List<CardView> _cardsViews = new List<CardView>();
+
+    public CardsObjectCreator(CardsCreatorInspectorData cardsObjectCreatorModel, ICardsCreatorData cardsCreator, ICardsObjectCreatorListener listener)
     {
+        _cardsViews = new List<CardView>();
         _model = cardsObjectCreatorModel;
         _cardsCreator = cardsCreator;
         _listener = listener;
     }
 
     public void CreateCards()
-    {
-        var creatorData = _cardsCreator;
-        creatorData.CreateDeck();
+    {    
+        var deck = _cardsCreator.CreateDeck();
 
-        List<CardView> cardsViews = new List<CardView>();
-
-        foreach (var deckCard in creatorData.GameCards)
+        foreach (var deckCard in deck)
         {
             var currentCard = UnityEngine.Object.Instantiate(_model.cardPrefab, _model.cardsInitialPoint);
             currentCard.transform.position = _model.cardsInitialPoint.position;
 
             var cardModel = new CardModel(deckCard);   
             currentCard.Setup(cardModel, null, null);
-            cardsViews.Add(currentCard);
+            _cardsViews.Add(currentCard);         
+        
         }
 
-        _listener?.OnCardsCreated(cardsViews);
+        _listener?.OnCreateCardsViews(_cardsViews);
+    }
+
+    public void Reset()
+    {
+        foreach (var cardViews in _cardsViews)
+        {
+            UnityEngine.Object.Destroy(cardViews.gameObject);
+        }
+
+        _cardsViews.Clear();
     }
 
   
+}
+
+public interface ICardsObjectCreatorListener
+{
+    void OnCreateCardsViews(List<CardView> cardViews);
 }
 
 

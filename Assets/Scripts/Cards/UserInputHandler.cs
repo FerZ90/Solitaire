@@ -2,15 +2,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CardInputHandler : ICardInputHandlerListener
+public class UserInputHandler : ICardInputHandlerListener
 {
     private Transform parentAfterDrag;
-    private IDecksController _decksController;
+    private IUserInputHandlerListener _listener;
 
-    public CardInputHandler(IDecksController decksController)
+    public UserInputHandler(IUserInputHandlerListener listener)
     {
-        _decksController = decksController;
-    }
+        _listener = listener;
+    }  
 
     public void OnBeginDragCard(PointerEventData eventData, CardView card)
     {
@@ -18,7 +18,7 @@ public class CardInputHandler : ICardInputHandlerListener
         card.transform.SetParent(card.transform.root);
         card.transform.SetAsLastSibling();
         card.GetComponent<Image>().raycastTarget = false;
-    }
+    } 
 
     public void OnDragCard(PointerEventData eventData, CardView card)
     {
@@ -28,7 +28,7 @@ public class CardInputHandler : ICardInputHandlerListener
     public void OnEndDragCard(PointerEventData eventData, CardView card)
     {
         if (!eventData.pointerDrag.TryGetComponent<Deck>(out var deck))
-            _decksController.InsertIntoDeck(deck, card);
+            _listener?.InsertIntoDeck(deck, card);
         else
             card.transform.SetParent(parentAfterDrag);
 
@@ -36,3 +36,4 @@ public class CardInputHandler : ICardInputHandlerListener
         card.GetComponent<Image>().raycastTarget = true;
     }    
 }
+
