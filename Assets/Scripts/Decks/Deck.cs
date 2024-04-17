@@ -31,20 +31,21 @@ public class Deck : MonoBehaviour, IDeck, IDropHandler
         return CardAnimator.AnimateCardToPosition(card, position);
     }
 
-    public void RemoveCardFromDeck(CardView card)
+    public virtual void RemoveCardFromDeck(CardView card)
     {
         if (_deckCards.Contains(card)) 
             _deckCards.Remove(card);  
     }
 
-    public CardView GetLastCard()
+    public virtual CardView GetLastCard(bool removeCard)
     {
         CardView card = null;
 
         if (_deckCards != null && _deckCards.Count > 0)
         {
             card = _deckCards.Last();
-            RemoveCardFromDeck(card);
+            if (removeCard)
+                RemoveCardFromDeck(card);
         }
 
         return card;
