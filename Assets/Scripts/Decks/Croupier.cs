@@ -18,7 +18,7 @@ public class Croupier
         {
             for (int i = 0; i < count; i++)
             {
-                var card = _deckController.GameDecks.deliveryDeck.GetLastCard(true);
+                var card = _deckController.GameDecks.deliveryDeck.RemoveLast();
 
                 if (card != null)
                 {

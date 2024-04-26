@@ -6,7 +6,7 @@ public class DecksData
 {
     public Deck deliveryDeck;
     public Deck discardDeck;
-    public List<InGameDeck> inGameDecks = new List<InGameDeck>();
-    public List<FinishedDeck> finishedDecks = new List<FinishedDeck>();
+    public List<Deck> inGameDecks = new List<Deck>();
+    public List<Deck> finishedDecks = new List<Deck>();
 }
 

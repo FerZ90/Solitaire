@@ -10,7 +10,6 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
     [SerializeField] private TextMeshProUGUI cardSuitTxt;
 
     private CardModel _cardModel;
-    private Sprite _cardSprite;
     private bool _reverse = true;
     private Image _image;
     private ICardInputHandlerListener _cardListener;
@@ -24,34 +23,16 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
         _image = GetComponent<Image>();
     }
 
-    public void Setup(CardModel cardModel, Sprite cardSprite, Sprite reverseSprite)
+    public void Setup(CardModel cardModel, ICardInputHandlerListener cardListener)
     {
         _cardModel = cardModel;
-        _cardSprite = cardSprite;  
-
-        if (reverseSprite != null)
-        {
-            _image.sprite = reverseSprite;
-
-            if (!_reverse)
-                _image.overrideSprite = cardSprite;
-        }
+        _cardListener = cardListener;
 
         UpdateCardInfo();
     }
 
-    public void SetListener(ICardInputHandlerListener cardListener)
-    {
-        _cardListener = cardListener;
-    }
-
     public void UpdateCard()
-    {
-        if (!_reverse)
-            _image.overrideSprite = _cardSprite;
-        else
-            _image.overrideSprite = null;
-
+    {    
         UpdateCardInfo();      
     }
 
@@ -77,21 +58,21 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (_reverse)
+        if (CardModel.deck == null /*|| !CardModel.deck.IsValidDragging(this)*/)
             return;
         _cardListener?.OnBeginDragCard(eventData, this);       
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (_reverse)
+        if (CardModel.deck == null /*|| !CardModel.deck.IsValidDragging(this)*/)
             return;
         _cardListener?.OnDragCard(eventData, this);       
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (_reverse)
+        if (CardModel.deck == null /*|| !CardModel.deck.IsValidDragging(this)*/)
             return;
         _cardListener?.OnEndDragCard(eventData, this);
     }

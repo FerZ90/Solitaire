@@ -1,36 +1,38 @@
 
-public class DecksController : IDecksController, IUserInputHandlerListener
-{
+using System.Diagnostics;
+
+public class DecksController : IDecksController
+{  
     private DecksData _gameDecks;
     public DecksData GameDecks => _gameDecks;
 
-    public void PrepareDecks(DecksData data)
+    public void PrepareDecks(DecksData data, IDeckInputHandlerListener listener)
     {
         _gameDecks = data;
 
-        _gameDecks.deliveryDeck.Initialize(this);
-        _gameDecks.discardDeck.Initialize(this);   
+        //_gameDecks.deliveryDeck.Initialize(listener);
+        //_gameDecks.discardDeck.Initialize(listener);
 
-        foreach (var gameDeck in _gameDecks.inGameDecks)
-        {         
-            gameDeck.Initialize(this);
-        }
+        //foreach (var gameDeck in _gameDecks.inGameDecks)
+        //{
+        //    gameDeck.Initialize(listener);
+        //}
 
-        foreach (var finishedDeck in _gameDecks.finishedDecks)
-        {       
-            finishedDeck.Initialize(this);
-        }
+        //foreach (var finishedDeck in _gameDecks.finishedDecks)
+        //{
+        //    finishedDeck.Initialize(listener);
+        //}
     }
 
     public void InsertIntoDeck(IDeck deck, CardView cardView)
-    {
+    {  
         ChangeCardDeck(cardView, deck);
     }
 
     public void InsertIntoCroupierDeck(CardView cardView)
     {
         var croupierDeck = _gameDecks.deliveryDeck;
-        ChangeCardDeck(cardView, croupierDeck);
+        croupierDeck.AddLast(cardView);
     }
 
     public void InsertIntoDiscardDeck(CardView cardView)
@@ -48,16 +50,32 @@ public class DecksController : IDecksController, IUserInputHandlerListener
         //throw new System.NotImplementedException();
     }
 
-    private async void ChangeCardDeck(CardView cardView, IDeck newDeck)
-    {
-        if (cardView.CardModel.deck != null)
-            cardView.CardModel.deck.RemoveCardFromDeck(cardView);
+    private void ChangeCardDeck(CardView cardView, IDeck newDeck)
+    {    
+        var newCardDeck = newDeck;
 
-        if (newDeck != null)
-            cardView.CardModel.deck = newDeck;
+        if (newCardDeck == null)
+            newCardDeck = cardView.CardModel.deck;
 
-        await cardView.CardModel.deck.AddCardToDeck(cardView);
+        cardView.CardModel.LogCard();
+
+        if (false /*cardView.CardModel.deck == newDeck*/)
+        {
+            //cardView.CardModel.deck.ReturnCardToDeck(cardView);
+        }
+        else
+        {
+
+            if (cardView.CardModel.deck != null)
+            {
+                cardView.CardModel.deck.RemoveLast();
+            }
+
+            cardView.CardModel.deck = newCardDeck;
+            cardView.CardModel.deck.AddLast(cardView);
+        }       
     }
+ 
 }
    
 

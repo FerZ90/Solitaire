@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 
 public interface IDecksController
 {
     public DecksData GameDecks { get; }
-    void PrepareDecks(DecksData data);
+    void PrepareDecks(DecksData data, IDeckInputHandlerListener _listener);
     void InsertIntoCroupierDeck(CardView cardView);
     void InsertIntoDiscardDeck(CardView cardView);
     void InsertIntoFinishedDeck(CardView cardView);

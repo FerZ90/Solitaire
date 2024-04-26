@@ -1,6 +1,6 @@
 
 public class CardModel
-{
+{    
     public CardInfo cardSuitValue;
     public IDeck deck;
 
@@ -15,6 +15,11 @@ public class CardModel
         {
 
         };
+    }      
+
+    public void LogCard()
+    {
+        UnityEngine.Debug.Log($"<color=cyan>Card Value: {cardSuitValue.value} || Card Suit: {cardSuitValue.suit}</color>");
     }
 
 }

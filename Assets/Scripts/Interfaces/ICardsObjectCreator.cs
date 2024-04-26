@@ -1,5 +1,5 @@
 public interface ICardsObjectCreator
 {
-    void CreateCards();
+    void CreateCards(ICardInputHandlerListener inputCardsListener);
     void Reset();
 }

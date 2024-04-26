@@ -24,18 +24,21 @@ public class GameInstaller : MonoBehaviour, ICardsObjectCreatorListener
     private IEnumerator Start()
     {
         yield return new WaitForEndOfFrame();
-        _decksController.PrepareDecks(deckIspectorData);
-        _cardsObjectCreator.CreateCards(); 
+        _decksController.PrepareDecks(deckIspectorData, _cardsInputHandler);
+        _cardsObjectCreator.CreateCards(_cardsInputHandler); 
     }
 
     public async void OnCreateCardsViews(List<CardView> cardViews)
     {
+        List<Task> allTasks = new List<Task>();
+
         foreach (var cardView in cardViews)
-        {
-            cardView.SetListener(_cardsInputHandler);
+        {        
             _decksController.InsertIntoCroupierDeck(cardView);
-            await Task.Delay(100);
+            allTasks.Add(Task.Delay(100));
         }
+
+        await Task.WhenAll(allTasks);
 
         _croupier.DealCards();
     }

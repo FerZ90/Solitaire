@@ -17,7 +17,7 @@ public class CardsObjectCreator : ICardsObjectCreator
         _listener = listener;
     }
 
-    public void CreateCards()
+    public void CreateCards(ICardInputHandlerListener inputCardsListener)
     {    
         var deck = _cardsCreator.CreateDeck();
 
@@ -27,8 +27,8 @@ public class CardsObjectCreator : ICardsObjectCreator
             currentCard.transform.position = _model.cardsInitialPoint.position;
 
             var cardModel = new CardModel(deckCard);   
-            currentCard.Setup(cardModel, null, null);
-            _cardsViews.Add(currentCard);         
+            currentCard.Setup(cardModel, inputCardsListener);
+            _cardsViews.Add(currentCard);        
         
         }
 
