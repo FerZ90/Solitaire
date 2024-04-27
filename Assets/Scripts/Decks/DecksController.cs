@@ -10,18 +10,14 @@ public class DecksController : IDecksController
     {
         _gameDecks = data;
 
-        //_gameDecks.deliveryDeck.Initialize(listener);
-        //_gameDecks.discardDeck.Initialize(listener);
+        _gameDecks.deliveryDeck.Setup(listener);
+        _gameDecks.discardDeck.Setup(listener);
 
-        //foreach (var gameDeck in _gameDecks.inGameDecks)
-        //{
-        //    gameDeck.Initialize(listener);
-        //}
+        foreach (var gameDeck in _gameDecks.inGameDecks)
+            gameDeck.Setup(listener);
 
-        //foreach (var finishedDeck in _gameDecks.finishedDecks)
-        //{
-        //    finishedDeck.Initialize(listener);
-        //}
+        foreach (var finishedDeck in _gameDecks.finishedDecks)
+            finishedDeck.Setup(listener);
     }
 
     public void InsertIntoDeck(IDeck deck, CardView cardView)

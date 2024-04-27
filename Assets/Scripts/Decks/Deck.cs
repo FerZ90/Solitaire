@@ -1,19 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Deck : MonoBehaviour, IDeck
+public class Deck : MonoBehaviour, IDeck, IDropHandler
 {
     private IStack<CardView> _cards;
-    private ICardValidator _cardValidator;
+    private IDeckInputHandlerListener _listener;
 
     private void Awake()
     {  
         _cards = new ListStack<CardView>();
     }
 
-    public void Setup(ICardValidator cardValidator)
+    public void Setup(IDeckInputHandlerListener listener)
     {
-        
+        _listener = listener;
     }
 
     protected virtual Vector3 GetCardPosition(CardView card)
@@ -62,6 +63,11 @@ public class Deck : MonoBehaviour, IDeck
         card.transform.SetSiblingIndex(cardIndex);
 
         CardAnimator.AnimateCardToPosition(card, GetCardPosition(card));
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        _listener?.OnDropCardInDeck(this, eventData);
     }
 
     #region OLD

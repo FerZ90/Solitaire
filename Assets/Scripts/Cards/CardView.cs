@@ -83,8 +83,5 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
         UpdateCardInfo();
     }
 
-    public void MoveTo(Vector3 position)
-    {
-
-    }
+   
 }

@@ -10,7 +10,7 @@ public interface IDeck
     void ReturnCardToDeck(CardView card);
     void AddLast(CardView card);
     CardView RemoveLast();
-    void Setup(ICardValidator cardValidator);
+    void Setup(IDeckInputHandlerListener listener);
     List<CardView> GetNodeCards(CardView card);
     bool TryInsertCard(CardView card);
 }

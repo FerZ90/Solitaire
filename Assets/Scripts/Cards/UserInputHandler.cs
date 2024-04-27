@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -21,6 +20,8 @@ public class UserInputHandler : ICardInputHandlerListener, IDeckInputHandlerList
 
         var nodeCards = card.CardModel.deck.GetNodeCards(card);
 
+        Debug.Log($">> OnBeginDragCard nodeCards Count: {nodeCards.Count}<<");
+
         foreach (var nodeCard in nodeCards)
         {
             nodeCard.transform.SetParent(cardsParent.transform);
@@ -42,6 +43,8 @@ public class UserInputHandler : ICardInputHandlerListener, IDeckInputHandlerList
         if (_draggingCard == null)
             return;
 
+        Debug.Log(">> OnEndDragCard <<");
+
         var nodeCards = card.CardModel.deck.GetNodeCards(card);
 
         foreach (var nodeCard in nodeCards)
@@ -55,9 +58,13 @@ public class UserInputHandler : ICardInputHandlerListener, IDeckInputHandlerList
 
     public void OnDropCardInDeck(IDeck deck, PointerEventData eventData)
     {
+        Debug.Log($">> OnDropCardInDeck <<");
+
         if (eventData.pointerDrag.TryGetComponent<CardView>(out var cardView))
         {
             var nodeCards = cardView.CardModel.deck.GetNodeCards(cardView);
+
+            Debug.Log($"nodeCards Count: {nodeCards.Count}");
 
             foreach (var nodeCard in nodeCards)
             {
