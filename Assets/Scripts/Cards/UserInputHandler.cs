@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -15,32 +16,40 @@ public class UserInputHandler : ICardInputHandlerListener, IDeckInputHandlerList
 
     public void OnBeginDragCard(PointerEventData eventData, CardView card)
     {
+        cardsParent.transform.parent = card.transform.root;
+        cardsParent.transform.position = card.transform.position;
+
+        var nodeCards = card.CardModel.deck.GetNodeCards(card);
+
+        foreach (var nodeCard in nodeCards)
+        {
+            nodeCard.transform.SetParent(cardsParent.transform);
+            nodeCard.transform.SetAsLastSibling();
+            nodeCard.GetComponent<Image>().raycastTarget = false;
+        }
+
         _draggingCard = card;
 
-        cardsParent.transform.parent = card.transform.root;
-
-        card.transform.SetParent(card.transform.root);
-        card.transform.SetAsLastSibling();
-
-        card.GetComponent<Image>().raycastTarget = false;
     } 
 
     public void OnDragCard(PointerEventData eventData, CardView card)
     {
-        card.transform.position = eventData.position;
+        cardsParent.transform.position = eventData.position;       
     }
 
     public void OnEndDragCard(PointerEventData eventData, CardView card)
     {
-        card.GetComponent<Image>().raycastTarget = true;
-
         if (_draggingCard == null)
             return;
 
-        if (_draggingCard.CardModel.deck == card.CardModel.deck)
-            _decksController?.InsertIntoDeck(card.CardModel.deck, card);
+        var nodeCards = card.CardModel.deck.GetNodeCards(card);
 
-        _draggingCard = null;
+        foreach (var nodeCard in nodeCards)
+        {
+            nodeCard.GetComponent<Image>().raycastTarget = true;
+            if (nodeCard.CardModel.deck == nodeCard.CardModel.deck)
+                _decksController?.InsertIntoDeck(nodeCard.CardModel.deck, nodeCard);
+        }         
 
     }    
 
@@ -48,12 +57,22 @@ public class UserInputHandler : ICardInputHandlerListener, IDeckInputHandlerList
     {
         if (eventData.pointerDrag.TryGetComponent<CardView>(out var cardView))
         {
-            if (deck.TryInsertCard(cardView))
+            var nodeCards = cardView.CardModel.deck.GetNodeCards(cardView);
+
+            foreach (var nodeCard in nodeCards)
             {
-                _decksController?.InsertIntoDeck(deck, cardView);
-                _draggingCard = null;
-            }            
+                nodeCard.GetComponent<Image>().raycastTarget = true;
+
+                if (deck.TryInsertCard(cardView))
+                {
+                    _decksController?.InsertIntoDeck(deck, nodeCard);
+                    _draggingCard = null;
+                }
+            }
+                     
         }          
     }
 }
+
+
 

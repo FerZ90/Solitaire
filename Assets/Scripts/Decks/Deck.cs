@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class Deck : MonoBehaviour, IDeck
 {
-    private NodeStack<CardView> _cards;
+    private IStack<CardView> _cards;
     private ICardValidator _cardValidator;
 
     private void Awake()
     {  
-        _cards = new NodeStack<CardView>();
+        _cards = new ListStack<CardView>();
     }
 
     public void Setup(ICardValidator cardValidator)
@@ -25,11 +25,14 @@ public class Deck : MonoBehaviour, IDeck
 
     public void AddLast(CardView card)
     {
-        card.transform.SetParent(transform);
-        card.transform.SetAsLastSibling();
-        _cards.AddLast(card);
+        bool success = _cards.AddLast(card);
 
-        card.transform.position = GetCardPosition(card);
+        Debug.Log($"Successs adding card --> {success}");
+
+        if (!success)
+            return;
+
+        PutCardviewOnDeck(card);
     }
 
     public CardView RemoveLast()
@@ -42,10 +45,24 @@ public class Deck : MonoBehaviour, IDeck
         return _cards.GetNodeItems(card);
     }
 
+    public void ReturnCardToDeck(CardView card)
+    {
+        PutCardviewOnDeck(card);
+    }
+
     public bool TryInsertCard(CardView card)
     {
         return true;
     }   
+
+    private void PutCardviewOnDeck(CardView card)
+    {
+        int cardIndex = _cards.GetItemIndex(card);
+        card.transform.SetParent(transform);
+        card.transform.SetSiblingIndex(cardIndex);
+
+        CardAnimator.AnimateCardToPosition(card, GetCardPosition(card));
+    }
 
     #region OLD
     //protected LinkedList<CardView> _deckCards;

@@ -82,4 +82,9 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
         _reverse = reverse;   
         UpdateCardInfo();
     }
+
+    public void MoveTo(Vector3 position)
+    {
+
+    }
 }

@@ -59,9 +59,9 @@ public class DecksController : IDecksController
 
         cardView.CardModel.LogCard();
 
-        if (false /*cardView.CardModel.deck == newDeck*/)
+        if (cardView.CardModel.deck == newDeck)
         {
-            //cardView.CardModel.deck.ReturnCardToDeck(cardView);
+            cardView.CardModel.deck.ReturnCardToDeck(cardView);
         }
         else
         {

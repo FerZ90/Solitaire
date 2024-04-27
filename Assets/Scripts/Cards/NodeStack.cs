@@ -1,40 +1,46 @@
 using System.Collections.Generic;
 
-public class NodeStack<T>
+public class NodeStack<T> : IStack<T>
 {
     private Node<T> head;
 
-    public void AddFirst(T data)
+    public void AddFirst(T item)
     {
         Node<T> toAdd = new Node<T>();
 
-        toAdd.data = data;
+        toAdd.data = item;
         toAdd.next = head;
 
         head = toAdd;
     }
 
-    public void AddLast(T data)
+    public bool AddLast(T item)
     {
         if (head == null)
         {
             head = new Node<T>();
-            head.data = data;
+            head.data = item;
             head.next = null;
         }
         else
         {
             Node<T> toAdd = new Node<T>();
-            toAdd.data = data;
+            toAdd.data = item;
 
             Node<T> current = head;
+
             while (current.next != null)
             {
+                if (current.data.Equals(item))
+                    return false;
+
                 current = current.next;
             }
 
             current.next = toAdd;
         }
+
+        return true;
     }
 
     public int GetItemIndex(T item)
@@ -75,8 +81,8 @@ public class NodeStack<T>
                 found = true;
 
             if (found)
-                pile.Add(current.data);             
-         
+                pile.Add(current.data);
+
             current = current.next;
         }
 
@@ -84,7 +90,7 @@ public class NodeStack<T>
     }
 
     public bool RemoveItem(T item)
-    {      
+    {
         Node<T> current = head;
 
         if (current.data.Equals(item))
@@ -99,7 +105,7 @@ public class NodeStack<T>
             {
                 current.next = current.next.next;
                 return true;
-            }              
+            }
 
         }
 
@@ -109,7 +115,7 @@ public class NodeStack<T>
     public T RemoveLast()
     {
         Node<T> previous = null;
-        Node<T> current = head;   
+        Node<T> current = head;
 
         while (current != null && current.next != null)
         {
