@@ -28,8 +28,6 @@ public class Deck : MonoBehaviour, IDeck, IDropHandler
     {
         bool success = _cards.AddLast(card);
 
-        Debug.Log($"Successs adding card --> {success}");
-
         if (!success)
             return;
 
@@ -67,6 +65,8 @@ public class Deck : MonoBehaviour, IDeck, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
+        Debug.Log($">> OnDrop Listener !! <<");
+
         _listener?.OnDropCardInDeck(this, eventData);
     }
 

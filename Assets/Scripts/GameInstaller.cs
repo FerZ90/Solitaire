@@ -7,6 +7,7 @@ public class GameInstaller : MonoBehaviour, ICardsObjectCreatorListener
 {
     [SerializeField] private CardsCreatorInspectorData cardsCreatorInspectorData;
     [SerializeField] private DecksData deckIspectorData;
+    [SerializeField] private GameObject draggingCardsParent;
 
     private Croupier _croupier;
     private DecksController _decksController;
@@ -17,7 +18,7 @@ public class GameInstaller : MonoBehaviour, ICardsObjectCreatorListener
     {
         _decksController = new DecksController();
         _croupier = new Croupier(_decksController);
-        _cardsInputHandler = new UserInputHandler(_decksController);
+        _cardsInputHandler = new UserInputHandler(_decksController, draggingCardsParent);
         _cardsObjectCreator = new CardsObjectCreator(cardsCreatorInspectorData, new CardsCreatorData(), this);
     }
 

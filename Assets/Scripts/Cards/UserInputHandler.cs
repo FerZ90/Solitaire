@@ -6,27 +6,24 @@ public class UserInputHandler : ICardInputHandlerListener, IDeckInputHandlerList
 {
     private IDecksController _decksController;
     private CardView _draggingCard;
-    private GameObject cardsParent = new GameObject("CardsParent");
+    private GameObject _cardsParent;
 
-    public UserInputHandler(IDecksController decksController)
+    public UserInputHandler(IDecksController decksController, GameObject cardsParent)
     {
         _decksController = decksController;
+        _cardsParent = cardsParent;  
     }  
 
     public void OnBeginDragCard(PointerEventData eventData, CardView card)
-    {
-        cardsParent.transform.parent = card.transform.root;
-        cardsParent.transform.position = card.transform.position;
+    {    
+        _cardsParent.transform.position = card.transform.position;
 
         var nodeCards = card.CardModel.deck.GetNodeCards(card);
 
-        Debug.Log($">> OnBeginDragCard nodeCards Count: {nodeCards.Count}<<");
-
         foreach (var nodeCard in nodeCards)
         {
-            nodeCard.transform.SetParent(cardsParent.transform);
+            nodeCard.transform.SetParent(_cardsParent.transform);
             nodeCard.transform.SetAsLastSibling();
-            nodeCard.GetComponent<Image>().raycastTarget = false;
         }
 
         _draggingCard = card;
@@ -35,48 +32,40 @@ public class UserInputHandler : ICardInputHandlerListener, IDeckInputHandlerList
 
     public void OnDragCard(PointerEventData eventData, CardView card)
     {
-        cardsParent.transform.position = eventData.position;       
+        _cardsParent.transform.position = eventData.position;       
     }
 
     public void OnEndDragCard(PointerEventData eventData, CardView card)
     {
+        var nodeCards = card.CardModel.deck.GetNodeCards(card);
+
         if (_draggingCard == null)
             return;
 
-        Debug.Log(">> OnEndDragCard <<");
-
-        var nodeCards = card.CardModel.deck.GetNodeCards(card);
-
         foreach (var nodeCard in nodeCards)
         {
-            nodeCard.GetComponent<Image>().raycastTarget = true;
-            if (nodeCard.CardModel.deck == nodeCard.CardModel.deck)
+            if (_draggingCard.CardModel.deck == nodeCard.CardModel.deck)
                 _decksController?.InsertIntoDeck(nodeCard.CardModel.deck, nodeCard);
-        }         
+        }
+
+        _draggingCard = null;
 
     }    
 
     public void OnDropCardInDeck(IDeck deck, PointerEventData eventData)
     {
-        Debug.Log($">> OnDropCardInDeck <<");
-
         if (eventData.pointerDrag.TryGetComponent<CardView>(out var cardView))
         {
             var nodeCards = cardView.CardModel.deck.GetNodeCards(cardView);
 
-            Debug.Log($"nodeCards Count: {nodeCards.Count}");
-
             foreach (var nodeCard in nodeCards)
             {
-                nodeCard.GetComponent<Image>().raycastTarget = true;
-
                 if (deck.TryInsertCard(cardView))
-                {
                     _decksController?.InsertIntoDeck(deck, nodeCard);
-                    _draggingCard = null;
-                }
             }
-                     
+
+            _draggingCard = null;
+
         }          
     }
 }
