@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class Croupier : ICardsObjectCreatorListener
+public class Croupier : ICardsObjectCreatorListener, ICroupier
 {
     public bool BlockUserInput { get; private set; }
 
@@ -12,18 +12,7 @@ public class Croupier : ICardsObjectCreatorListener
     {      
         _decksController = deckController;
         BlockUserInput = false;
-    }
-
-    public void InsertIntoCroupierDeck(CardView cardView)
-    {
-        var croupierDeck = _decksController.DeckModel.deliveryDeck;
-        croupierDeck.AddLast(cardView);
-    }
-
-    public void InsertIntoDiscardDeck(CardView cardView)
-    {
-        //throw new System.NotImplementedException();
-    }
+    } 
 
     public async void DealCards()
     {
@@ -62,7 +51,7 @@ public class Croupier : ICardsObjectCreatorListener
 
         foreach (var cardView in cardViews)
         {
-            InsertIntoCroupierDeck(cardView);
+            _decksController.InsertIntoCroupierDeck(cardView);
             allTasks.Add(Task.Delay(100));
         }
 
@@ -70,6 +59,40 @@ public class Croupier : ICardsObjectCreatorListener
 
         DealCards();
     }
+   
+    public void InsertIntoDeck(IDeck deck, CardView cardView)
+    {
+        switch (deck)
+        {
+            case null:
+                Debug.LogError("Trying to insert card into null deck !!");
+                break;
+            case InGameDeck:
+                _decksController.InsertIntoDeck(deck, cardView);
+                break;
+            case FinishedDeck:
+                _decksController.InsertIntoFinishedDeck(cardView);
+                break;
+            case DeliveryDeck:
+                _decksController.InsertIntoCroupierDeck(cardView);
+                break;
+            case DiscardDeck:
+                _decksController.InsertIntoDiscardDeck(cardView);
+                break;
+            default:
+                break;
+        }
+    }
 
+    public void DeliverCard(CardView cardView)
+    {
+        _decksController.InsertIntoDiscardDeck(cardView);
+    }
+}
+
+public interface ICroupier
+{
+    void InsertIntoDeck(IDeck deck, CardView cardView);
+    void DeliverCard(CardView cardView);
 }
 

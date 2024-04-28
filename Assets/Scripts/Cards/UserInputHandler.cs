@@ -3,13 +3,13 @@ using UnityEngine.EventSystems;
 
 public class UserInputHandler : ICardInputHandlerListener, IDeckInputHandlerListener
 {
-    private IUserDecksController _decksController;
+    private ICroupier _croupier;
     private CardView _draggingCard;
     private GameObject _cardsParent;
 
-    public UserInputHandler(IUserDecksController decksController, GameObject cardsParent)
+    public UserInputHandler(ICroupier croupier, GameObject cardsParent)
     {
-        _decksController = decksController;
+        _croupier = croupier;
         _cardsParent = cardsParent;  
     }  
 
@@ -53,7 +53,7 @@ public class UserInputHandler : ICardInputHandlerListener, IDeckInputHandlerList
         foreach (var nodeCard in nodeCards)
         {
             if (_draggingCard.CardModel.deck == nodeCard.CardModel.deck)
-                _decksController?.InsertIntoDeck(nodeCard.CardModel.deck, nodeCard);
+                _croupier?.InsertIntoDeck(nodeCard.CardModel.deck, nodeCard);
         }
 
         _draggingCard = null;
@@ -71,14 +71,19 @@ public class UserInputHandler : ICardInputHandlerListener, IDeckInputHandlerList
             foreach (var nodeCard in nodeCards)
             {
                 if (canInsertCards)
-                    _decksController?.InsertIntoDeck(deck, nodeCard);
+                    _croupier?.InsertIntoDeck(deck, nodeCard);
                 else
-                    _decksController?.InsertIntoDeck(nodeCard.CardModel.deck, nodeCard);
+                    _croupier?.InsertIntoDeck(nodeCard.CardModel.deck, nodeCard);
             }
 
             _draggingCard = null;
 
         }          
+    }
+
+    public void OnCroupierClick(PointerEventData eventData, CardView card)
+    {
+        _croupier?.DeliverCard(card);
     }
 }
 

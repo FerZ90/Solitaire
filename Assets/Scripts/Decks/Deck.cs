@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class Deck : MonoBehaviour, IDeck, IDropHandler
+public class Deck : MonoBehaviour, IDeck
 {
     private IStack<CardView> _cards;
-    private IDeckInputHandlerListener _listener;
+    protected IDeckInputHandlerListener _listener;
 
     private void Awake()
     {  
@@ -64,23 +63,15 @@ public class Deck : MonoBehaviour, IDeck, IDropHandler
         return !card.Reverse;
     }
 
-    private void PutCardviewOnDeck(CardView card)
+    private async void PutCardviewOnDeck(CardView card)
     {
+        await CardAnimator.AnimateCardToPosition(card, GetCardPosition(card));
+
         int cardIndex = _cards.GetItemIndex(card);
         card.transform.SetParent(transform);
         card.transform.SetSiblingIndex(cardIndex);
-
-        CardAnimator.AnimateCardToPosition(card, GetCardPosition(card));
     }
-
-    public void OnDrop(PointerEventData eventData)
-    {
-        Debug.Log($">> OnDrop Listener !! <<");
-
-        _listener?.OnDropCardInDeck(this, eventData);
-    }
-
-
+  
 
     #region OLD
     //protected LinkedList<CardView> _deckCards;

@@ -4,21 +4,19 @@ using System.Collections.Generic;
 [Serializable]
 public class DeckModel
 {
-    public Deck deliveryDeck;
+    public DeliveryDeck deliveryDeck;
     public Deck discardDeck;
-    public List<Deck> inGameDecks = new List<Deck>();
+    public List<InGameDeck> inGameDecks = new List<InGameDeck>();
     public List<Deck> finishedDecks = new List<Deck>();
 
-    public void PrepareDecks(IDeckInputHandlerListener listener)
+    public void PrepareDecks(IDeckInputHandlerListener inputHandlerListener)
     {
-        deliveryDeck.Setup(listener);
-        discardDeck.Setup(listener);
+        deliveryDeck.Setup(inputHandlerListener);
 
         foreach (var gameDeck in inGameDecks)
-            gameDeck.Setup(listener);
+            gameDeck.Setup(inputHandlerListener);  
 
-        foreach (var finishedDeck in finishedDecks)
-            finishedDeck.Setup(listener);
+
     }
 }
 

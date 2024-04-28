@@ -1,7 +1,7 @@
 public class UserDecksController : IUserDecksController
 {
     private DeckModel _deckModel;
-    public DeckModel DeckModel { get; private set; }
+    public DeckModel DeckModel => _deckModel;
 
     public UserDecksController(DeckModel deckModel)
     {
@@ -31,7 +31,9 @@ public class UserDecksController : IUserDecksController
 
     public void InsertIntoDiscardDeck(CardView cardView)
     {
-        //throw new System.NotImplementedException();
+        cardView.SetReverse(false);
+        var discardDeck = _deckModel.discardDeck;
+        discardDeck.AddLast(cardView);
     }
 
 

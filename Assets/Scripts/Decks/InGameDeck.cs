@@ -1,6 +1,14 @@
+using UnityEngine.EventSystems;
 
-public class InGameDeck : Deck
+public class InGameDeck : Deck, IDropHandler
 {
+    private IDeckInputHandlerListener _listener;
+
+    public void Setup(IDeckInputHandlerListener listener)
+    {
+        _listener = listener;
+    }
+
     public override bool TryInsertCard(CardView card)
     {
         var lastCard = base.GetLast();
@@ -25,6 +33,13 @@ public class InGameDeck : Deck
 
         return removeCard;
     }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        _listener?.OnDropCardInDeck(this, eventData);
+    }
+
+
 
     #region OLD
     //protected override Vector2 GetNewCardPosition()

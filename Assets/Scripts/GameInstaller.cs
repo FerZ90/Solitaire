@@ -16,7 +16,7 @@ public class GameInstaller : MonoBehaviour
     {
         _decksController = new UserDecksController(deckIspectorData);
         _croupier = new Croupier(_decksController);
-        _cardsInputHandler = new UserInputHandler(_decksController, draggingCardsParent);
+        _cardsInputHandler = new UserInputHandler(_croupier, draggingCardsParent);
         _cardsObjectCreator = new CardsObjectCreator(cardsCreatorInspectorData, new CardsCreatorData(), _croupier);
     }
 
