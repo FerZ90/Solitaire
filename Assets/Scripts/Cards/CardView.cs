@@ -58,21 +58,21 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (CardModel.deck == null /*|| !CardModel.deck.IsValidDragging(this)*/)
+        if (CardModel.deck == null || !CardModel.deck.IsValidDragging(this))
             return;
         _cardListener?.OnBeginDragCard(eventData, this);       
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (CardModel.deck == null /*|| !CardModel.deck.IsValidDragging(this)*/)
+        if (CardModel.deck == null || !CardModel.deck.IsValidDragging(this))
             return;
         _cardListener?.OnDragCard(eventData, this);       
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (CardModel.deck == null /*|| !CardModel.deck.IsValidDragging(this)*/)
+        if (CardModel.deck == null || !CardModel.deck.IsValidDragging(this))
             return;
         _cardListener?.OnEndDragCard(eventData, this);
     }

@@ -64,6 +64,11 @@ public class NodeStack<T> : IStack<T>
         return count;
     }
 
+    public T GetLast()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public List<T> GetNodeItems(T item)
     {
         List<T> pile = new List<T>();

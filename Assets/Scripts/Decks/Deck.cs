@@ -34,7 +34,12 @@ public class Deck : MonoBehaviour, IDeck, IDropHandler
         PutCardviewOnDeck(card);
     }
 
-    public CardView RemoveLast()
+    public CardView GetLast()
+    {
+        return _cards.GetLast();
+    }
+
+    public virtual CardView RemoveLast()
     {
         return _cards.RemoveLast();
     }
@@ -49,10 +54,15 @@ public class Deck : MonoBehaviour, IDeck, IDropHandler
         PutCardviewOnDeck(card);
     }
 
-    public bool TryInsertCard(CardView card)
+    public virtual bool TryInsertCard(CardView card)
     {
         return true;
-    }   
+    }
+
+    public virtual bool IsValidDragging(CardView card)
+    {
+        return !card.Reverse;
+    }
 
     private void PutCardviewOnDeck(CardView card)
     {
@@ -69,6 +79,8 @@ public class Deck : MonoBehaviour, IDeck, IDropHandler
 
         _listener?.OnDropCardInDeck(this, eventData);
     }
+
+
 
     #region OLD
     //protected LinkedList<CardView> _deckCards;

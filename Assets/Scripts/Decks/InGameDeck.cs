@@ -1,7 +1,30 @@
-using UnityEngine;
 
-public class InGameDeck : MonoBehaviour
-{   
+public class InGameDeck : Deck
+{
+    public override bool TryInsertCard(CardView card)
+    {
+        var lastCard = base.GetLast();
+
+        if (lastCard == null)
+        {
+            return card.CardModel.cardSuitValue.value == CardValue.King;
+        }
+        else
+        {
+            return CardsValidator.CompatibleWithPreviousCard(card.CardModel.cardSuitValue, lastCard.CardModel.cardSuitValue);
+        }     
+    }
+
+    public override CardView RemoveLast()
+    {
+        var removeCard = base.RemoveLast();
+        var lastCard = base.GetLast();
+
+        if (lastCard != null)
+            lastCard.SetReverse(false);
+
+        return removeCard;
+    }
 
     #region OLD
     //protected override Vector2 GetNewCardPosition()

@@ -8,4 +8,5 @@ public interface IStack<T>
     List<T> GetNodeItems(T item);
     bool RemoveItem(T item);
     T RemoveLast();
+    T GetLast();
 }

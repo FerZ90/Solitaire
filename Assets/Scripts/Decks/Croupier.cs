@@ -23,7 +23,8 @@ public class Croupier
                 if (card != null)
                 {
                     if (i == count - 1)
-                        card.SetReverse(false);                
+                       card.SetReverse(false);          
+                    
                     _deckController.InsertIntoDeck(inGameDeck, card);
                 }
                 else

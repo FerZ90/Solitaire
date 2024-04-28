@@ -29,6 +29,14 @@ public class ListStack<T> : IStack<T>
         return _listStack.IndexOf(item);
     }
 
+    public T GetLast()
+    {
+        if (_listStack.Count <= 0)
+            return default(T);
+
+        return _listStack.Last();
+    }
+
     public List<T> GetNodeItems(T item)
     {
         List<T> items = new List<T>();

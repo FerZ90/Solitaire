@@ -1,12 +1,11 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 public interface IDeck
 {
     //Task AddCardToDeck(CardView card);
     //void RemoveCardFromDeck(CardView card);
-    //bool IsValidDragging(CardView card);
     //CardView GetLastCard(bool removeCard);
+    bool IsValidDragging(CardView card);
     void ReturnCardToDeck(CardView card);
     void AddLast(CardView card);
     CardView RemoveLast();

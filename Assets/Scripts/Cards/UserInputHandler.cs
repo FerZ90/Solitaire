@@ -58,10 +58,14 @@ public class UserInputHandler : ICardInputHandlerListener, IDeckInputHandlerList
         {
             var nodeCards = cardView.CardModel.deck.GetNodeCards(cardView);
 
+            var canInsertCards = deck.TryInsertCard(cardView);
+
             foreach (var nodeCard in nodeCards)
             {
-                if (deck.TryInsertCard(cardView))
+                if (canInsertCards)
                     _decksController?.InsertIntoDeck(deck, nodeCard);
+                else
+                    _decksController?.InsertIntoDeck(nodeCard.CardModel.deck, nodeCard);
             }
 
             _draggingCard = null;

@@ -1,6 +1,3 @@
-
-using System.Diagnostics;
-
 public class DecksController : IDecksController
 {  
     private DecksData _gameDecks;
@@ -63,9 +60,7 @@ public class DecksController : IDecksController
         {
 
             if (cardView.CardModel.deck != null)
-            {
                 cardView.CardModel.deck.RemoveLast();
-            }
 
             cardView.CardModel.deck = newCardDeck;
             cardView.CardModel.deck.AddLast(cardView);
