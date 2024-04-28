@@ -1,21 +1,23 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class UserInputHandler : ICardInputHandlerListener, IDeckInputHandlerListener
 {
-    private IDecksController _decksController;
+    private IUserDecksController _decksController;
     private CardView _draggingCard;
     private GameObject _cardsParent;
 
-    public UserInputHandler(IDecksController decksController, GameObject cardsParent)
+    public UserInputHandler(IUserDecksController decksController, GameObject cardsParent)
     {
         _decksController = decksController;
         _cardsParent = cardsParent;  
     }  
 
     public void OnBeginDragCard(PointerEventData eventData, CardView card)
-    {    
+    {
+        if (card.CardModel.deck == null || !card.CardModel.deck.IsValidDragging(card))
+            return;
+
         _cardsParent.transform.position = card.transform.position;
 
         var nodeCards = card.CardModel.deck.GetNodeCards(card);
@@ -32,11 +34,17 @@ public class UserInputHandler : ICardInputHandlerListener, IDeckInputHandlerList
 
     public void OnDragCard(PointerEventData eventData, CardView card)
     {
+        if (card.CardModel.deck == null || !card.CardModel.deck.IsValidDragging(card))
+            return;
+
         _cardsParent.transform.position = eventData.position;       
     }
 
     public void OnEndDragCard(PointerEventData eventData, CardView card)
     {
+        if (card.CardModel.deck == null || !card.CardModel.deck.IsValidDragging(card))
+            return;
+
         var nodeCards = card.CardModel.deck.GetNodeCards(card);
 
         if (_draggingCard == null)
