@@ -9,12 +9,12 @@ public class DeckModel
     public List<InGameDeck> inGameDecks = new List<InGameDeck>();
     public List<Deck> finishedDecks = new List<Deck>();
 
-    public void PrepareDecks(IDeckInputHandlerListener inputHandlerListener)
+    public void PrepareDecks(IDecksListener decksListener)
     {
-        deliveryDeck.Setup(inputHandlerListener);
+        deliveryDeck.Setup(decksListener);
 
         foreach (var gameDeck in inGameDecks)
-            gameDeck.Setup(inputHandlerListener);  
+            gameDeck.Setup(decksListener);
 
 
     }

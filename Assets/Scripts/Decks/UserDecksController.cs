@@ -33,7 +33,7 @@ public class UserDecksController : IUserDecksController
     {
         cardView.SetReverse(false);
         var discardDeck = _deckModel.discardDeck;
-        discardDeck.AddLast(cardView);
+        ChangeCardDeck(cardView, discardDeck);
     }
 
 

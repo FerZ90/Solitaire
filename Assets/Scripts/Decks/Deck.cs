@@ -4,17 +4,11 @@ using UnityEngine;
 public class Deck : MonoBehaviour, IDeck
 {
     private IStack<CardView> _cards;
-    protected IDeckInputHandlerListener _listener;
 
     private void Awake()
     {  
         _cards = new ListStack<CardView>();
-    }
-
-    public void Setup(IDeckInputHandlerListener listener)
-    {
-        _listener = listener;
-    }
+    }  
 
     protected virtual Vector3 GetCardPosition(CardView card)
     {

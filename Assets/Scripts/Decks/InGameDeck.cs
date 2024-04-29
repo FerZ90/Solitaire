@@ -2,9 +2,9 @@ using UnityEngine.EventSystems;
 
 public class InGameDeck : Deck, IDropHandler
 {
-    private IDeckInputHandlerListener _listener;
+    private IGameDeckListener _listener;
 
-    public void Setup(IDeckInputHandlerListener listener)
+    public void Setup(IGameDeckListener listener)
     {
         _listener = listener;
     }

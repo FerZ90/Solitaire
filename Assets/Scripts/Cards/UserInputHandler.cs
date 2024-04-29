@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UserInputHandler : ICardInputHandlerListener, IDeckInputHandlerListener
+public class UserInputHandler : ICardInputHandlerListener, IDecksListener
 {
     private ICroupier _croupier;
     private CardView _draggingCard;
@@ -64,6 +64,9 @@ public class UserInputHandler : ICardInputHandlerListener, IDeckInputHandlerList
     {
         if (eventData.pointerDrag.TryGetComponent<CardView>(out var cardView))
         {
+            if (cardView.CardModel.deck == null)
+                return;
+
             var nodeCards = cardView.CardModel.deck.GetNodeCards(cardView);
 
             var canInsertCards = deck.TryInsertCard(cardView);
@@ -83,6 +86,9 @@ public class UserInputHandler : ICardInputHandlerListener, IDeckInputHandlerList
 
     public void OnCroupierClick(PointerEventData eventData, CardView card)
     {
+        card.transform.SetParent(_cardsParent.transform);
+        card.transform.SetAsLastSibling();
+
         _croupier?.DeliverCard(card);
     }
 }

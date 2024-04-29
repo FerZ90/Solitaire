@@ -5,7 +5,7 @@ public interface IDeck
     //Task AddCardToDeck(CardView card);
     //void RemoveCardFromDeck(CardView card);
     //CardView GetLastCard(bool removeCard);
-    void Setup(IDeckInputHandlerListener listener);
+    //void Setup(IDeckInputHandlerListener listener);
     bool IsValidDragging(CardView card);
     void ReturnCardToDeck(CardView card);
     void AddLast(CardView card);
