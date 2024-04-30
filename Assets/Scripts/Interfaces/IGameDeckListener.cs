@@ -1,8 +1,10 @@
-﻿using UnityEngine.EventSystems;
+﻿using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 public interface IGameDeckListener
 {
-    public void OnDropCardInDeck(IDeck deck, PointerEventData eventData);
+    void OnDeckComplete(List<CardView> deck);
+    void OnDropCardInDeck(IDeck deck, PointerEventData eventData);
 }
 
 public interface IDecksListener : IGameDeckListener, IDeliveryDeckListener

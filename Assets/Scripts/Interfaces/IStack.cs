@@ -2,6 +2,7 @@
 
 public interface IStack<T>
 {
+    List<T> Elements { get; }
     void AddFirst(T item);
     bool AddLast(T item);
     int GetItemIndex(T item);

@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using UnityEngine.EventSystems;
 
 public class InGameDeck : Deck, IDropHandler
@@ -34,12 +37,40 @@ public class InGameDeck : Deck, IDropHandler
         return removeCard;
     }
 
+    public override void AddLast(CardView card)
+    {
+        base.AddLast(card);
+        CheckIfDeckIsComplete();
+    }
+
     public void OnDrop(PointerEventData eventData)
     {
         _listener?.OnDropCardInDeck(this, eventData);
     }
 
+    private void CheckIfDeckIsComplete()
+    {
+        if (_cards.Elements.Count < 13)
+            return;
 
+        var completeDeck = new List<CardView>();
+
+        for (int i = _cards.Elements.Count - 1; i >= 0; i--)
+        {
+            var card = _cards.Elements[i];
+
+            if (card.Reverse)
+                break;
+
+            if (i - 1 >= 0 && CardsValidator.CompatibleWithPreviousCard(card.CardModel.cardSuitValue, _cards.Elements[i - 1].CardModel.cardSuitValue) && !_cards.Elements[i - 1].Reverse)
+                completeDeck.Add(card);
+            else
+                break;
+        }
+
+        if (completeDeck.Count == 13 && _cards.Elements.All(c => !c.Reverse))
+            _listener?.OnDeckComplete(null);
+    }
 
     #region OLD
     //protected override Vector2 GetNewCardPosition()

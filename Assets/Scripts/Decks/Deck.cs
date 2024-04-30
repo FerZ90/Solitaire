@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Deck : MonoBehaviour, IDeck
 {
-    private IStack<CardView> _cards;
+    protected IStack<CardView> _cards;
 
     public List<CardView> Cards;  //Test propose
 

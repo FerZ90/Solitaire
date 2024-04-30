@@ -7,7 +7,7 @@ public class DeckModel
     public DeliveryDeck deliveryDeck;
     public Deck discardDeck;
     public List<InGameDeck> inGameDecks = new List<InGameDeck>();
-    public List<Deck> finishedDecks = new List<Deck>();
+    public List<FinishedDeck> finishedDecks = new List<FinishedDeck>();
 
     public void PrepareDecks(IDecksListener decksListener)
     {

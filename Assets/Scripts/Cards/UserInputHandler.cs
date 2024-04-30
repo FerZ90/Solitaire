@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -91,6 +92,12 @@ public class UserInputHandler : ICardInputHandlerListener, IDecksListener
 
         _croupier?.DeliverCard(card);
     }
+
+    public void OnDeckComplete(List<CardView> deck)
+    {
+        _croupier?.CompleteInGameDeck(deck);
+    }
+  
 }
 
 

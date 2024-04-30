@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -25,8 +26,8 @@ public class Croupier : ICardsObjectCreatorListener, ICroupier
                 {
                     if (i == count - 1)
                        card.SetReverse(false);
-            
-                    UserDecksController.InsertIntoDeck(inGameDeck, card);
+
+                    ChangeCardDeck(inGameDeck, card);
                 }
                 else
                 {
@@ -47,7 +48,7 @@ public class Croupier : ICardsObjectCreatorListener, ICroupier
 
         foreach (var cardView in cardViews)
         {
-            UserDecksController.InsertIntoDeck(_deckModel.deliveryDeck, cardView);
+            ChangeCardDeck(_deckModel.deliveryDeck, cardView);
             allTasks.Add(Task.Delay(100));
         }
 
@@ -58,18 +59,55 @@ public class Croupier : ICardsObjectCreatorListener, ICroupier
    
     public void InsertIntoDeck(IDeck deck, CardView cardView)
     {
-        UserDecksController.InsertIntoDeck(deck, cardView);      
+        ChangeCardDeck(deck, cardView);      
     }
 
     public void DeliverCard(CardView cardView)
     {
-        UserDecksController.InsertIntoDeck(_deckModel.discardDeck, cardView);     
+        ChangeCardDeck(_deckModel.discardDeck, cardView);     
     }
-}
 
-public interface ICroupier
-{
-    void InsertIntoDeck(IDeck deck, CardView cardView);
-    void DeliverCard(CardView cardView);
+    public void CompleteInGameDeck(List<CardView> completeDeck)
+    {
+        for (int i = _deckModel.finishedDecks.Count - 1; i >= 0; i--)
+        {
+            var finishedDeck = _deckModel.finishedDecks[i];
+
+            if (finishedDeck.IsComplete)
+                continue;
+
+            foreach (var card in completeDeck)
+                ChangeCardDeck(finishedDeck, card);
+
+            break;
+        }
+
+       
+    }
+
+    private void ChangeCardDeck(IDeck newDeck, CardView cardView)
+    {
+        var newCardDeck = newDeck;
+
+        if (newCardDeck == null)
+            newCardDeck = cardView.CardModel.deck;
+
+        cardView.CardModel.LogCard();
+
+        if (cardView.CardModel.deck == newDeck)
+        {
+            cardView.CardModel.deck.ReturnCardToDeck(cardView);
+        }
+        else
+        {
+
+            if (cardView.CardModel.deck != null)
+                cardView.CardModel.deck.RemoveLast();
+
+            cardView.CardModel.deck = newCardDeck;
+            cardView.CardModel.deck.AddLast(cardView);
+        }
+    }
+   
 }
 

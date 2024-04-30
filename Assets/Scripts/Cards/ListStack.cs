@@ -4,6 +4,7 @@ using System.Linq;
 public class ListStack<T> : IStack<T>
 {
     private List<T> _listStack;
+    public List<T> Elements => _listStack;
 
     public ListStack()
     {

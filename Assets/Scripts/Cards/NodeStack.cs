@@ -4,6 +4,8 @@ public class NodeStack<T> : IStack<T>
 {
     private Node<T> head;
 
+    public List<T> Elements => throw new System.NotImplementedException();
+
     public void AddFirst(T item)
     {
         Node<T> toAdd = new Node<T>();
