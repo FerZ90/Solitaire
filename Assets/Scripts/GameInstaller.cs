@@ -8,14 +8,12 @@ public class GameInstaller : MonoBehaviour
     [SerializeField] private GameObject draggingCardsParent;
 
     private Croupier _croupier;
-    private UserDecksController _decksController;
     private CardsObjectCreator _cardsObjectCreator;
     private UserInputHandler _cardsInputHandler;
 
     private void Awake()
     {
-        _decksController = new UserDecksController(deckIspectorData);
-        _croupier = new Croupier(_decksController);
+        _croupier = new Croupier(deckIspectorData);
         _cardsInputHandler = new UserInputHandler(_croupier, draggingCardsParent);
         _cardsObjectCreator = new CardsObjectCreator(cardsCreatorInspectorData, new CardsCreatorData(), _croupier);
     }

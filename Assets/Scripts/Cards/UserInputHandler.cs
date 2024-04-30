@@ -18,7 +18,7 @@ public class UserInputHandler : ICardInputHandlerListener, IDecksListener
         if (card.CardModel.deck == null || !card.CardModel.deck.IsValidDragging(card))
             return;
 
-        _cardsParent.transform.position = card.transform.position;
+        _cardsParent.transform.position = card.transform.position;   
 
         var nodeCards = card.CardModel.deck.GetNodeCards(card);
 

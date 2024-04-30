@@ -4,32 +4,29 @@ using UnityEngine;
 
 public class Croupier : ICardsObjectCreatorListener, ICroupier
 {
-    public bool BlockUserInput { get; private set; }
+    private DeckModel _deckModel; 
 
-    private IUserDecksController _decksController; 
-
-    public Croupier(IUserDecksController deckController)
-    {      
-        _decksController = deckController;
-        BlockUserInput = false;
+    public Croupier(DeckModel deckModel)
+    {
+        _deckModel = deckModel;        
     } 
 
     public async void DealCards()
     {
         int count = 1;
 
-        foreach (var inGameDeck in _decksController.DeckModel.inGameDecks)
+        foreach (var inGameDeck in _deckModel.inGameDecks)
         {
             for (int i = 0; i < count; i++)
             {
-                var card = _decksController.DeckModel.deliveryDeck.RemoveLast();
+                var card = _deckModel.deliveryDeck.GetLast();
 
                 if (card != null)
                 {
                     if (i == count - 1)
                        card.SetReverse(false);
-
-                    _decksController.InsertIntoDeck(inGameDeck, card);
+            
+                    UserDecksController.InsertIntoDeck(inGameDeck, card);
                 }
                 else
                 {
@@ -41,8 +38,7 @@ public class Croupier : ICardsObjectCreatorListener, ICroupier
 
             count++;
         }
-
-        BlockUserInput = true;
+    
     }
 
     public async void OnCreateCardsViews(List<CardView> cardViews)
@@ -51,7 +47,7 @@ public class Croupier : ICardsObjectCreatorListener, ICroupier
 
         foreach (var cardView in cardViews)
         {
-            _decksController.InsertIntoCroupierDeck(cardView);
+            UserDecksController.InsertIntoDeck(_deckModel.deliveryDeck, cardView);
             allTasks.Add(Task.Delay(100));
         }
 
@@ -62,31 +58,12 @@ public class Croupier : ICardsObjectCreatorListener, ICroupier
    
     public void InsertIntoDeck(IDeck deck, CardView cardView)
     {
-        switch (deck)
-        {
-            case null:
-                Debug.LogError("Trying to insert card into null deck !!");
-                break;
-            case InGameDeck:
-                _decksController.InsertIntoDeck(deck, cardView);
-                break;
-            case FinishedDeck:
-                _decksController.InsertIntoFinishedDeck(cardView);
-                break;
-            case DeliveryDeck:
-                _decksController.InsertIntoCroupierDeck(cardView);
-                break;
-            case DiscardDeck:
-                _decksController.InsertIntoDiscardDeck(cardView);
-                break;
-            default:
-                break;
-        }
+        UserDecksController.InsertIntoDeck(deck, cardView);      
     }
 
     public void DeliverCard(CardView cardView)
     {
-        _decksController.InsertIntoDiscardDeck(cardView);
+        UserDecksController.InsertIntoDeck(_deckModel.discardDeck, cardView);     
     }
 }
 

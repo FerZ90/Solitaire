@@ -23,4 +23,10 @@ public class DeliveryDeck : Deck, IPointerClickHandler
         return transform.position;
     }
 
+    public override void AddLast(CardView card)
+    {
+        base.AddLast(card);
+        card.SetReverse(true);        
+    }
+
 }

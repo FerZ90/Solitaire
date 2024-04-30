@@ -5,9 +5,12 @@ public class Deck : MonoBehaviour, IDeck
 {
     private IStack<CardView> _cards;
 
+    public List<CardView> Cards;  //Test propose
+
     private void Awake()
     {  
         _cards = new ListStack<CardView>();
+        Cards = new List<CardView>();  //Test propose
     }  
 
     protected virtual Vector3 GetCardPosition(CardView card)
@@ -17,7 +20,7 @@ public class Deck : MonoBehaviour, IDeck
         return new Vector3(transform.position.x, transform.position.y - (cardIndex * 30), transform.position.z);      
     }
 
-    public void AddLast(CardView card)
+    public virtual void AddLast(CardView card)
     {
         bool success = _cards.AddLast(card);
 
@@ -25,6 +28,8 @@ public class Deck : MonoBehaviour, IDeck
             return;
 
         PutCardviewOnDeck(card);
+
+        Cards.Add(card); //Test propose
     }
 
     public CardView GetLast()
@@ -34,6 +39,7 @@ public class Deck : MonoBehaviour, IDeck
 
     public virtual CardView RemoveLast()
     {
+        Cards.Remove(Cards[Cards.Count - 1]); //Test propose    
         return _cards.RemoveLast();
     }
 

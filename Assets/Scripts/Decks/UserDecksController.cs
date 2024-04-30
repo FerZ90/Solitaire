@@ -1,44 +1,12 @@
-public class UserDecksController : IUserDecksController
+public static class UserDecksController
 {
-    private DeckModel _deckModel;
-    public DeckModel DeckModel => _deckModel;
-
-    public UserDecksController(DeckModel deckModel)
+    public static void InsertIntoDeck(IDeck deck, CardView cardView)
     {
-        _deckModel = deckModel;
+        ChangeCardDeck(deck, cardView);
     }
 
-    public void InsertIntoDeck(IDeck deck, CardView cardView)
-    {  
-        ChangeCardDeck(cardView, deck);
-    }   
-
-    public void InsertIntoFinishedDeck(CardView cardView)
+    private static void ChangeCardDeck(IDeck newDeck, CardView cardView)
     {
-        //throw new System.NotImplementedException();
-    }
-
-    public void InsertIntoInGameDeck(CardView cardView)
-    {
-        //throw new System.NotImplementedException();
-    }
-
-    public void InsertIntoCroupierDeck(CardView cardView)
-    {
-        var croupierDeck = _deckModel.deliveryDeck;
-        croupierDeck.AddLast(cardView);
-    }
-
-    public void InsertIntoDiscardDeck(CardView cardView)
-    {
-        cardView.SetReverse(false);
-        var discardDeck = _deckModel.discardDeck;
-        ChangeCardDeck(cardView, discardDeck);
-    }
-
-
-    private void ChangeCardDeck(CardView cardView, IDeck newDeck)
-    {    
         var newCardDeck = newDeck;
 
         if (newCardDeck == null)
@@ -58,9 +26,9 @@ public class UserDecksController : IUserDecksController
 
             cardView.CardModel.deck = newCardDeck;
             cardView.CardModel.deck.AddLast(cardView);
-        }       
+        }
     }
- 
+
 }
    
 

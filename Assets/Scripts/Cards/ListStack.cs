@@ -41,7 +41,7 @@ public class ListStack<T> : IStack<T>
     {
         List<T> items = new List<T>();
 
-        int itemIndex = _listStack.IndexOf(item);
+        int itemIndex = _listStack.IndexOf(item);     
 
         for (int i = itemIndex; i < _listStack.Count; i++)
         {
