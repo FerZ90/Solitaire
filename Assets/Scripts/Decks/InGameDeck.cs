@@ -50,10 +50,11 @@ public class InGameDeck : Deck, IDropHandler
 
     private void CheckIfDeckIsComplete()
     {
-        if (_cards.Elements.Count < 13)
+        if (_cards.Elements.Count < 13 || _cards.Elements.Count <= 0)
             return;
 
         var completeDeck = new List<CardView>();
+        completeDeck.Add(_cards.Elements[_cards.Elements.Count - 1]);
 
         for (int i = _cards.Elements.Count - 1; i >= 0; i--)
         {
@@ -62,7 +63,7 @@ public class InGameDeck : Deck, IDropHandler
             if (card.Reverse)
                 break;
 
-            if (i - 1 >= 0 && CardsValidator.CompatibleWithPreviousCard(card.CardModel.cardSuitValue, _cards.Elements[i - 1].CardModel.cardSuitValue) && !_cards.Elements[i - 1].Reverse)
+            if (i - 1 >= 0 && CardsValidator.CompatibleWithPreviousCard(_cards.Elements[i - 1].CardModel.cardSuitValue, card.CardModel.cardSuitValue) && !_cards.Elements[i - 1].Reverse)
                 completeDeck.Add(card);
             else
                 break;

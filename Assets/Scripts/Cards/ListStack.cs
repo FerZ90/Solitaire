@@ -63,6 +63,8 @@ public class ListStack<T> : IStack<T>
 
     public T RemoveLast()
     {
+        UnityEngine.Debug.Log($"RemoveLast || Elements Count: {_listStack.Count}");
+
         var last = _listStack.Last();
         _listStack.Remove(last);
         return last;

@@ -12,7 +12,7 @@ public class DeliveryDeck : Deck, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        var lastCard = RemoveLast();
+        var lastCard = GetLast();
 
         if (lastCard != null) 
             _listener?.OnCroupierClick(eventData, lastCard);
