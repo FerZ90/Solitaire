@@ -1,23 +1,19 @@
 public static class CardsValidator
 {
-    public static bool CompatibleWithPreviousCard(CardInfo previous, CardInfo current)
+    public static bool CompatibleWith(CardInfo higherCard, CardInfo lowerCard)
     {
-        bool checkSuits = CheckCompatibleSuit(previous, current);
-        bool checkValues = (int)previous.value + 1 == (int)current.value;
+        bool checkSuits = CheckCompatibleSuit(higherCard, lowerCard);
+        bool checkValues = (int)higherCard.value - 1 == (int)lowerCard.value;
 
         return checkSuits && checkValues;
-    }
+    }   
 
-    public static bool CompatibleWithNextCard(CardInfo current, CardInfo next)
+    private static bool CheckCompatibleSuit(CardInfo first, CardInfo second)
     {
-        bool checkSuits = CheckCompatibleSuit(current, next);
-        bool checkValues = (int)current.value + 1 == (int)next.value;
+        var firstCondition = (first.suit == CardSuit.Diamonds || first.suit == CardSuit.Hearts) && (second.suit == CardSuit.Spades || second.suit == CardSuit.Clovers);
 
-        return checkSuits && checkValues;
-    }
+        var secondCondition = (first.suit == CardSuit.Clovers || first.suit == CardSuit.Spades) && (second.suit == CardSuit.Hearts || second.suit == CardSuit.Diamonds);
 
-    private static bool CheckCompatibleSuit(CardInfo first,CardInfo second)
-    {
-        return (first.suit == CardSuit.Diamonds || first.suit == CardSuit.Hearts && second.suit == CardSuit.Spades || second.suit == CardSuit.Clovers) || (first.suit == CardSuit.Spades || first.suit == CardSuit.Clovers && second.suit == CardSuit.Diamonds || second.suit == CardSuit.Hearts);
+        return firstCondition || secondCondition;
     }
 }

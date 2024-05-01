@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using UnityEngine.EventSystems;
 
@@ -22,7 +21,7 @@ public class InGameDeck : Deck, IDropHandler
         }
         else
         {
-            return CardsValidator.CompatibleWithPreviousCard(card.CardModel.cardSuitValue, lastCard.CardModel.cardSuitValue);
+            return CardsValidator.CompatibleWith(lastCard.CardModel.cardSuitValue, card.CardModel.cardSuitValue);
         }     
     }
 
@@ -63,11 +62,15 @@ public class InGameDeck : Deck, IDropHandler
             if (card.Reverse)
                 break;
 
-            if (i - 1 >= 0 && CardsValidator.CompatibleWithPreviousCard(_cards.Elements[i - 1].CardModel.cardSuitValue, card.CardModel.cardSuitValue) && !_cards.Elements[i - 1].Reverse)
+            UnityEngine.Debug.Log($"Compare Cards | 1st: '{_cards.Elements[i - 1].CardModel.cardSuitValue.value},{_cards.Elements[i - 1].CardModel.cardSuitValue.suit}' | 2nd: '{card.CardModel.cardSuitValue.value},{card.CardModel.cardSuitValue.suit}'");
+
+            if (i - 1 >= 0 && CardsValidator.CompatibleWith(_cards.Elements[i - 1].CardModel.cardSuitValue, card.CardModel.cardSuitValue) && !_cards.Elements[i - 1].Reverse)
                 completeDeck.Add(card);
             else
                 break;
         }
+
+        UnityEngine.Debug.Log($"CheckIfDeckIsComplete_01 | completeDeck Count: {completeDeck.Count}");
 
         if (completeDeck.Count == 13 && _cards.Elements.All(c => !c.Reverse))
             _listener?.OnDeckComplete(null);
