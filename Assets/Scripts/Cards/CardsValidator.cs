@@ -5,7 +5,7 @@ public static class CardsValidator
         bool checkSuits = CheckCompatibleSuit(higherCard, lowerCard);
         bool checkValues = (int)higherCard.value - 1 == (int)lowerCard.value;
 
-        return checkSuits && checkValues;
+        return /*checkSuits &&*/ checkValues;
     }   
 
     private static bool CheckCompatibleSuit(CardInfo first, CardInfo second)

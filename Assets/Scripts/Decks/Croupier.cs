@@ -67,7 +67,7 @@ public class Croupier : ICardsObjectCreatorListener, ICroupier
         ChangeCardDeck(_deckModel.discardDeck, cardView);     
     }
 
-    public void CompleteInGameDeck(List<CardView> completeDeck)
+    public async void CompleteInGameDeck(List<CardView> completeDeck)
     {
         for (int i = _deckModel.finishedDecks.Count - 1; i >= 0; i--)
         {
@@ -77,7 +77,10 @@ public class Croupier : ICardsObjectCreatorListener, ICroupier
                 continue;
 
             foreach (var card in completeDeck)
+            {
                 ChangeCardDeck(finishedDeck, card);
+                await Task.Delay(100);
+            }               
 
             break;
         }

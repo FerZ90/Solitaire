@@ -52,28 +52,23 @@ public class InGameDeck : Deck, IDropHandler
         if (_cards.Elements.Count < 13 || _cards.Elements.Count <= 0)
             return;
 
-        var completeDeck = new List<CardView>();
-        completeDeck.Add(_cards.Elements[_cards.Elements.Count - 1]);
+        var completeDeck = new List<CardView>();  
 
         for (int i = _cards.Elements.Count - 1; i >= 0; i--)
         {
-            var card = _cards.Elements[i];
-
-            if (card.Reverse)
+            if (_cards.Elements[i].Reverse)
                 break;
 
-            UnityEngine.Debug.Log($"Compare Cards | 1st: '{_cards.Elements[i - 1].CardModel.cardSuitValue.value},{_cards.Elements[i - 1].CardModel.cardSuitValue.suit}' | 2nd: '{card.CardModel.cardSuitValue.value},{card.CardModel.cardSuitValue.suit}'");
+            completeDeck.Add(_cards.Elements[i]);
 
-            if (i - 1 >= 0 && CardsValidator.CompatibleWith(_cards.Elements[i - 1].CardModel.cardSuitValue, card.CardModel.cardSuitValue) && !_cards.Elements[i - 1].Reverse)
-                completeDeck.Add(card);
-            else
-                break;
+            if (completeDeck.Count >= 13)
+                break;       
         }
 
         UnityEngine.Debug.Log($"CheckIfDeckIsComplete_01 | completeDeck Count: {completeDeck.Count}");
 
         if (completeDeck.Count == 13 && _cards.Elements.All(c => !c.Reverse))
-            _listener?.OnDeckComplete(null);
+            _listener?.OnDeckComplete(completeDeck);
     }
 
     #region OLD
