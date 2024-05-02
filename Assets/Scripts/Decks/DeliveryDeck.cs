@@ -11,10 +11,8 @@ public class DeliveryDeck : Pile, IDeliveryPile
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        var lastCard = GetLast();
-
-        if (lastCard != null) 
-            _listener?.OnCroupierClick(eventData, lastCard);
+        var lastCard = GetLast();   
+        _listener?.OnCroupierClick(eventData, lastCard);
     }
 
     public override void AddLast(CardView card)

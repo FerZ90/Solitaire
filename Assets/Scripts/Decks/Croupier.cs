@@ -61,9 +61,23 @@ public class Croupier : ICardsObjectCreatorListener, ICroupier, IDoubleTapListen
         ChangeCardDeck(deck, cardView);      
     }
 
-    public void DeliverCard(CardView cardView)
+    public async void DeliverCard(CardView cardView)
     {
-        ChangeCardDeck(_deckModel.discardDeck, cardView);     
+        if (cardView == null)
+        {
+            var lastCard = _deckModel.discardDeck.GetLast();
+
+            while (lastCard != null)
+            {
+                ChangeCardDeck(_deckModel.deliveryDeck, lastCard);
+                lastCard = _deckModel.discardDeck.GetLast();
+                await Task.Delay(7);
+            }
+        }
+        else
+        {
+            ChangeCardDeck(_deckModel.discardDeck, cardView);
+        }       
     }
 
     private void ChangeCardDeck(IPile newDeck, CardView cardView)

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -87,8 +86,11 @@ public class UserInputHandler : ICardInputHandlerListener, IDecksListener
 
     public void OnCroupierClick(PointerEventData eventData, CardView card)
     {
-        card.transform.SetParent(_cardsParent.transform);
-        card.transform.SetAsLastSibling();
+        if (card != null)
+        {
+            card.transform.SetParent(_cardsParent.transform);
+            card.transform.SetAsLastSibling();
+        }      
 
         _croupier?.DeliverCard(card);
     }
