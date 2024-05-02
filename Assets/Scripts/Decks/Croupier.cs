@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class Croupier : ICardsObjectCreatorListener, ICroupier, IDoubleTapListener
 {
@@ -68,27 +66,6 @@ public class Croupier : ICardsObjectCreatorListener, ICroupier, IDoubleTapListen
         ChangeCardDeck(_deckModel.discardDeck, cardView);     
     }
 
-    public async void CompleteInGameDeck(List<CardView> completeDeck)
-    {
-        for (int i = _deckModel.finishedDecks.Count - 1; i >= 0; i--)
-        {
-            var finishedDeck = _deckModel.finishedDecks[i];
-
-            if (finishedDeck.IsComplete)
-                continue;
-
-            foreach (var card in completeDeck)
-            {
-                ChangeCardDeck(finishedDeck, card);
-                await Task.Delay(100);
-            }               
-
-            break;
-        }
-
-       
-    }
-
     private void ChangeCardDeck(IPile newDeck, CardView cardView)
     {
         var newCardDeck = newDeck;
@@ -115,11 +92,44 @@ public class Croupier : ICardsObjectCreatorListener, ICroupier, IDoubleTapListen
 
     public void OnDoubleTap(CardView card)
     {
+        if (card.CardModel.deck is FinishedDeck || card.Reverse)
+            return;
+
         if (card != null)
         {
-            //TODO
+            foreach (var finishedDeck in _deckModel.finishedDecks)
+            {
+                if (finishedDeck.TryInsertCard(card))
+                {
+                    ChangeCardDeck(finishedDeck, card);
+                    break;
+                }
+            }
+
             Debug.Log($"OnDoubleTap Card--> '{card.CardModel.cardSuitValue.value}, {card.CardModel.cardSuitValue.suit}'");
-        }       
+        }
     }
+
+    #region OLD
+    //public async void CompleteInGameDeck(List<CardView> completeDeck)
+    //{
+    //    for (int i = _deckModel.finishedDecks.Count - 1; i >= 0; i--)
+    //    {
+    //        var finishedDeck = _deckModel.finishedDecks[i];
+
+    //        if (finishedDeck.IsComplete)
+    //            continue;
+
+    //        foreach (var card in completeDeck)
+    //        {
+    //            ChangeCardDeck(finishedDeck, card);
+    //            await Task.Delay(100);
+    //        }
+
+    //        break;
+    //    }
+
+    //}
+    #endregion
 }
 

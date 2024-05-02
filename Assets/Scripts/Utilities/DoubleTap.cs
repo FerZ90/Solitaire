@@ -33,7 +33,9 @@ public class DoubleTap : MonoBehaviour
             }
             else
             {
+                hasFirstTap = false;
                 float timeSinceLastTap = Time.time - lastTapTime;
+
                 if (timeSinceLastTap <= doubleTapTimeThreshold)
                 {
                     _pointerEventData.position = Input.mousePosition;
@@ -48,8 +50,7 @@ public class DoubleTap : MonoBehaviour
                         }
                     }
                 }
-
-                hasFirstTap = false;
+               
             }
         }      
     }

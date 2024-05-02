@@ -1,19 +1,18 @@
 
 public class FinishedDeck : Pile
 {
-    private bool _isComplete;
-    public bool IsComplete => _isComplete;
-
-    public override void AddLast(CardView card)
+    public override bool TryInsertCard(CardView card)
     {
-        if (_isComplete)
-            return;
+        var lastCard = base.GetLast();
 
-        base.AddLast(card);
-        card.SetReverse(true);
-
-        if (_cards.Elements.Count >= 13)
-            _isComplete = true;
-    }  
+        if (lastCard == null)
+        {
+            return card.CardModel.cardSuitValue.value == CardValue.Ace;
+        }
+        else
+        {
+            return CardsValidator.CompatibleWithSameSuit(card.CardModel.cardSuitValue, lastCard.CardModel.cardSuitValue);
+        }
+    }
 
 }
