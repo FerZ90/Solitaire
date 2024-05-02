@@ -1,22 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Deck : MonoBehaviour, IDeck
+public class Pile : MonoBehaviour, IPile
 {
     protected IStack<CardView> _cards;
 
     private void Awake()
     {  
         _cards = new ListStack<CardView>();  
-    }  
-
-    protected virtual Vector3 GetCardPosition(CardView card)
-    {
-        int cardIndex = _cards.GetItemIndex(card);
-
-        return new Vector3(transform.position.x, transform.position.y - (cardIndex * 30), transform.position.z);      
     }
 
+    public virtual Vector3 GetCardPosition(CardView card)
+    {
+        return transform.position;
+    }
+   
     public virtual void AddLast(CardView card)
     {
         bool success = _cards.AddLast(card);
@@ -50,12 +48,7 @@ public class Deck : MonoBehaviour, IDeck
     public virtual bool TryInsertCard(CardView card)
     {
         return true;
-    }
-
-    public virtual bool IsValidDragging(CardView card)
-    {
-        return !card.Reverse;
-    }
+    }    
 
     private async void PutCardviewOnDeck(CardView card)
     {
@@ -64,8 +57,8 @@ public class Deck : MonoBehaviour, IDeck
         int cardIndex = _cards.GetItemIndex(card);
         card.transform.SetParent(transform);
         card.transform.SetSiblingIndex(cardIndex);
-    }
-  
+    }   
+
 
     #region OLD
     //protected LinkedList<CardView> _deckCards;

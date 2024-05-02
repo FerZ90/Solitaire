@@ -16,7 +16,7 @@ public class UserInputHandler : ICardInputHandlerListener, IDecksListener
 
     public void OnBeginDragCard(PointerEventData eventData, CardView card)
     {
-        if (card.CardModel.deck == null || !card.CardModel.deck.IsValidDragging(card))
+        if (card.CardModel.deck == null || card.Reverse)
             return;
 
         _cardsParent.transform.position = card.transform.position;   
@@ -35,7 +35,7 @@ public class UserInputHandler : ICardInputHandlerListener, IDecksListener
 
     public void OnDragCard(PointerEventData eventData, CardView card)
     {
-        if (card.CardModel.deck == null || !card.CardModel.deck.IsValidDragging(card))
+        if (card.CardModel.deck == null || card.Reverse)
             return;
 
         _cardsParent.transform.position = eventData.position;       
@@ -43,7 +43,7 @@ public class UserInputHandler : ICardInputHandlerListener, IDecksListener
 
     public void OnEndDragCard(PointerEventData eventData, CardView card)
     {
-        if (card.CardModel.deck == null || !card.CardModel.deck.IsValidDragging(card))
+        if (card.CardModel.deck == null || card.Reverse)
             return;
 
         var nodeCards = card.CardModel.deck.GetNodeCards(card);
@@ -61,7 +61,7 @@ public class UserInputHandler : ICardInputHandlerListener, IDecksListener
 
     }    
 
-    public void OnDropCardInDeck(IDeck deck, PointerEventData eventData)
+    public void OnDropCardInDeck(IPile deck, PointerEventData eventData)
     {
         if (eventData.pointerDrag.TryGetComponent<CardView>(out var cardView))
         {

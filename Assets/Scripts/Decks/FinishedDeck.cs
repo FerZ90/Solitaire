@@ -1,6 +1,5 @@
-using UnityEngine;
 
-public class FinishedDeck : Deck
+public class FinishedDeck : Pile
 {
     private bool _isComplete;
     public bool IsComplete => _isComplete;
@@ -15,10 +14,6 @@ public class FinishedDeck : Deck
 
         if (_cards.Elements.Count >= 13)
             _isComplete = true;
-    }
-    protected override Vector3 GetCardPosition(CardView card)
-    {
-        return transform.position;
-    }
+    }  
 
 }

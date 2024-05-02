@@ -1297,6 +1297,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1407119993}
   - component: {fileID: 1407119994}
+  - component: {fileID: 1407119995}
   m_Layer: 0
   m_Name: GAME INSTALLER
   m_TagString: Untagged
@@ -1331,6 +1332,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01e15581462b7a648850b9a53e1c3be9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doubleTapInput: {fileID: 1407119995}
   cardsCreatorInspectorData:
     cardPrefab: {fileID: 7840265329095936505, guid: 47e292ce390d9f7498f115ef3c6a4c8b,
       type: 3}
@@ -1352,6 +1354,19 @@ MonoBehaviour:
     - {fileID: 749839841}
     - {fileID: 994242291}
   draggingCardsParent: {fileID: 2053851508}
+--- !u!114 &1407119995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1407119991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00f90328c2b9aae4cabd7f1718d455d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doubleTapTimeThreshold: 0.2
 --- !u!1 &1409241939
 GameObject:
   m_ObjectHideFlags: 0

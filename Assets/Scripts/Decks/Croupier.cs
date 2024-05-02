@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Croupier : ICardsObjectCreatorListener, ICroupier
+public class Croupier : ICardsObjectCreatorListener, ICroupier, IDoubleTapListener
 {
     private DeckModel _deckModel; 
 
@@ -57,7 +58,7 @@ public class Croupier : ICardsObjectCreatorListener, ICroupier
         DealCards();
     }
    
-    public void InsertIntoDeck(IDeck deck, CardView cardView)
+    public void InsertIntoDeck(IPile deck, CardView cardView)
     {
         ChangeCardDeck(deck, cardView);      
     }
@@ -88,7 +89,7 @@ public class Croupier : ICardsObjectCreatorListener, ICroupier
        
     }
 
-    private void ChangeCardDeck(IDeck newDeck, CardView cardView)
+    private void ChangeCardDeck(IPile newDeck, CardView cardView)
     {
         var newCardDeck = newDeck;
 
@@ -111,6 +112,14 @@ public class Croupier : ICardsObjectCreatorListener, ICroupier
             cardView.CardModel.deck.AddLast(cardView);
         }
     }
-   
+
+    public void OnDoubleTap(CardView card)
+    {
+        if (card != null)
+        {
+            //TODO
+            Debug.Log($"OnDoubleTap Card--> '{card.CardModel.cardSuitValue.value}, {card.CardModel.cardSuitValue.suit}'");
+        }       
+    }
 }
 

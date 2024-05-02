@@ -2,7 +2,7 @@
 public class CardModel
 {    
     public CardInfo cardSuitValue;
-    public IDeck deck;
+    public IPile deck;
 
     public CardModel(CardInfo cardData)
     {

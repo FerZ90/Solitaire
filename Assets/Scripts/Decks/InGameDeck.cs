@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class InGameDeck : Deck, IDropHandler
+public class InGameDeck : Pile, IGamePile
 {
     private IGameDeckListener _listener;
 
@@ -34,12 +33,12 @@ public class InGameDeck : Deck, IDropHandler
             lastCard.SetReverse(false);
 
         return removeCard;
-    }
+    }  
 
-    public override void AddLast(CardView card)
+    public override Vector3 GetCardPosition(CardView card)
     {
-        base.AddLast(card);
-        CheckIfDeckIsComplete();
+        int cardIndex = _cards.GetItemIndex(card);
+        return new Vector3(transform.position.x, transform.position.y - (cardIndex * 30), transform.position.z);
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -47,31 +46,32 @@ public class InGameDeck : Deck, IDropHandler
         _listener?.OnDropCardInDeck(this, eventData);
     }
 
-    private void CheckIfDeckIsComplete()
-    {
-        if (_cards.Elements.Count < 13 || _cards.Elements.Count <= 0)
-            return;
-
-        var completeDeck = new List<CardView>();  
-
-        for (int i = _cards.Elements.Count - 1; i >= 0; i--)
-        {
-            if (_cards.Elements[i].Reverse)
-                break;
-
-            completeDeck.Add(_cards.Elements[i]);
-
-            if (completeDeck.Count >= 13)
-                break;       
-        }
-
-        UnityEngine.Debug.Log($"CheckIfDeckIsComplete_01 | completeDeck Count: {completeDeck.Count}");
-
-        if (completeDeck.Count == 13 && _cards.Elements.All(c => !c.Reverse))
-            _listener?.OnDeckComplete(completeDeck);
-    }
-
     #region OLD
+    //private void CheckIfDeckIsComplete()
+    //{
+    //    if (_cards.Elements.Count < 13 || _cards.Elements.Count <= 0)
+    //        return;
+
+    //    var completeDeck = new List<CardView>();  
+
+    //    for (int i = _cards.Elements.Count - 1; i >= 0; i--)
+    //    {
+    //        if (_cards.Elements[i].Reverse)
+    //            break;
+
+    //        completeDeck.Add(_cards.Elements[i]);
+
+    //        if (completeDeck.Count >= 13)
+    //            break;       
+    //    }
+
+    //    Debug.Log($"CheckIfDeckIsComplete_01 | completeDeck Count: {completeDeck.Count}");
+
+    //    if (completeDeck.Count == 13 && _cards.Elements.All(c => !c.Reverse))
+    //        _listener?.OnDeckComplete(completeDeck);
+    //}
+
+
     //protected override Vector2 GetNewCardPosition()
     //{
     //    return new Vector3(transform.position.x, transform.position.y - (_deckCards.Count * 30), transform.position.z);

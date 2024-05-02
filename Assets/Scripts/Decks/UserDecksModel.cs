@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class DeckModel
 {
     public DeliveryDeck deliveryDeck;
-    public Deck discardDeck;
+    public Pile discardDeck;
     public List<InGameDeck> inGameDecks = new List<InGameDeck>();
     public List<FinishedDeck> finishedDecks = new List<FinishedDeck>();
 

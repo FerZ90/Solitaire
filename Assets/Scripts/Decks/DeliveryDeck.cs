@@ -1,7 +1,6 @@
-using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DeliveryDeck : Deck, IPointerClickHandler
+public class DeliveryDeck : Pile, IDeliveryPile
 {
     private IDeliveryDeckListener _listener;
 
@@ -16,11 +15,6 @@ public class DeliveryDeck : Deck, IPointerClickHandler
 
         if (lastCard != null) 
             _listener?.OnCroupierClick(eventData, lastCard);
-    }
-
-    protected override Vector3 GetCardPosition(CardView card)
-    {
-        return transform.position;
     }
 
     public override void AddLast(CardView card)

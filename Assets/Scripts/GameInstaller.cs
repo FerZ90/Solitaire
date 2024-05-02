@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class GameInstaller : MonoBehaviour
 {
+    [SerializeField] private DoubleTap doubleTapInput;
     [SerializeField] private CardsCreatorInspectorData cardsCreatorInspectorData;
     [SerializeField] private DeckModel deckIspectorData;
     [SerializeField] private GameObject draggingCardsParent;
@@ -16,6 +17,7 @@ public class GameInstaller : MonoBehaviour
         _croupier = new Croupier(deckIspectorData);
         _cardsInputHandler = new UserInputHandler(_croupier, draggingCardsParent);
         _cardsObjectCreator = new CardsObjectCreator(cardsCreatorInspectorData, new CardsCreatorData(), _croupier);
+        doubleTapInput.Setup(_croupier);
     }
 
     private IEnumerator Start()
