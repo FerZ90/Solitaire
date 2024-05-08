@@ -6,6 +6,7 @@ public class DoubleTap : MonoBehaviour
 {
     public float doubleTapTimeThreshold = 0.2f;
     private float lastTapTime;
+    private float firstTapTime;
     private bool hasFirstTap;
     private PointerEventData _pointerEventData;
     private List<RaycastResult> _raycastResults;
@@ -24,35 +25,49 @@ public class DoubleTap : MonoBehaviour
 
     void Update()
     {
+        if (_listener == null)
+            return;  
+
         if (Input.GetMouseButtonUp(0))
-        {
+        {        
+            if (hasFirstTap && Time.time - lastTapTime > doubleTapTimeThreshold)
+            {
+                hasFirstTap = false;
+            }
+
             if (!hasFirstTap)
             {
                 hasFirstTap = true;
-                lastTapTime = Time.time;
+                firstTapTime = Time.time;
             }
             else
             {
                 hasFirstTap = false;
-                float timeSinceLastTap = Time.time - lastTapTime;
 
-                if (timeSinceLastTap <= doubleTapTimeThreshold)
+                if (Time.time - firstTapTime <= doubleTapTimeThreshold)
                 {
-                    _pointerEventData.position = Input.mousePosition;
-                    EventSystem.current.RaycastAll(_pointerEventData, _raycastResults);
-
-                    foreach (var result in _raycastResults)
-                    {
-                        if (result.gameObject.TryGetComponent<CardView>(out var cardview))
-                        {
-                            _listener?.OnDoubleTap(cardview);
-                            break;
-                        }
-                    }
+                    FindCardView();
                 }
                
             }
+
+            lastTapTime = Time.time;
         }      
+    }
+
+    private void FindCardView()
+    {
+        _pointerEventData.position = Input.mousePosition;
+        EventSystem.current.RaycastAll(_pointerEventData, _raycastResults);
+
+        foreach (var result in _raycastResults)
+        {
+            if (result.gameObject.TryGetComponent<CardView>(out var cardview))
+            {
+                _listener?.OnDoubleTap(cardview);
+                break;
+            }
+        }
     }
 }
 
