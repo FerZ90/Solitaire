@@ -52,6 +52,9 @@ public class Pile : MonoBehaviour, IPile
 
     private async void PutCardviewOnDeck(CardView card)
     {
+        card.transform.SetParent(transform.root);
+        card.transform.SetAsLastSibling();
+
         await CardAnimator.AnimateCardToPosition(card, GetCardPosition(card));
 
         int cardIndex = _cards.GetItemIndex(card);
