@@ -12,8 +12,6 @@ public class Observer<T> : IDisposable, ISubject<T>
 
     public void Subscribe(IObserver<T> observer)
     {
-        UnityEngine.Debug.Log("Subscribe Observer !!");
-
         if (!_observers.Contains(observer))
             _observers.Add(observer);
     }
@@ -37,24 +35,5 @@ public class Observer<T> : IDisposable, ISubject<T>
 
         _observers.Clear();
     }
-}
-
-public class ObserverModel
-{
-
-}
-
-public class CardViewObserverModel : ObserverModel
-{
-    public CardView card;
-    public bool finishAnimation;
-
-    public CardViewObserverModel(CardView card, bool finishAnimation)
-    {
-        this.card = card;
-        this.finishAnimation = finishAnimation;
-    }
-
-   
 }
 
