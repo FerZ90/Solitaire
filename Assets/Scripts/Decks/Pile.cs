@@ -3,11 +3,13 @@ using UnityEngine;
 
 public class Pile : MonoBehaviour, IPile
 {
-    protected IStack<CardView> _cards;
+    protected IStack<CardView> _cards = new ListStack<CardView>();
+    protected Observer<CardViewObserverModel> _pileObserver = new Observer<CardViewObserverModel>();
+    public Observer<CardViewObserverModel> PileObserver => _pileObserver;
 
-    private void Awake()
-    {  
-        _cards = new ListStack<CardView>();  
+    private void OnDestroy()
+    {
+        _pileObserver.Dispose();
     }
 
     public virtual Vector3 GetCardPosition(CardView card)
@@ -55,7 +57,9 @@ public class Pile : MonoBehaviour, IPile
         card.transform.SetParent(transform.root);
         card.transform.SetAsLastSibling();
 
+        _pileObserver.Notify(new CardViewObserverModel(card, false));
         await CardAnimator.AnimateCardToPosition(card, GetCardPosition(card));
+        _pileObserver.Notify(new CardViewObserverModel(card, true));
 
         int cardIndex = _cards.GetItemIndex(card);
         card.transform.SetParent(transform);

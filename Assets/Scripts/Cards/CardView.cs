@@ -75,7 +75,7 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
     {
         _reverse = reverse;   
         UpdateCardInfo();
-    }
-
-   
+    }   
 }
+
+
