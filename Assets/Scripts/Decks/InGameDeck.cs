@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class InGameDeck : Pile, IGamePile
+public class InGameDeck : Pile, IDropablePile
 {
-    private IGameDeckListener _listener;
+    private IDropableListener _listener;
 
-    public void Setup(IGameDeckListener listener)
+    public void Setup(IDropableListener listener)
     {
         _listener = listener;
     }

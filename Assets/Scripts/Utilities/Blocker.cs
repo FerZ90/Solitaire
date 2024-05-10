@@ -1,13 +1,19 @@
+using UnityEngine;
 using UnityEngine.UI;
 
-public class Blocker : IObserver<CardViewObserverModel>
+[RequireComponent(typeof(Image))]
+public class Blocker : MonoBehaviour, IObserver<CardViewObserverModel>
 {
-    private Image _blocker;
+    private Image blockerImage;
 
-    public Blocker(Image uiBlocker, DeckModel deckModel)
+    private void Awake()
     {
-        _blocker = uiBlocker;
-        uiBlocker.enabled = false;
+        blockerImage = GetComponent<Image>();
+    }
+
+    public void Setup(DeckModel deckModel)
+    {
+        blockerImage.enabled = false;
 
         deckModel.deliveryDeck.PileObserver.Subscribe(this);
         deckModel.discardDeck.PileObserver.Subscribe(this);
@@ -26,7 +32,7 @@ public class Blocker : IObserver<CardViewObserverModel>
     public void UpdateEvent(CardViewObserverModel observer)
     {
         if (observer != null && observer is CardViewObserverModel)
-            _blocker.enabled = !observer.finishAnimation;
+            blockerImage.enabled = !observer.finishAnimation;
     }
 
 }

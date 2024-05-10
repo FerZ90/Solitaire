@@ -16,7 +16,8 @@ public class DeckModel
         foreach (var gameDeck in inGameDecks)
             gameDeck.Setup(decksListener);
 
-
+        foreach (var finishedDeck in finishedDecks)
+            finishedDeck.Setup(decksListener);
     }
 }
 

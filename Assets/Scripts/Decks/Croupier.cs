@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -120,8 +119,6 @@ public class Croupier : ICardsObjectCreatorListener, ICroupier, IDoubleTapListen
                     break;
                 }
             }
-
-            Debug.Log($"OnDoubleTap Card--> '{card.CardModel.cardSuitValue.value}, {card.CardModel.cardSuitValue.suit}'");
         }
     }
 

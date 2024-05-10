@@ -12,9 +12,9 @@ public interface IPile
     bool TryInsertCard(CardView card);
 }
 
-public interface IGamePile : IDropHandler
+public interface IDropablePile : IDropHandler
 {
-    void Setup(IGameDeckListener listener);
+    void Setup(IDropableListener listener);
 }
 
 public interface IDeliveryPile : IPointerClickHandler
