@@ -1,15 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pile : MonoBehaviour, IPile
+public class Pile : MonoBehaviour, IPile, ISubjectType<PileObserverModel>
 {
     protected IStack<CardView> _cards = new ListStack<CardView>();
-    protected readonly Observer<PileObserverModel> _pileObserver = new Observer<PileObserverModel>();
-    public Observer<PileObserverModel> PileObserver => _pileObserver;
+    public Observer<PileObserverModel> Observer { get; set; } = new Observer<PileObserverModel>();
 
     private void OnDestroy()
     {
-        _pileObserver.Dispose();
+        Observer.Dispose();
     }
 
     public virtual Vector3 GetCardPosition(CardView card)
@@ -57,9 +56,9 @@ public class Pile : MonoBehaviour, IPile
         card.transform.SetParent(transform.root);
         card.transform.SetAsLastSibling();
 
-        _pileObserver.Notify(new PileObserverModel(card, false));
+        Observer.Notify(new PileObserverModel(card, false));
         await CardAnimator.AnimateCardToPosition(card, GetCardPosition(card));
-        _pileObserver.Notify(new PileObserverModel(card, true));
+        Observer.Notify(new PileObserverModel(card, true));
 
         int cardIndex = _cards.GetItemIndex(card);
         card.transform.SetParent(transform);

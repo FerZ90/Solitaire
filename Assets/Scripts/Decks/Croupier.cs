@@ -6,10 +6,10 @@ public class Croupier : ICroupier, IDoubleTapListener, IObserver<List<CardView>>
 {
     private DeckModel _deckModel; 
 
-    public Croupier(ICardsObjectCreator cardsCreator, DeckModel deckModel)
+    public Croupier(ISubjectType<List<CardView>> cardsCreatorSubject, DeckModel deckModel)
     {
         _deckModel = deckModel;
-        cardsCreator.CardsObjectCreatorObserver.Subscribe(this);
+        cardsCreatorSubject.Observer.Subscribe(this);
     } 
 
     public async void DealCards()

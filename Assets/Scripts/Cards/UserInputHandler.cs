@@ -8,18 +8,17 @@ public class UserInputHandler : ICardInputHandlerListener, IDecksListener, IObse
     private CardView _draggingCard;
     private GameObject _cardsParent;
 
-    public UserInputHandler(ICardsObjectCreator cardsCreator, ICroupier croupier, GameObject cardsParent)
+    public UserInputHandler(ISubjectType<List<CardView>> cardsCreatorSubject, ICroupier croupier, GameObject cardsParent)
     {
         _croupier = croupier;
         _cardsParent = cardsParent;
-        cardsCreator.CardsObjectCreatorObserver.Subscribe(this);
+        cardsCreatorSubject.Observer.Subscribe(this);
     }
 
     public void UpdateEvent(List<CardView> parameter)
     {
         foreach (var cardview in parameter)
-            cardview.CardviewObserver.Subscribe(this);
-      
+            cardview.Observer.Subscribe(this);      
     }
 
     public void UpdateEvent(CardviewObserverModel parameter)

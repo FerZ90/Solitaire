@@ -5,5 +5,4 @@ public interface ICardsObjectCreator
     void CreateCards();
     void Reset();
 
-    public Observer<List<CardView>> CardsObjectCreatorObserver { get; }
 }

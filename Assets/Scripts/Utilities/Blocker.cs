@@ -15,17 +15,17 @@ public class Blocker : MonoBehaviour, IObserver<PileObserverModel>
     {
         blockerImage.enabled = false;
 
-        deckModel.deliveryDeck.PileObserver.Subscribe(this);
-        deckModel.discardDeck.PileObserver.Subscribe(this);
+        deckModel.deliveryDeck.Observer.Subscribe(this);
+        deckModel.discardDeck.Observer.Subscribe(this);
 
         foreach (var finishedDeck in deckModel.finishedDecks)
         {
-            finishedDeck.PileObserver.Subscribe(this);
+            finishedDeck.Observer.Subscribe(this);
         }
 
         foreach (var ingameDeck in deckModel.inGameDecks)
         {
-            ingameDeck.PileObserver.Subscribe(this);
+            ingameDeck.Observer.Subscribe(this);
         }
     }
 

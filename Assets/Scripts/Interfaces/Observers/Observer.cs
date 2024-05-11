@@ -37,3 +37,8 @@ public class Observer<T> : IDisposable, ISubject<T>
     }
 }
 
+public interface ISubjectType<T>
+{
+    public Observer<T> Observer { get; set; }
+}
+
