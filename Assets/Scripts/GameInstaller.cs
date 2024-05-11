@@ -17,8 +17,8 @@ public class GameInstaller : MonoBehaviour
     private void Awake()
     {
         _croupier = new Croupier(deckIspectorData);
-        _cardsInputHandler = new UserInputHandler(_croupier, draggingCardsParent);
-        _cardsObjectCreator = new CardsObjectCreator(cardsCreatorInspectorData, new CardsCreatorData(), _croupier);
+        _cardsObjectCreator = new CardsObjectCreator(cardsCreatorInspectorData, new DeckCreator());
+        _cardsInputHandler = new UserInputHandler(_cardsObjectCreator, _croupier, draggingCardsParent);
         doubleTapInput.Setup(_croupier);
         blocker.Setup(deckIspectorData);
     }
@@ -27,7 +27,7 @@ public class GameInstaller : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         deckIspectorData.PrepareDecks(_cardsInputHandler);
-        _cardsObjectCreator.CreateCards(_cardsInputHandler);
+        _cardsObjectCreator.CreateCards();
     }  
 
 }

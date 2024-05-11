@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-public class Blocker : MonoBehaviour, IObserver<CardViewObserverModel>
+public class Blocker : MonoBehaviour, IObserver<PileObserverModel>
 {
     private Image blockerImage;
 
@@ -29,9 +29,9 @@ public class Blocker : MonoBehaviour, IObserver<CardViewObserverModel>
         }
     }
 
-    public void UpdateEvent(CardViewObserverModel observer)
+    public void UpdateEvent(PileObserverModel observer)
     {
-        if (observer != null && observer is CardViewObserverModel)
+        if (observer != null && observer is PileObserverModel)
             blockerImage.enabled = !observer.finishAnimation;
     }
 

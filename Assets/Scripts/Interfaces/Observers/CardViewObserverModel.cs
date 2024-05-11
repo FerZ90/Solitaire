@@ -1,14 +1,13 @@
-﻿public class CardViewObserverModel
+﻿public class PileObserverModel
 {
     public CardView card;
     public bool finishAnimation;
 
-    public CardViewObserverModel(CardView card, bool finishAnimation)
+    public PileObserverModel(CardView card, bool finishAnimation)
     {
         this.card = card;
         this.finishAnimation = finishAnimation;
     }
-
    
 }
 

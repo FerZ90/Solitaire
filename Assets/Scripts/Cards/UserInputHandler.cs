@@ -1,17 +1,42 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UserInputHandler : ICardInputHandlerListener, IDecksListener
+public class UserInputHandler : ICardInputHandlerListener, IDecksListener, IObserver<List<CardView>>, IObserver<CardviewObserverModel>
 {
     private ICroupier _croupier;
     private CardView _draggingCard;
     private GameObject _cardsParent;
 
-    public UserInputHandler(ICroupier croupier, GameObject cardsParent)
+    public UserInputHandler(ICardsObjectCreator cardsCreator, ICroupier croupier, GameObject cardsParent)
     {
         _croupier = croupier;
-        _cardsParent = cardsParent;  
-    }  
+        _cardsParent = cardsParent;
+        cardsCreator.CardsObjectCreatorObserver.Subscribe(this);
+    }
+
+    public void UpdateEvent(List<CardView> parameter)
+    {
+        foreach (var cardview in parameter)
+            cardview.CardviewObserver.Subscribe(this);
+      
+    }
+
+    public void UpdateEvent(CardviewObserverModel parameter)
+    {
+        switch (parameter.eventType) 
+        {
+            case CardViewEventType.OnBeginDrag:
+                OnBeginDragCard(parameter.eventData, parameter.card);
+                break;        
+            case CardViewEventType.OnDrag:
+                OnDragCard(parameter.eventData, parameter.card);
+                break;
+            case CardViewEventType.OnEndDrag:
+                OnEndDragCard(parameter.eventData, parameter.card);
+                break;
+        }
+    }
 
     public void OnBeginDragCard(PointerEventData eventData, CardView card)
     {
@@ -93,9 +118,7 @@ public class UserInputHandler : ICardInputHandlerListener, IDecksListener
         }      
 
         _croupier?.DeliverCard(card);
-    }
-    
-  
+    } 
 }
 
 

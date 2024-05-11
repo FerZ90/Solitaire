@@ -4,20 +4,20 @@ public class CardsObjectCreator : ICardsObjectCreator
 {  
     private CardsCreatorInspectorData _model;   
     private ICardsCreatorData _cardsCreator;
-    private ICardsObjectCreatorListener _listener;
-
 
     private readonly List<CardView> _cardsViews = new List<CardView>();
 
-    public CardsObjectCreator(CardsCreatorInspectorData cardsObjectCreatorModel, ICardsCreatorData cardsCreator, ICardsObjectCreatorListener listener)
+    private readonly Observer<List<CardView>> _cardsObjectCreatorObserver = new Observer<List<CardView>>();
+    public Observer<List<CardView>> CardsObjectCreatorObserver => _cardsObjectCreatorObserver;
+
+    public CardsObjectCreator(CardsCreatorInspectorData cardsObjectCreatorModel, ICardsCreatorData cardsCreator)
     {
         _cardsViews = new List<CardView>();
         _model = cardsObjectCreatorModel;
         _cardsCreator = cardsCreator;
-        _listener = listener;
     }
 
-    public void CreateCards(ICardInputHandlerListener inputCardsListener)
+    public void CreateCards()
     {    
         var deck = _cardsCreator.CreateDeck();
 
@@ -27,12 +27,12 @@ public class CardsObjectCreator : ICardsObjectCreator
             currentCard.transform.position = _model.cardsInitialPoint.position;
 
             var cardModel = new CardModel(deckCard);   
-            currentCard.Setup(cardModel, inputCardsListener);
+            currentCard.Setup(cardModel);
             _cardsViews.Add(currentCard);        
         
         }
 
-        _listener?.OnCreateCardsViews(_cardsViews);
+        _cardsObjectCreatorObserver.Notify(_cardsViews);
     }
 
     public void Reset()
@@ -44,8 +44,7 @@ public class CardsObjectCreator : ICardsObjectCreator
 
         _cardsViews.Clear();
     }
-
-  
+   
 }
 
 public interface ICardsObjectCreatorListener

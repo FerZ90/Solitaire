@@ -19,5 +19,6 @@ public class DeckModel
         foreach (var finishedDeck in finishedDecks)
             finishedDeck.Setup(decksListener);
     }
+
 }
 

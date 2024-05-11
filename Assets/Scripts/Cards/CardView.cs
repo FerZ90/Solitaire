@@ -12,10 +12,11 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
     private CardModel _cardModel;
     private bool _reverse = true;
     private Image _image;
-    private ICardInputHandlerListener _cardListener;
+    private readonly Observer<CardviewObserverModel> _cardviewObserver = new Observer<CardviewObserverModel>();
 
     public CardModel CardModel => _cardModel;
     public bool Reverse => _reverse;
+    public Observer<CardviewObserverModel> CardviewObserver => _cardviewObserver;
 
 
     private void Awake()
@@ -23,10 +24,9 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
         _image = GetComponent<Image>();
     }
 
-    public void Setup(CardModel cardModel, ICardInputHandlerListener cardListener)
+    public void Setup(CardModel cardModel)
     {
-        _cardModel = cardModel;
-        _cardListener = cardListener;
+        _cardModel = cardModel;  
 
         UpdateCardInfo();
     }
@@ -57,18 +57,18 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
     }
 
     public void OnBeginDrag(PointerEventData eventData)
-    {     
-        _cardListener?.OnBeginDragCard(eventData, this);       
+    {
+        CardviewObserver?.Notify(new CardviewObserverModel(CardViewEventType.OnBeginDrag, eventData, this));   
     }
 
     public void OnDrag(PointerEventData eventData)
-    {       
-        _cardListener?.OnDragCard(eventData, this);       
+    {
+        CardviewObserver?.Notify(new CardviewObserverModel(CardViewEventType.OnDrag, eventData, this));
     }
 
     public void OnEndDrag(PointerEventData eventData)
-    {   
-        _cardListener?.OnEndDragCard(eventData, this);
+    {
+        CardviewObserver?.Notify(new CardviewObserverModel(CardViewEventType.OnEndDrag, eventData, this));
     }
 
     public void SetReverse(bool reverse)
@@ -78,4 +78,24 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
     }   
 }
 
+public enum CardViewEventType
+{
+    OnBeginDrag,
+    OnDrag,
+    OnEndDrag
+}
+
+public class CardviewObserverModel
+{
+    public CardViewEventType eventType;
+    public PointerEventData eventData;
+    public CardView card;
+
+    public CardviewObserverModel(CardViewEventType eventType, PointerEventData eventData, CardView card)
+    {
+        this.card = card;
+        this.eventData = eventData;
+        this.card = card;
+    }
+}
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-public class CardsCreatorData : ICardsCreatorData
+public class DeckCreator : ICardsCreatorData
 {   
     public List<CardInfo> CreateDeck()
     {

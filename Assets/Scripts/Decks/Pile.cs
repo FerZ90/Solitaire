@@ -4,8 +4,8 @@ using UnityEngine;
 public class Pile : MonoBehaviour, IPile
 {
     protected IStack<CardView> _cards = new ListStack<CardView>();
-    protected Observer<CardViewObserverModel> _pileObserver = new Observer<CardViewObserverModel>();
-    public Observer<CardViewObserverModel> PileObserver => _pileObserver;
+    protected readonly Observer<PileObserverModel> _pileObserver = new Observer<PileObserverModel>();
+    public Observer<PileObserverModel> PileObserver => _pileObserver;
 
     private void OnDestroy()
     {
@@ -57,9 +57,9 @@ public class Pile : MonoBehaviour, IPile
         card.transform.SetParent(transform.root);
         card.transform.SetAsLastSibling();
 
-        _pileObserver.Notify(new CardViewObserverModel(card, false));
+        _pileObserver.Notify(new PileObserverModel(card, false));
         await CardAnimator.AnimateCardToPosition(card, GetCardPosition(card));
-        _pileObserver.Notify(new CardViewObserverModel(card, true));
+        _pileObserver.Notify(new PileObserverModel(card, true));
 
         int cardIndex = _cards.GetItemIndex(card);
         card.transform.SetParent(transform);
