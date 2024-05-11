@@ -93,7 +93,7 @@ public class CardviewObserverModel
 
     public CardviewObserverModel(CardViewEventType eventType, PointerEventData eventData, CardView card)
     {
-        this.card = card;
+        this.eventType = eventType;
         this.eventData = eventData;
         this.card = card;
     }

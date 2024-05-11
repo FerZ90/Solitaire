@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class Croupier : ICardsObjectCreatorListener, ICroupier, IDoubleTapListener
+public class Croupier : ICroupier, IDoubleTapListener, IObserver<List<CardView>>
 {
     private DeckModel _deckModel; 
 
-    public Croupier(DeckModel deckModel)
+    public Croupier(ICardsObjectCreator cardsCreator, DeckModel deckModel)
     {
-        _deckModel = deckModel;        
+        _deckModel = deckModel;
+        cardsCreator.CardsObjectCreatorObserver.Subscribe(this);
     } 
 
     public async void DealCards()
@@ -41,11 +42,12 @@ public class Croupier : ICardsObjectCreatorListener, ICroupier, IDoubleTapListen
     
     }
 
-    public async void OnCreateCardsViews(List<CardView> cardViews)
+
+    public async void UpdateEvent(List<CardView> parameter)
     {
         List<Task> allTasks = new List<Task>();
 
-        foreach (var cardView in cardViews)
+        foreach (var cardView in parameter)
         {
             ChangeCardDeck(_deckModel.deliveryDeck, cardView);
             allTasks.Add(Task.Delay(100));
@@ -55,6 +57,7 @@ public class Croupier : ICardsObjectCreatorListener, ICroupier, IDoubleTapListen
 
         DealCards();
     }
+  
    
     public void InsertIntoDeck(IPile deck, CardView cardView)
     {

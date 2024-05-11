@@ -38,18 +38,12 @@ public class CardsObjectCreator : ICardsObjectCreator
     public void Reset()
     {
         foreach (var cardViews in _cardsViews)
-        {
             UnityEngine.Object.Destroy(cardViews.gameObject);
-        }
 
         _cardsViews.Clear();
     }
    
 }
 
-public interface ICardsObjectCreatorListener
-{
-    void OnCreateCardsViews(List<CardView> cardViews);
-}
 
 

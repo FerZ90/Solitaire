@@ -24,6 +24,8 @@ public class UserInputHandler : ICardInputHandlerListener, IDecksListener, IObse
 
     public void UpdateEvent(CardviewObserverModel parameter)
     {
+        Debug.Log($"UpdateEvent CardviewObserverModel eventType: {parameter.eventType}");
+
         switch (parameter.eventType) 
         {
             case CardViewEventType.OnBeginDrag:
