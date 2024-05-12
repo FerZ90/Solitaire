@@ -1437,6 +1437,8 @@ MonoBehaviour:
     - {fileID: 900276257}
     - {fileID: 749839841}
     - {fileID: 994242291}
+  cardTextureDistributor: {fileID: 11400000, guid: f77349a17824ec24e9bb964f4ab9f556,
+    type: 2}
   blocker: {fileID: 733620625}
   doubleTapInput: {fileID: 1407119995}
   cardsCreatorInspectorData:

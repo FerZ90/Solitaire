@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class GameInstaller : MonoBehaviour
 {
     [SerializeField] private DeckModel deckIspectorData;
+    [SerializeField] private CardTextureDistributor cardTextureDistributor; //TODO use this distributor for setup cards textures
     [SerializeField] private Blocker blocker;
     [SerializeField] private DoubleTap doubleTapInput;
     [SerializeField] private CardsCreatorInspectorData cardsCreatorInspectorData;

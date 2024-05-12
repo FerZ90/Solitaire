@@ -29,7 +29,6 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
     public void Setup(CardModel cardModel)
     {
         _cardModel = cardModel;  
-
         UpdateCardInfo();
     }
 
