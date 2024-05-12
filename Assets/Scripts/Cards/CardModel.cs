@@ -1,12 +1,22 @@
+using UnityEngine;
 
 public class CardModel
 {    
     public CardInfo cardSuitValue;
     public IPile deck;
+    public Sprite cardImg;
+    public Sprite backgroundImg;
 
     public CardModel(CardInfo cardData)
     {
         this.cardSuitValue = cardData;     
+    }
+
+    public CardModel(CardInfo cardData, Sprite cardImg, Sprite backgroundImg)
+    {
+        this.cardSuitValue = cardData;
+        this.cardImg = cardImg;
+        this.backgroundImg = backgroundImg;
     }
 
     public CardModel CopyCard()
@@ -19,7 +29,7 @@ public class CardModel
 
     public void LogCard()
     {
-        UnityEngine.Debug.Log($"<color=cyan>Card Value: {cardSuitValue.value} || Card Suit: {cardSuitValue.suit}</color>");
+        Debug.Log($"<color=cyan>Card Value: {cardSuitValue.value} || Card Suit: {cardSuitValue.suit}</color>");
     }
 
 }

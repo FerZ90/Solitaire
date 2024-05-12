@@ -38,7 +38,7 @@ public class InGameDeck : Pile, IDropablePile
     public override Vector3 GetCardPosition(CardView card)
     {
         int cardIndex = _cards.GetItemIndex(card);
-        return new Vector3(transform.position.x, transform.position.y - (cardIndex * 30), transform.position.z);
+        return new Vector3(transform.position.x, transform.position.y - (cardIndex * 40), transform.position.z);
     }
 
     public void OnDrop(PointerEventData eventData)

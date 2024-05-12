@@ -6,9 +6,6 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHandler, ISubjectType<CardviewObserverModel>
 {
-    [SerializeField] private TextMeshProUGUI cardValueTxt;
-    [SerializeField] private TextMeshProUGUI cardSuitTxt;
-
     private CardModel _cardModel;
     private bool _reverse = true;
     private Image _image;
@@ -28,6 +25,7 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
 
     public void Setup(CardModel cardModel)
     {
+        _image.sprite = cardModel.backgroundImg;
         _cardModel = cardModel;  
         UpdateCardInfo();
     }
@@ -40,21 +38,9 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
     private void UpdateCardInfo()
     {
         if (_reverse)
-        {
-            _image.color = Color.green;
-            cardValueTxt.text = null;
-            cardSuitTxt.text = null;
-        }
+            _image.overrideSprite = null;        
         else
-        {
-            if (_cardModel.cardSuitValue.suit == CardSuit.Diamonds || _cardModel.cardSuitValue.suit == CardSuit.Hearts)
-                _image.color = Color.red;
-            else
-                _image.color = Color.black;
-
-            cardValueTxt.text = _cardModel.cardSuitValue.value.ToString();
-            cardSuitTxt.text = _cardModel.cardSuitValue.suit.ToString();
-        }     
+            _image.overrideSprite = CardModel.cardImg;
     }
 
     public void OnBeginDrag(PointerEventData eventData)

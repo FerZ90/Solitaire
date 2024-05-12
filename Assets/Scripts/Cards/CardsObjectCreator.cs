@@ -1,35 +1,39 @@
 using System.Collections.Generic;
+using UnityEngine;
 
-public class CardsObjectCreator : ICardsObjectCreator, ISubjectType<List<CardView>>
-{  
-    private CardsCreatorInspectorData _model;   
+public class CardsObjectCreator : MonoBehaviour, ICardsObjectCreator, ISubjectType<List<CardView>>
+{
+    [SerializeField] private CardsCreatorInspectorData cardsCreatorInspectorData;
+    [SerializeField] private CardTextureDistributor cardTextureDistributor;
+
     private ICardsCreatorData _cardsCreator;
-
-    private readonly List<CardView> _cardsViews = new List<CardView>();
+    private List<CardView> _cardsViews = new List<CardView>();
     public Observer<List<CardView>> Observer { get; set; } = new Observer<List<CardView>>();
 
-    public CardsObjectCreator(CardsCreatorInspectorData cardsObjectCreatorModel, ICardsCreatorData cardsCreator)
+    private void Awake()
     {
         _cardsViews = new List<CardView>();
-        _model = cardsObjectCreatorModel;
-        _cardsCreator = cardsCreator;
+        _cardsCreator = new DeckCreator();
     }
 
-    ~CardsObjectCreator() 
+    private void OnDestroy()
     {
         Observer.Dispose();
-    }
+    } 
 
     public void CreateCards()
     {    
         var deck = _cardsCreator.CreateDeck();
+        var cardBackgroundImg = cardTextureDistributor.GetRandomBackground();
+
 
         foreach (var deckCard in deck)
         {
-            var currentCard = UnityEngine.Object.Instantiate(_model.cardPrefab, _model.cardsInitialPoint);
-            currentCard.transform.position = _model.cardsInitialPoint.position;
+            var currentCard = Instantiate(cardsCreatorInspectorData.cardPrefab, cardsCreatorInspectorData.cardsInitialPoint);
+            currentCard.transform.position = cardsCreatorInspectorData.cardsInitialPoint.position;
 
-            var cardModel = new CardModel(deckCard);   
+            var cardImg = cardTextureDistributor.GetCardTexture(deckCard);        
+            var cardModel = new CardModel(deckCard, cardImg, cardBackgroundImg);   
             currentCard.Setup(cardModel);
             _cardsViews.Add(currentCard);        
         
@@ -41,7 +45,7 @@ public class CardsObjectCreator : ICardsObjectCreator, ISubjectType<List<CardVie
     public void Reset()
     {
         foreach (var cardViews in _cardsViews)
-            UnityEngine.Object.Destroy(cardViews.gameObject);
+            Destroy(cardViews.gameObject);
 
         _cardsViews.Clear();
     }
