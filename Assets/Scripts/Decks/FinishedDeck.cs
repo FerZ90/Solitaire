@@ -4,9 +4,27 @@ using UnityEngine.EventSystems;
 public class FinishedDeck : Pile, IDropablePile
 {
     private IDropableListener _listener;
+    public bool IsComplete { get; private set; }
+
     public void Setup(IDropableListener listener)
     {
         _listener = listener;
+    }
+
+    public override void AddLast(CardView card)
+    {
+        if (IsComplete)
+            return;
+
+        base.AddLast(card);
+        CheckIfComplete();
+    }
+
+    public override CardView RemoveLast()
+    {
+        var card = base.RemoveLast();
+        CheckIfComplete();
+        return card;
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -26,6 +44,11 @@ public class FinishedDeck : Pile, IDropablePile
         {
             return CardsValidator.CompatibleWithSameSuit(card.CardModel.cardSuitValue, lastCard.CardModel.cardSuitValue);
         }
+    }
+
+    private void CheckIfComplete()
+    {
+        IsComplete = _cards.Elements.Count >= 13;
     }
 
 }

@@ -58,11 +58,12 @@ public class Pile : MonoBehaviour, IPile, ISubjectType<PileObserverModel>
 
         Observer.Notify(new PileObserverModel(card, false));
         await CardAnimator.AnimateCardToPosition(card, GetCardPosition(card));
-        Observer.Notify(new PileObserverModel(card, true));
 
         int cardIndex = _cards.GetItemIndex(card);
         card.transform.SetParent(transform);
         card.transform.SetSiblingIndex(cardIndex);
+
+        Observer.Notify(new PileObserverModel(card, true));
     }   
 
 
@@ -162,5 +163,6 @@ public class Pile : MonoBehaviour, IPile, ISubjectType<PileObserverModel>
     #endregion OLD
 
 }
+
 
 

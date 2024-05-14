@@ -11,22 +11,10 @@ public class Blocker : MonoBehaviour, IObserver<PileObserverModel>
         blockerImage = GetComponent<Image>();
     }
 
-    public void Setup(DeckModel deckModel)
+    public void Setup(ISubjectType<PileObserverModel> deckModel)
     {
         blockerImage.enabled = false;
-
-        deckModel.deliveryDeck.Observer.Subscribe(this);
-        deckModel.discardDeck.Observer.Subscribe(this);
-
-        foreach (var finishedDeck in deckModel.finishedDecks)
-        {
-            finishedDeck.Observer.Subscribe(this);
-        }
-
-        foreach (var ingameDeck in deckModel.inGameDecks)
-        {
-            ingameDeck.Observer.Subscribe(this);
-        }
+        deckModel.Observer.Subscribe(this);     
     }
 
     public void UpdateEvent(PileObserverModel observer)

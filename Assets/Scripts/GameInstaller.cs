@@ -9,14 +9,15 @@ public class GameInstaller : MonoBehaviour
     [SerializeField] private CardsObjectCreator cardsObjectCreator;
     [SerializeField] private GameObject draggingCardsParent;
 
+    private GameScore _gameScore;
     private Croupier _croupier;
     private UserInputHandler _cardsInputHandler;
 
     private void Awake()
-    {      
-        _croupier = new Croupier(cardsObjectCreator, deckIspectorData);
+    {
+        _gameScore = new GameScore(deckIspectorData);
+        _croupier = new Croupier(cardsObjectCreator, doubleTapInput, deckIspectorData);
         _cardsInputHandler = new UserInputHandler(cardsObjectCreator, _croupier, draggingCardsParent);
-        doubleTapInput.Setup(_croupier);
         blocker.Setup(deckIspectorData);
     }
 

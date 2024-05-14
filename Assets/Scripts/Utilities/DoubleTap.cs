@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DoubleTap : MonoBehaviour
+public class DoubleTap : MonoBehaviour, ISubjectType<CardView>
 {
     public float doubleTapTimeThreshold = 0.2f;
     private float lastTapTime;
@@ -10,24 +10,17 @@ public class DoubleTap : MonoBehaviour
     private bool hasFirstTap;
     private PointerEventData _pointerEventData;
     private List<RaycastResult> _raycastResults;
-    private IDoubleTapListener _listener;
+
+    public Observer<CardView> Observer { get; set; } = new Observer<CardView>();
 
     private void Awake()
     {
         _pointerEventData = new PointerEventData(EventSystem.current);
         _raycastResults = new List<RaycastResult>();
-    }
-
-    public void Setup(IDoubleTapListener listener)
-    {
-        _listener = listener;
-    }
+    }  
 
     void Update()
     {
-        if (_listener == null)
-            return;  
-
         if (Input.GetMouseButtonUp(0))
         {        
             if (hasFirstTap && Time.time - lastTapTime > doubleTapTimeThreshold)
@@ -64,11 +57,12 @@ public class DoubleTap : MonoBehaviour
         {
             if (result.gameObject.TryGetComponent<CardView>(out var cardview))
             {
-                _listener?.OnDoubleTap(cardview);
+                Observer.Notify(cardview);
                 break;
             }
         }
     }
+   
 }
 
 public interface IDoubleTapListener

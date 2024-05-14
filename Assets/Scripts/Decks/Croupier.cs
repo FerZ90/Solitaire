@@ -2,15 +2,16 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class Croupier : ICroupier, IDoubleTapListener, IObserver<List<CardView>>
+public class Croupier : ICroupier, IObserver<List<CardView>>, IObserver<CardView>
 {
     private DeckModel _deckModel; 
 
-    public Croupier(ISubjectType<List<CardView>> cardsCreatorSubject, DeckModel deckModel)
+    public Croupier(ISubjectType<List<CardView>> cardsCreatorSubject, ISubjectType<CardView> doubleTapSubject, DeckModel deckModel)
     {
         _deckModel = deckModel;
         cardsCreatorSubject.Observer.Subscribe(this);
-    } 
+        doubleTapSubject.Observer.Subscribe(this);
+    }
 
     public async void DealCards()
     {
@@ -42,12 +43,11 @@ public class Croupier : ICroupier, IDoubleTapListener, IObserver<List<CardView>>
     
     }
 
-
-    public async void UpdateEvent(List<CardView> parameter)
+    public async void UpdateEvent(List<CardView> cards)
     {
         List<Task> allTasks = new List<Task>();
 
-        foreach (var cardView in parameter)
+        foreach (var cardView in cards)
         {
             ChangeCardDeck(_deckModel.deliveryDeck, cardView);
             allTasks.Add(Task.Delay(100));
@@ -107,7 +107,7 @@ public class Croupier : ICroupier, IDoubleTapListener, IObserver<List<CardView>>
         }
     }
 
-    public void OnDoubleTap(CardView card)
+    public void UpdateEvent(CardView card)
     {
         if (card.CardModel.deck is FinishedDeck || card.Reverse)
             return;
@@ -124,6 +124,7 @@ public class Croupier : ICroupier, IDoubleTapListener, IObserver<List<CardView>>
             }
         }
     }
+ 
 
     #region OLD
     //public async void CompleteInGameDeck(List<CardView> completeDeck)
