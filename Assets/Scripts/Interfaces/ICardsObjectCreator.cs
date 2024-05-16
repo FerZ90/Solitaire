@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-
 public interface ICardsObjectCreator
 {
-    void CreateCards();
+    void CreateCards(ICardviewListener cardviewListener);
     void Reset();
 
 }

@@ -44,7 +44,8 @@ public class EventDispatcher
 
     private Action<object> Convert<T>(IObserver<T> myActionT)
     {
-        if (myActionT == null) return null;
-        else return new Action<object>(o => myActionT.UpdateEvent((T)o));
+        return null;
+        //if (myActionT == null) return null;
+        //else return new Action<object>(o => myActionT.UpdateEvent((T)o));
     }
 }

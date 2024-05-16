@@ -1,13 +1,13 @@
-public class GameScore : IObserver<PileObserverModel>, ISubjectType<int>
+public class GameScore
 {
     private DeckModel _deckModel;
     private int score;
-    public Observer<int> Observer { get; set; } = new Observer<int>();
+
+    public Observer<GameScoreObserverModel> Observer { get; set; } = new Observer<GameScoreObserverModel>();
 
     public GameScore(DeckModel deckModel)
     {
         _deckModel = deckModel;
-        _deckModel.Observer.Subscribe(this);
         score = 0;
     }
 
@@ -29,6 +29,16 @@ public class GameScore : IObserver<PileObserverModel>, ISubjectType<int>
                 return;
         }
 
-        Observer.Notify(score);
+        Observer.Notify(new GameScoreObserverModel(score));
+    }
+}
+
+public class GameScoreObserverModel
+{
+    public int score;
+
+    public GameScoreObserverModel(int score)
+    {
+        this.score = score;
     }
 }

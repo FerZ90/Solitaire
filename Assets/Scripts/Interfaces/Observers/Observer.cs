@@ -22,12 +22,6 @@ public class Observer<T> : IDisposable, ISubject<T>
             _observers.Remove(observer);
     }
 
-    public void Notify(T parameter)
-    {
-        foreach (var observer in _observers)
-            observer.UpdateEvent(parameter);
-    }
-
     public void Dispose()
     {
         for (int i = 0; i < _observers.Count; i++)
@@ -35,10 +29,13 @@ public class Observer<T> : IDisposable, ISubject<T>
 
         _observers.Clear();
     }
+
+    public void Notify(T parameter)
+    {
+        foreach (var observer in _observers)
+            observer.UpdateEvent(parameter);
+    }
+
 }
 
-public interface ISubjectType<T>
-{
-    public Observer<T> Observer { get; set; }
-}
 

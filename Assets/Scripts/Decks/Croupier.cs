@@ -2,15 +2,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class Croupier : ICroupier, IObserver<List<CardView>>, IObserver<CardView>
+public class Croupier : ICroupier, ICardObjectCreatorListener, UserInputHandlerListener
 {
-    private DeckModel _deckModel; 
+    private DeckModel _deckModel;
 
-    public Croupier(ISubjectType<List<CardView>> cardsCreatorSubject, ISubjectType<CardView> doubleTapSubject, DeckModel deckModel)
+    public Croupier(DeckModel deckModel)
     {
         _deckModel = deckModel;
-        cardsCreatorSubject.Observer.Subscribe(this);
-        doubleTapSubject.Observer.Subscribe(this);
     }
 
     public async void DealCards()
@@ -26,24 +24,24 @@ public class Croupier : ICroupier, IObserver<List<CardView>>, IObserver<CardView
                 if (card != null)
                 {
                     if (i == count - 1)
-                       card.SetReverse(false);
+                        card.SetReverse(false);
 
                     ChangeCardDeck(inGameDeck, card);
                 }
                 else
                 {
                     Debug.LogError("DeliveryDeck is empty !!");
-                }              
+                }
 
                 await Task.Delay(100);
             }
 
             count++;
         }
-    
+
     }
 
-    public async void UpdateEvent(List<CardView> cards)
+    public async void OnCreateCards(List<CardView> cards)
     {
         List<Task> allTasks = new List<Task>();
 
@@ -57,11 +55,10 @@ public class Croupier : ICroupier, IObserver<List<CardView>>, IObserver<CardView
 
         DealCards();
     }
-  
-   
+
     public void InsertIntoDeck(IPile deck, CardView cardView)
     {
-        ChangeCardDeck(deck, cardView);      
+        ChangeCardDeck(deck, cardView);
     }
 
     public async void DeliverCard(CardView cardView)
@@ -80,7 +77,7 @@ public class Croupier : ICroupier, IObserver<List<CardView>>, IObserver<CardView
         else
         {
             ChangeCardDeck(_deckModel.discardDeck, cardView);
-        }       
+        }
     }
 
     private void ChangeCardDeck(IPile newDeck, CardView cardView)
@@ -107,45 +104,5 @@ public class Croupier : ICroupier, IObserver<List<CardView>>, IObserver<CardView
         }
     }
 
-    public void UpdateEvent(CardView card)
-    {
-        if (card.CardModel.deck is FinishedDeck || card.Reverse)
-            return;
-
-        if (card != null)
-        {
-            foreach (var finishedDeck in _deckModel.finishedDecks)
-            {
-                if (finishedDeck.TryInsertCard(card))
-                {
-                    ChangeCardDeck(finishedDeck, card);
-                    break;
-                }
-            }
-        }
-    }
- 
-
-    #region OLD
-    //public async void CompleteInGameDeck(List<CardView> completeDeck)
-    //{
-    //    for (int i = _deckModel.finishedDecks.Count - 1; i >= 0; i--)
-    //    {
-    //        var finishedDeck = _deckModel.finishedDecks[i];
-
-    //        if (finishedDeck.IsComplete)
-    //            continue;
-
-    //        foreach (var card in completeDeck)
-    //        {
-    //            ChangeCardDeck(finishedDeck, card);
-    //            await Task.Delay(100);
-    //        }
-
-    //        break;
-    //    }
-
-    //}
-    #endregion
 }
 

@@ -1,15 +1,7 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class InGameDeck : Pile, IDropablePile
+public class InGameDeck : DropPile
 {
-    private IDropableListener _listener;
-
-    public void Setup(IDropableListener listener)
-    {
-        _listener = listener;
-    }
-
     public override bool TryInsertCard(CardView card)
     {
         var lastCard = base.GetLast();
@@ -21,7 +13,7 @@ public class InGameDeck : Pile, IDropablePile
         else
         {
             return CardsValidator.CompatibleWith(lastCard.CardModel.cardSuitValue, card.CardModel.cardSuitValue);
-        }     
+        }
     }
 
     public override CardView RemoveLast()
@@ -33,7 +25,7 @@ public class InGameDeck : Pile, IDropablePile
             lastCard.SetReverse(false);
 
         return removeCard;
-    }  
+    }
 
     public override Vector3 GetCardPosition(CardView card)
     {
@@ -41,10 +33,6 @@ public class InGameDeck : Pile, IDropablePile
         return new Vector3(transform.position.x, transform.position.y - (cardIndex * 40), transform.position.z);
     }
 
-    public void OnDrop(PointerEventData eventData)
-    {
-        _listener?.OnDropCardInDeck(this, eventData);
-    }
 
     #region OLD
     //private void CheckIfDeckIsComplete()

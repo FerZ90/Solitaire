@@ -1,42 +1,16 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UserInputHandler : ICardInputHandlerListener, IDecksListener, IObserver<List<CardView>>, IObserver<CardviewObserverModel>
+public class UserInputHandler : ICardviewListener, IDecksListener
 {
-    private ICroupier _croupier;
+    private UserInputHandlerListener _listener;
     private CardView _draggingCard;
     private GameObject _cardsParent;
 
-    public UserInputHandler(ISubjectType<List<CardView>> cardsCreatorSubject, ICroupier croupier, GameObject cardsParent)
+    public UserInputHandler(UserInputHandlerListener listener, GameObject cardsParent)
     {
-        _croupier = croupier;
+        _listener = listener;
         _cardsParent = cardsParent;
-        cardsCreatorSubject.Observer.Subscribe(this);
-    }
-
-    public void UpdateEvent(List<CardView> parameter)
-    {
-        foreach (var cardview in parameter)
-            cardview.Observer.Subscribe(this);      
-    }
-
-    public void UpdateEvent(CardviewObserverModel parameter)
-    {
-        Debug.Log($"UpdateEvent CardviewObserverModel eventType: {parameter.eventType}");
-
-        switch (parameter.eventType) 
-        {
-            case CardViewEventType.OnBeginDrag:
-                OnBeginDragCard(parameter.eventData, parameter.card);
-                break;        
-            case CardViewEventType.OnDrag:
-                OnDragCard(parameter.eventData, parameter.card);
-                break;
-            case CardViewEventType.OnEndDrag:
-                OnEndDragCard(parameter.eventData, parameter.card);
-                break;
-        }
     }
 
     public void OnBeginDragCard(PointerEventData eventData, CardView card)
@@ -44,7 +18,7 @@ public class UserInputHandler : ICardInputHandlerListener, IDecksListener, IObse
         if (card.CardModel.deck == null || card.Reverse)
             return;
 
-        _cardsParent.transform.position = card.transform.position;   
+        _cardsParent.transform.position = card.transform.position;
 
         var nodeCards = card.CardModel.deck.GetNodeCards(card);
 
@@ -56,14 +30,14 @@ public class UserInputHandler : ICardInputHandlerListener, IDecksListener, IObse
 
         _draggingCard = card;
 
-    } 
+    }
 
     public void OnDragCard(PointerEventData eventData, CardView card)
     {
         if (card.CardModel.deck == null || card.Reverse)
             return;
 
-        _cardsParent.transform.position = eventData.position;       
+        _cardsParent.transform.position = eventData.position;
     }
 
     public void OnEndDragCard(PointerEventData eventData, CardView card)
@@ -79,12 +53,12 @@ public class UserInputHandler : ICardInputHandlerListener, IDecksListener, IObse
         foreach (var nodeCard in nodeCards)
         {
             if (_draggingCard.CardModel.deck == nodeCard.CardModel.deck)
-                _croupier?.InsertIntoDeck(nodeCard.CardModel.deck, nodeCard);
+                _listener?.InsertIntoDeck(nodeCard.CardModel.deck, nodeCard);
         }
 
         _draggingCard = null;
 
-    }    
+    }
 
     public void OnDropCardInDeck(IPile deck, PointerEventData eventData)
     {
@@ -100,26 +74,27 @@ public class UserInputHandler : ICardInputHandlerListener, IDecksListener, IObse
             foreach (var nodeCard in nodeCards)
             {
                 if (canInsertCards)
-                    _croupier?.InsertIntoDeck(deck, nodeCard);
+                    _listener?.InsertIntoDeck(deck, nodeCard);
                 else
-                    _croupier?.InsertIntoDeck(nodeCard.CardModel.deck, nodeCard);
+                    _listener?.InsertIntoDeck(nodeCard.CardModel.deck, nodeCard);
             }
 
             _draggingCard = null;
 
-        }          
+        }
     }
 
-    public void OnCroupierClick(PointerEventData eventData, CardView card)
+    public void OnCroupierClick(CardView card)
     {
         if (card != null)
         {
             card.transform.SetParent(_cardsParent.transform);
             card.transform.SetAsLastSibling();
-        }      
+        }
 
-        _croupier?.DeliverCard(card);
-    } 
+        _listener?.DeliverCard(card);
+    }
+
 }
 
 

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DoubleTap : MonoBehaviour, ISubjectType<CardView>
+public class DoubleTap : MonoBehaviour
 {
     public float doubleTapTimeThreshold = 0.2f;
     private float lastTapTime;
@@ -11,18 +11,18 @@ public class DoubleTap : MonoBehaviour, ISubjectType<CardView>
     private PointerEventData _pointerEventData;
     private List<RaycastResult> _raycastResults;
 
-    public Observer<CardView> Observer { get; set; } = new Observer<CardView>();
+    public Observer<DoubleTapObserverModel> Observer { get; private set; } = new Observer<DoubleTapObserverModel>();
 
     private void Awake()
     {
         _pointerEventData = new PointerEventData(EventSystem.current);
         _raycastResults = new List<RaycastResult>();
-    }  
+    }
 
     void Update()
     {
         if (Input.GetMouseButtonUp(0))
-        {        
+        {
             if (hasFirstTap && Time.time - lastTapTime > doubleTapTimeThreshold)
             {
                 hasFirstTap = false;
@@ -41,11 +41,11 @@ public class DoubleTap : MonoBehaviour, ISubjectType<CardView>
                 {
                     FindCardView();
                 }
-               
+
             }
 
             lastTapTime = Time.time;
-        }      
+        }
     }
 
     private void FindCardView()
@@ -57,15 +57,20 @@ public class DoubleTap : MonoBehaviour, ISubjectType<CardView>
         {
             if (result.gameObject.TryGetComponent<CardView>(out var cardview))
             {
-                Observer.Notify(cardview);
+                Observer.Notify(new DoubleTapObserverModel(cardview));
                 break;
             }
         }
     }
-   
+
 }
 
-public interface IDoubleTapListener
+public class DoubleTapObserverModel
 {
-    void OnDoubleTap(CardView card);
+    public CardView cardView;
+
+    public DoubleTapObserverModel(CardView cardview)
+    {
+        this.cardView = cardview;
+    }
 }

@@ -1,13 +1,19 @@
 using DG.Tweening;
-using System.Threading.Tasks;
 using UnityEngine;
 
-public static class CardAnimator
+public class CardAnimator : ICardAnimator
 {
-    public static Task AnimateCardToPosition(CardView card, Vector3 to)
+    private ICardAnimatorListener _listener;
+    public CardAnimator(ICardAnimatorListener listener)
     {
-        var task = card.GetComponent<RectTransform>().DOMove(to, 0.3f).AsyncWaitForCompletion();
-        return task;
+        _listener = listener;
     }
-  
+
+    public async void AnimateCardToPosition(CardView card, Vector3 to)
+    {
+        _listener?.StartAnimation();
+        await card.GetComponent<RectTransform>().DOMove(to, 0.3f).AsyncWaitForCompletion();
+        _listener?.FinishAnimation();
+    }
+
 }

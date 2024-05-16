@@ -2,25 +2,26 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-public class Blocker : MonoBehaviour, IObserver<PileObserverModel>
+public class Blocker : MonoBehaviour, ICardAnimatorListener
 {
     private Image blockerImage;
 
     private void Awake()
     {
         blockerImage = GetComponent<Image>();
+        blockerImage.enabled = false;
     }
 
-    public void Setup(ISubjectType<PileObserverModel> deckModel)
+    public void StartAnimation()
     {
         blockerImage.enabled = false;
-        deckModel.Observer.Subscribe(this);     
     }
 
-    public void UpdateEvent(PileObserverModel observer)
+    public void FinishAnimation()
     {
-        if (observer != null && observer is PileObserverModel)
-            blockerImage.enabled = !observer.finishAnimation;
+        blockerImage.enabled = true;
     }
-
 }
+
+
+

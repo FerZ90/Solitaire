@@ -6,11 +6,13 @@ public interface IDropableListener
 }
 public interface IDeliveryDeckListener
 {
-    void OnCroupierClick(PointerEventData eventData, CardView card);
+    void OnCroupierClick(CardView card);
 }
 
 public interface IDecksListener : IDropableListener, IDeliveryDeckListener
 {
 
 }
+
+
 

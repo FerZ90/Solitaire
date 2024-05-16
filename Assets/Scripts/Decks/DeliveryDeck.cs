@@ -1,6 +1,6 @@
 using UnityEngine.EventSystems;
 
-public class DeliveryDeck : Pile, IDeliveryPile
+public class DeliveryDeck : Pile
 {
     private IDeliveryDeckListener _listener;
 
@@ -9,16 +9,16 @@ public class DeliveryDeck : Pile, IDeliveryPile
         _listener = listener;
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public void OnPointerClick(PointerEventData _)
     {
-        var lastCard = GetLast();   
-        _listener?.OnCroupierClick(eventData, lastCard);
+        var lastCard = GetLast();
+        _listener?.OnCroupierClick(lastCard);
     }
 
     public override void AddLast(CardView card)
     {
         base.AddLast(card);
-        card.SetReverse(true);        
+        card.SetReverse(true);
     }
 
 }

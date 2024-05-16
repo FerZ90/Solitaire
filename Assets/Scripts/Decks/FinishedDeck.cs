@@ -1,15 +1,6 @@
-
-using UnityEngine.EventSystems;
-
-public class FinishedDeck : Pile, IDropablePile
+public class FinishedDeck : DropPile
 {
-    private IDropableListener _listener;
     public bool IsComplete { get; private set; }
-
-    public void Setup(IDropableListener listener)
-    {
-        _listener = listener;
-    }
 
     public override void AddLast(CardView card)
     {
@@ -27,11 +18,6 @@ public class FinishedDeck : Pile, IDropablePile
         return card;
     }
 
-    public void OnDrop(PointerEventData eventData)
-    {
-        _listener?.OnDropCardInDeck(this, eventData);
-    }
- 
     public override bool TryInsertCard(CardView card)
     {
         var lastCard = base.GetLast();

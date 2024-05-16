@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public interface IPile
 {
@@ -12,15 +11,6 @@ public interface IPile
     bool TryInsertCard(CardView card);
 }
 
-public interface IDropablePile : IDropHandler
-{
-    void Setup(IDropableListener listener);
-}
-
-public interface IDeliveryPile : IPointerClickHandler
-{
-    void Setup(IDeliveryDeckListener listener);
-}
 
 
 

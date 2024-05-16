@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardsObjectCreator : MonoBehaviour, ICardsObjectCreator, ISubjectType<List<CardView>>
+public class CardsObjectCreator : MonoBehaviour, ICardsObjectCreator
 {
     [SerializeField] private CardsCreatorInspectorData cardsCreatorInspectorData;
     [SerializeField] private CardTextureDistributor cardTextureDistributor;
 
     private ICardsCreatorData _cardsCreator;
+    private ICardObjectCreatorListener _listener;
     private List<CardView> _cardsViews = new List<CardView>();
-    public Observer<List<CardView>> Observer { get; set; } = new Observer<List<CardView>>();
 
     private void Awake()
     {
@@ -16,13 +16,13 @@ public class CardsObjectCreator : MonoBehaviour, ICardsObjectCreator, ISubjectTy
         _cardsCreator = new DeckCreator();
     }
 
-    private void OnDestroy()
+    public void Setup(ICardObjectCreatorListener listener)
     {
-        Observer.Dispose();
-    } 
+        _listener = listener;
+    }
 
-    public void CreateCards()
-    {    
+    public void CreateCards(ICardviewListener cardviewListener)
+    {
         var deck = _cardsCreator.CreateDeck();
         var cardBackgroundImg = cardTextureDistributor.GetRandomBackground();
 
@@ -32,14 +32,14 @@ public class CardsObjectCreator : MonoBehaviour, ICardsObjectCreator, ISubjectTy
             var currentCard = Instantiate(cardsCreatorInspectorData.cardPrefab, cardsCreatorInspectorData.cardsInitialPoint);
             currentCard.transform.position = cardsCreatorInspectorData.cardsInitialPoint.position;
 
-            var cardImg = cardTextureDistributor.GetCardTexture(deckCard);        
-            var cardModel = new CardModel(deckCard, cardImg, cardBackgroundImg);   
-            currentCard.Setup(cardModel);
-            _cardsViews.Add(currentCard);        
-        
+            var cardImg = cardTextureDistributor.GetCardTexture(deckCard);
+            var cardModel = new CardModel(deckCard, cardImg, cardBackgroundImg);
+            currentCard.Setup(cardviewListener, cardModel);
+            _cardsViews.Add(currentCard);
+
         }
 
-        Observer.Notify(_cardsViews);
+        _listener?.OnCreateCards(_cardsViews);
     }
 
     public void Reset()
@@ -49,7 +49,12 @@ public class CardsObjectCreator : MonoBehaviour, ICardsObjectCreator, ISubjectTy
 
         _cardsViews.Clear();
     }
-   
+
+}
+
+public interface ICardObjectCreatorListener
+{
+    void OnCreateCards(List<CardView> cards);
 }
 
 
