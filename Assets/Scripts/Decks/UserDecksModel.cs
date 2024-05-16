@@ -10,15 +10,15 @@ public class DeckModel
     public List<FinishedDeck> finishedDecks = new List<FinishedDeck>();
 
 
-    public void PrepareDecks(IDecksListener deckListener)
+    public void PrepareDecks()
     {
-        deliveryDeck.Setup(deckListener);
+        //deliveryDeck.Setup(deckListener);
 
-        foreach (var gameDeck in inGameDecks)
-            gameDeck.Setup(deckListener);
+        //foreach (var gameDeck in inGameDecks)
+        //    gameDeck.Setup(deckListener);
 
-        foreach (var finishedDeck in finishedDecks)
-            finishedDeck.Setup(deckListener);
+        //foreach (var finishedDeck in finishedDecks)
+        //    finishedDeck.Setup(deckListener);
     }
 
 }

@@ -9,6 +9,7 @@ public class GameInstaller : MonoBehaviour
     [SerializeField] private CardsObjectCreator cardsObjectCreator;
     [SerializeField] private GameObject draggingCardsParent;
 
+    private CardTranslator _cardTranslator;
     private CardAnimator _cardAnimator;
     private GameScore _gameScore;
     private Croupier _croupier;
@@ -16,18 +17,19 @@ public class GameInstaller : MonoBehaviour
 
     private void Awake()
     {
-        _cardAnimator = new CardAnimator(blocker);
+        _cardAnimator = new CardAnimator();
+        _cardTranslator = new CardTranslator(_cardAnimator);
         _gameScore = new GameScore(deckIspectorData);
-        _croupier = new Croupier(deckIspectorData);
-        _cardsInputHandler = new UserInputHandler(_croupier, draggingCardsParent);
-        cardsObjectCreator.Setup(_croupier);
+        _croupier = new Croupier(cardsObjectCreator, deckIspectorData);
+        _cardsInputHandler = new UserInputHandler(cardsObjectCreator, draggingCardsParent);
+        blocker.Setup(_cardAnimator);
     }
 
     private IEnumerator Start()
     {
         yield return new WaitForEndOfFrame();
-        deckIspectorData.PrepareDecks(_cardsInputHandler);
-        cardsObjectCreator.CreateCards(_cardsInputHandler);
+        deckIspectorData.PrepareDecks();
+        cardsObjectCreator.CreateCards();
     }
 
 }

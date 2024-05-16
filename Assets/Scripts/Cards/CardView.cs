@@ -3,14 +3,15 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHandler
+public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHandler, IObservable<CardViewObserverModel>
 {
     private CardModel _cardModel;
     private bool _reverse = true;
     private Image _image;
-    private ICardviewListener _listener;
     public CardModel CardModel => _cardModel;
     public bool Reverse => _reverse;
+
+    public Observer<CardViewObserverModel> Observer { get; set; } = new();
 
 
     private void Awake()
@@ -18,9 +19,8 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
         _image = GetComponent<Image>();
     }
 
-    public void Setup(ICardviewListener listener, CardModel cardModel)
+    public void Setup(CardModel cardModel)
     {
-        _listener = listener;
         _cardModel = cardModel;
         _image.sprite = _cardModel.backgroundImg;
         UpdateCardInfo();
@@ -41,17 +41,17 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        _listener?.OnBeginDragCard(eventData, this);
+        Observer.Notify(new CardViewObserverModel(CardInputState.OnBeginDrag, eventData, this));
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        _listener?.OnDragCard(eventData, this);
+        Observer.Notify(new CardViewObserverModel(CardInputState.OnDrag, eventData, this));
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        _listener?.OnEndDragCard(eventData, this);
+        Observer.Notify(new CardViewObserverModel(CardInputState.OnEndDrag, eventData, this));
     }
 
     public void SetReverse(bool reverse)
@@ -59,6 +59,13 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
         _reverse = reverse;
         UpdateCardInfo();
     }
+}
+
+public enum CardInputState
+{
+    OnBeginDrag,
+    OnDrag,
+    OnEndDrag
 }
 
 

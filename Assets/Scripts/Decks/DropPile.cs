@@ -2,15 +2,10 @@ using UnityEngine.EventSystems;
 
 public class DropPile : Pile, IDropHandler
 {
-    protected IDropableListener _listener;
-
-    public void Setup(IDropableListener listener)
-    {
-        _listener = listener;
-    }
+    public Observer<DropPileObserverModel> Observer { get; set; } = new();
 
     public void OnDrop(PointerEventData eventData)
     {
-        _listener?.OnDropCardInDeck(this, eventData);
+        Observer.Notify(new DropPileObserverModel(this, eventData));
     }
 }

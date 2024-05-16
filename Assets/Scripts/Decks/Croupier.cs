@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class Croupier : ICroupier, ICardObjectCreatorListener, UserInputHandlerListener
+public class Croupier : ICroupier, IObserver<CardsObjectCreatorObserverModel>
 {
     private DeckModel _deckModel;
 
-    public Croupier(DeckModel deckModel)
+    public Croupier(IObservable<CardsObjectCreatorObserverModel> observable, DeckModel deckModel)
     {
         _deckModel = deckModel;
+        observable.Observer.Subscribe(this);
     }
 
     public async void DealCards()
@@ -41,11 +42,12 @@ public class Croupier : ICroupier, ICardObjectCreatorListener, UserInputHandlerL
 
     }
 
-    public async void OnCreateCards(List<CardView> cards)
+
+    public async void UpdateEvent(CardsObjectCreatorObserverModel parameter)
     {
         List<Task> allTasks = new List<Task>();
 
-        foreach (var cardView in cards)
+        foreach (var cardView in parameter.cardsViews)
         {
             ChangeCardDeck(_deckModel.deliveryDeck, cardView);
             allTasks.Add(Task.Delay(100));
@@ -55,6 +57,8 @@ public class Croupier : ICroupier, ICardObjectCreatorListener, UserInputHandlerL
 
         DealCards();
     }
+
+
 
     public void InsertIntoDeck(IPile deck, CardView cardView)
     {
@@ -80,6 +84,7 @@ public class Croupier : ICroupier, ICardObjectCreatorListener, UserInputHandlerL
         }
     }
 
+
     private void ChangeCardDeck(IPile newDeck, CardView cardView)
     {
         var newCardDeck = newDeck;
@@ -103,6 +108,5 @@ public class Croupier : ICroupier, ICardObjectCreatorListener, UserInputHandlerL
             cardView.CardModel.deck.AddLast(cardView);
         }
     }
-
 }
 

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public interface IPile
 {
-    Vector3 GetCardPosition(CardView card);
+    Vector3 GetNewCardPosition(CardView card);
     void ReturnCardToDeck(CardView card);
     void AddLast(CardView card);
     CardView RemoveLast();

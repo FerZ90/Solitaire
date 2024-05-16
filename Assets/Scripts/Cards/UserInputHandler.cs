@@ -1,19 +1,44 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UserInputHandler : ICardviewListener, IDecksListener
+public class UserInputHandler : IObservable<UserInputHandlerObserverModel>, IObserver<CardViewObserverModel>, IObserver<CardsObjectCreatorObserverModel>
 {
-    private UserInputHandlerListener _listener;
     private CardView _draggingCard;
     private GameObject _cardsParent;
 
-    public UserInputHandler(UserInputHandlerListener listener, GameObject cardsParent)
+    public Observer<UserInputHandlerObserverModel> Observer { get; set; } = new();
+
+    public UserInputHandler(IObservable<CardsObjectCreatorObserverModel> observable, GameObject cardsParent)
     {
-        _listener = listener;
         _cardsParent = cardsParent;
+        observable.Observer.Subscribe(this);
     }
 
-    public void OnBeginDragCard(PointerEventData eventData, CardView card)
+    public void UpdateEvent(CardsObjectCreatorObserverModel parameter)
+    {
+        foreach (var card in parameter.cardsViews)
+            card.Observer.Subscribe(this);
+    }
+
+    public void UpdateEvent(CardViewObserverModel parameter)
+    {
+        switch (parameter.inputState)
+        {
+            case CardInputState.OnBeginDrag:
+                OnBeginDragCard(parameter.card);
+                break;
+            case CardInputState.OnDrag:
+                OnDragCard(parameter.eventData, parameter.card);
+                break;
+            case CardInputState.OnEndDrag:
+                OnEndDragCard(parameter.eventData, parameter.card);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void OnBeginDragCard(CardView card)
     {
         if (card.CardModel.deck == null || card.Reverse)
             return;
@@ -32,7 +57,7 @@ public class UserInputHandler : ICardviewListener, IDecksListener
 
     }
 
-    public void OnDragCard(PointerEventData eventData, CardView card)
+    private void OnDragCard(PointerEventData eventData, CardView card)
     {
         if (card.CardModel.deck == null || card.Reverse)
             return;
@@ -40,7 +65,7 @@ public class UserInputHandler : ICardviewListener, IDecksListener
         _cardsParent.transform.position = eventData.position;
     }
 
-    public void OnEndDragCard(PointerEventData eventData, CardView card)
+    private void OnEndDragCard(PointerEventData eventData, CardView card)
     {
         if (card.CardModel.deck == null || card.Reverse)
             return;
@@ -53,7 +78,7 @@ public class UserInputHandler : ICardviewListener, IDecksListener
         foreach (var nodeCard in nodeCards)
         {
             if (_draggingCard.CardModel.deck == nodeCard.CardModel.deck)
-                _listener?.InsertIntoDeck(nodeCard.CardModel.deck, nodeCard);
+                Observer.Notify(new UserInputHandlerObserverModel(nodeCard.CardModel.deck, nodeCard));
         }
 
         _draggingCard = null;
@@ -74,9 +99,9 @@ public class UserInputHandler : ICardviewListener, IDecksListener
             foreach (var nodeCard in nodeCards)
             {
                 if (canInsertCards)
-                    _listener?.InsertIntoDeck(deck, nodeCard);
+                    Observer.Notify(new UserInputHandlerObserverModel(deck, nodeCard));
                 else
-                    _listener?.InsertIntoDeck(nodeCard.CardModel.deck, nodeCard);
+                    Observer.Notify(new UserInputHandlerObserverModel(nodeCard.CardModel.deck, nodeCard));
             }
 
             _draggingCard = null;
@@ -92,10 +117,10 @@ public class UserInputHandler : ICardviewListener, IDecksListener
             card.transform.SetAsLastSibling();
         }
 
-        _listener?.DeliverCard(card);
+        Observer.Notify(new UserInputHandlerObserverModel(null, card));
     }
-
 }
+
 
 
 

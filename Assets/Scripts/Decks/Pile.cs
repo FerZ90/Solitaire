@@ -5,7 +5,7 @@ public class Pile : MonoBehaviour, IPile
 {
     protected IStack<CardView> _cards = new ListStack<CardView>();
 
-    public virtual Vector3 GetCardPosition(CardView card)
+    public virtual Vector3 GetNewCardPosition(CardView card)
     {
         return transform.position;
     }
