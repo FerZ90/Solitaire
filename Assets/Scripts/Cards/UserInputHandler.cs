@@ -67,22 +67,16 @@ public class UserInputHandler : IObservable<UserInputHandlerObserverModel>, IObs
 
     private void OnEndDragCard(PointerEventData eventData, CardView card)
     {
-        Debug.Log("OnEndDragCard_00");
         if (card.CardModel.deck == null || card.Reverse)
             return;
 
         var nodeCards = card.CardModel.deck.GetNodeCards(card);
 
-        Debug.Log("OnEndDragCard_01");
-
         if (_draggingCard == null)
             return;
 
-        Debug.Log("OnEndDragCard_02");
-
         foreach (var nodeCard in nodeCards)
         {
-            Debug.Log("OnEndDragCard_03");
             if (_draggingCard.CardModel.deck == nodeCard.CardModel.deck)
                 Observer.Notify(new UserInputHandlerObserverModel(nodeCard.CardModel.deck, nodeCard));
         }

@@ -25,7 +25,6 @@ public class CardTranslator : ICardTranslator, IObserver<CardAnimatorObserverMod
 
     public void MoveCard(IPile deck, CardView cardView)
     {
-        UnityEngine.Debug.Log("MOVE CARD !!");
         cardView.CardModel.LogCard();
 
         ChangeCardDeck(deck, cardView);
@@ -36,7 +35,10 @@ public class CardTranslator : ICardTranslator, IObserver<CardAnimatorObserverMod
     {
         var newCardDeck = newDeck;
 
-        if (newCardDeck != null)
+        if (newCardDeck == null)
+            newCardDeck = cardView.CardModel.deck;
+
+        if (cardView.CardModel.deck != newCardDeck)
         {
             if (cardView.CardModel.deck != null)
                 cardView.CardModel.deck.RemoveLast();
