@@ -20,8 +20,17 @@ public class GameInstaller : MonoBehaviour
         _cardAnimator = new CardAnimator();
         _cardTranslator = new CardTranslator(_cardAnimator);
         _gameScore = new GameScore(deckIspectorData);
-        _croupier = new Croupier(cardsObjectCreator, deckIspectorData);
         _cardsInputHandler = new UserInputHandler(cardsObjectCreator, draggingCardsParent);
+
+        var croupierModel = new CroupierSetupModel()
+        {
+            deckModel = deckIspectorData,
+            cardTranslator = _cardTranslator,
+            cardsCreatorObservable = cardsObjectCreator,
+            inputHandlerObservable = _cardsInputHandler
+        };
+
+        _croupier = new Croupier(croupierModel);
         blocker.Setup(_cardAnimator);
     }
 

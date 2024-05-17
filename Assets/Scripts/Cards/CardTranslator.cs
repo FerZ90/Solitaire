@@ -1,10 +1,11 @@
-public class CardTranslator : IObserver<CardAnimatorObserverModel>
+public class CardTranslator : ICardTranslator, IObserver<CardAnimatorObserverModel>
 {
     private ICardAnimator _cardAnimator;
 
     public CardTranslator(ICardAnimator cardAnimator)
     {
         _cardAnimator = cardAnimator;
+        _cardAnimator.Observer.Subscribe(this);
     }
 
     public void UpdateEvent(CardAnimatorObserverModel parameter)
@@ -18,12 +19,15 @@ public class CardTranslator : IObserver<CardAnimatorObserverModel>
         }
         else
         {
-            InsertCard(card);
+            card.CardModel.deck.PutCardviewOnDeck(card);
         }
     }
 
     public void MoveCard(IPile deck, CardView cardView)
     {
+        UnityEngine.Debug.Log("MOVE CARD !!");
+        cardView.CardModel.LogCard();
+
         ChangeCardDeck(deck, cardView);
         _cardAnimator.AnimateCardToPosition(cardView, cardView.CardModel.deck.GetNewCardPosition(cardView));
     }
@@ -32,30 +36,19 @@ public class CardTranslator : IObserver<CardAnimatorObserverModel>
     {
         var newCardDeck = newDeck;
 
-        if (newCardDeck == null)
-            newCardDeck = cardView.CardModel.deck;
+        if (newCardDeck != null)
+        {
+            if (cardView.CardModel.deck != null)
+                cardView.CardModel.deck.RemoveLast();
 
-        if (cardView.CardModel.deck != newDeck)
             cardView.CardModel.deck = newCardDeck;
-
+            cardView.CardModel.deck.AddLast(cardView);
+        }
     }
 
-    private void InsertCard(CardView cardView)
-    {
-        //cardView.CardModel.LogCard();
+}
 
-        //if (cardView.CardModel.deck == newDeck)
-        //{
-        //    cardView.CardModel.deck.ReturnCardToDeck(cardView);
-        //}
-        //else
-        //{
-
-        //    if (cardView.CardModel.deck != null)
-        //        cardView.CardModel.deck.RemoveLast();
-
-        //    cardView.CardModel.deck = newCardDeck;
-        //    cardView.CardModel.deck.AddLast(cardView);
-        //}
-    }
+public interface ICardTranslator
+{
+    void MoveCard(IPile deck, CardView cardView);
 }

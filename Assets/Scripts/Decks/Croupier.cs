@@ -2,32 +2,33 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class Croupier : ICroupier, IObserver<CardsObjectCreatorObserverModel>
+public class Croupier : ICroupier, IObserver<CardsObjectCreatorObserverModel>, IObserver<UserInputHandlerObserverModel>
 {
-    private DeckModel _deckModel;
+    private CroupierSetupModel _model;
 
-    public Croupier(IObservable<CardsObjectCreatorObserverModel> observable, DeckModel deckModel)
+    public Croupier(CroupierSetupModel model)
     {
-        _deckModel = deckModel;
-        observable.Observer.Subscribe(this);
+        _model = model;
+        _model.cardsCreatorObservable.Observer.Subscribe(this);
+        _model.inputHandlerObservable.Observer.Subscribe(this);
     }
 
     public async void DealCards()
     {
         int count = 1;
 
-        foreach (var inGameDeck in _deckModel.inGameDecks)
+        foreach (var inGameDeck in _model.deckModel.inGameDecks)
         {
             for (int i = 0; i < count; i++)
             {
-                var card = _deckModel.deliveryDeck.GetLast();
+                var card = _model.deckModel.deliveryDeck.GetLast();
 
                 if (card != null)
                 {
                     if (i == count - 1)
                         card.SetReverse(false);
 
-                    ChangeCardDeck(inGameDeck, card);
+                    _model.cardTranslator.MoveCard(inGameDeck, card);
                 }
                 else
                 {
@@ -42,6 +43,11 @@ public class Croupier : ICroupier, IObserver<CardsObjectCreatorObserverModel>
 
     }
 
+    public void UpdateEvent(UserInputHandlerObserverModel parameter)
+    {
+        _model.cardTranslator.MoveCard(parameter.pile, parameter.card);
+    }
+
 
     public async void UpdateEvent(CardsObjectCreatorObserverModel parameter)
     {
@@ -49,7 +55,7 @@ public class Croupier : ICroupier, IObserver<CardsObjectCreatorObserverModel>
 
         foreach (var cardView in parameter.cardsViews)
         {
-            ChangeCardDeck(_deckModel.deliveryDeck, cardView);
+            _model.cardTranslator.MoveCard(_model.deckModel.deliveryDeck, cardView);
             allTasks.Add(Task.Delay(100));
         }
 
@@ -59,54 +65,33 @@ public class Croupier : ICroupier, IObserver<CardsObjectCreatorObserverModel>
     }
 
 
-
-    public void InsertIntoDeck(IPile deck, CardView cardView)
-    {
-        ChangeCardDeck(deck, cardView);
-    }
-
     public async void DeliverCard(CardView cardView)
     {
         if (cardView == null)
         {
-            var lastCard = _deckModel.discardDeck.GetLast();
+            var lastCard = _model.deckModel.discardDeck.GetLast();
 
             while (lastCard != null)
             {
-                ChangeCardDeck(_deckModel.deliveryDeck, lastCard);
-                lastCard = _deckModel.discardDeck.GetLast();
+                _model.cardTranslator.MoveCard(_model.deckModel.deliveryDeck, lastCard);
+                lastCard = _model.deckModel.discardDeck.GetLast();
                 await Task.Delay(7);
             }
         }
         else
         {
-            ChangeCardDeck(_deckModel.discardDeck, cardView);
+            _model.cardTranslator.MoveCard(_model.deckModel.discardDeck, cardView);
         }
     }
 
+}
 
-    private void ChangeCardDeck(IPile newDeck, CardView cardView)
-    {
-        var newCardDeck = newDeck;
+public class CroupierSetupModel
+{
+    public DeckModel deckModel;
+    public IObservable<CardsObjectCreatorObserverModel> cardsCreatorObservable;
+    public IObservable<UserInputHandlerObserverModel> inputHandlerObservable;
+    public ICardTranslator cardTranslator;
 
-        if (newCardDeck == null)
-            newCardDeck = cardView.CardModel.deck;
-
-        cardView.CardModel.LogCard();
-
-        if (cardView.CardModel.deck == newDeck)
-        {
-            cardView.CardModel.deck.ReturnCardToDeck(cardView);
-        }
-        else
-        {
-
-            if (cardView.CardModel.deck != null)
-                cardView.CardModel.deck.RemoveLast();
-
-            cardView.CardModel.deck = newCardDeck;
-            cardView.CardModel.deck.AddLast(cardView);
-        }
-    }
 }
 
