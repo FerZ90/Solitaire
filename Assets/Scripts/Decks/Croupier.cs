@@ -2,33 +2,35 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class Croupier : ICroupier, IObserver<CardsObjectCreatorObserverModel>, IObserver<UserInputHandlerObserverModel>
+public class Croupier : ICroupier, IObserver<CardsObjectCreatorObserverModel>, IObserver<CardMovementObserverModel>
 {
-    private CroupierSetupModel _model;
+    private DeckModel _deckModel;
+    private ICardTranslator _cardTranslator;
 
-    public Croupier(CroupierSetupModel model)
+    public Croupier(DeckModel deckModel, IObservable<CardsObjectCreatorObserverModel> cardsCreatorObservable, IObservable<CardMovementObserverModel> cardMovementObserverModel, ICardTranslator cardTranslator)
     {
-        _model = model;
-        _model.cardsCreatorObservable.Observer.Subscribe(this);
-        _model.inputHandlerObservable.Observer.Subscribe(this);
+        _deckModel = deckModel;
+        cardsCreatorObservable.Observer.Subscribe(this);
+        cardMovementObserverModel.Observer.Subscribe(this);
+        _cardTranslator = cardTranslator;
     }
 
     public async void DealCards()
     {
         int count = 1;
 
-        foreach (var inGameDeck in _model.deckModel.inGameDecks)
+        foreach (var inGameDeck in _deckModel.inGameDecks)
         {
             for (int i = 0; i < count; i++)
             {
-                var card = _model.deckModel.deliveryDeck.GetLast();
+                var card = _deckModel.deliveryDeck.GetLast();
 
                 if (card != null)
                 {
                     if (i == count - 1)
                         card.SetReverse(false);
 
-                    _model.cardTranslator.MoveCard(inGameDeck, card);
+                    _cardTranslator.MoveCard(inGameDeck, card);
                 }
                 else
                 {
@@ -43,9 +45,16 @@ public class Croupier : ICroupier, IObserver<CardsObjectCreatorObserverModel>, I
 
     }
 
-    public void UpdateEvent(UserInputHandlerObserverModel parameter)
+    public void UpdateEvent(CardMovementObserverModel parameter)
     {
-        _model.cardTranslator.MoveCard(parameter.pile, parameter.card);
+        if (parameter.deck is DeliveryDeck)
+        {
+            DeliverCard(parameter.card);
+        }
+        else if ()
+        {
+            _cardTranslator.MoveCard(parameter.deck, parameter.card);
+        }
     }
 
 
@@ -55,7 +64,7 @@ public class Croupier : ICroupier, IObserver<CardsObjectCreatorObserverModel>, I
 
         foreach (var cardView in parameter.cardsViews)
         {
-            _model.cardTranslator.MoveCard(_model.deckModel.deliveryDeck, cardView);
+            _cardTranslator.MoveCard(_deckModel.deliveryDeck, cardView);
             allTasks.Add(Task.Delay(100));
         }
 
@@ -69,29 +78,21 @@ public class Croupier : ICroupier, IObserver<CardsObjectCreatorObserverModel>, I
     {
         if (cardView == null)
         {
-            var lastCard = _model.deckModel.discardDeck.GetLast();
+            var lastCard = _deckModel.discardDeck.GetLast();
 
             while (lastCard != null)
             {
-                _model.cardTranslator.MoveCard(_model.deckModel.deliveryDeck, lastCard);
-                lastCard = _model.deckModel.discardDeck.GetLast();
+                _cardTranslator.MoveCard(_deckModel.deliveryDeck, lastCard);
+                lastCard = _deckModel.discardDeck.GetLast();
                 await Task.Delay(7);
             }
         }
         else
         {
-            _model.cardTranslator.MoveCard(_model.deckModel.discardDeck, cardView);
+            _cardTranslator.MoveCard(_deckModel.discardDeck, cardView);
         }
     }
 
 }
 
-public class CroupierSetupModel
-{
-    public DeckModel deckModel;
-    public IObservable<CardsObjectCreatorObserverModel> cardsCreatorObservable;
-    public IObservable<UserInputHandlerObserverModel> inputHandlerObservable;
-    public ICardTranslator cardTranslator;
-
-}
 

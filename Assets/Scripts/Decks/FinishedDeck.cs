@@ -20,7 +20,7 @@ public class FinishedDeck : DropPile
 
     public override bool TryInsertCard(CardView card)
     {
-        var lastCard = base.GetLast();
+        var lastCard = GetLast();
 
         if (lastCard == null)
         {

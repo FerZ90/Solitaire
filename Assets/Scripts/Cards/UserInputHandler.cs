@@ -1,17 +1,22 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UserInputHandler : IObservable<UserInputHandlerObserverModel>, IObserver<CardViewObserverModel>, IObserver<CardsObjectCreatorObserverModel>
+public class UserInputHandler : IObservable<CardMovementObserverModel>, IObserver<CardViewObserverModel>, IObserver<CardsObjectCreatorObserverModel>, IObserver<DropPileObserverModel>
 {
     private CardView _draggingCard;
     private GameObject _cardsParent;
 
-    public Observer<UserInputHandlerObserverModel> Observer { get; set; } = new();
+    public Observer<CardMovementObserverModel> Observer { get; set; } = new();
 
     public UserInputHandler(IObservable<CardsObjectCreatorObserverModel> observable, GameObject cardsParent)
     {
         _cardsParent = cardsParent;
         observable.Observer.Subscribe(this);
+    }
+
+    public void UpdateEvent(DropPileObserverModel parameter)
+    {
+        OnDropCardInDeck(parameter.deck, parameter.eventData);
     }
 
     public void UpdateEvent(CardsObjectCreatorObserverModel parameter)
@@ -78,7 +83,7 @@ public class UserInputHandler : IObservable<UserInputHandlerObserverModel>, IObs
         foreach (var nodeCard in nodeCards)
         {
             if (_draggingCard.CardModel.deck == nodeCard.CardModel.deck)
-                Observer.Notify(new UserInputHandlerObserverModel(nodeCard.CardModel.deck, nodeCard));
+                Observer.Notify(new CardMovementObserverModel(nodeCard.CardModel.deck, nodeCard, eventData));
         }
 
         _draggingCard = null;
@@ -99,9 +104,9 @@ public class UserInputHandler : IObservable<UserInputHandlerObserverModel>, IObs
             foreach (var nodeCard in nodeCards)
             {
                 if (canInsertCards)
-                    Observer.Notify(new UserInputHandlerObserverModel(deck, nodeCard));
+                    Observer.Notify(new CardMovementObserverModel(deck, nodeCard, eventData));
                 else
-                    Observer.Notify(new UserInputHandlerObserverModel(nodeCard.CardModel.deck, nodeCard));
+                    Observer.Notify(new CardMovementObserverModel(nodeCard.CardModel.deck, nodeCard, eventData));
             }
 
             _draggingCard = null;
@@ -109,16 +114,16 @@ public class UserInputHandler : IObservable<UserInputHandlerObserverModel>, IObs
         }
     }
 
-    public void OnCroupierClick(CardView card)
-    {
-        if (card != null)
-        {
-            card.transform.SetParent(_cardsParent.transform);
-            card.transform.SetAsLastSibling();
-        }
+    //public void OnCroupierClick(CardView card)
+    //{
+    //    if (card != null)
+    //    {
+    //        card.transform.SetParent(_cardsParent.transform);
+    //        card.transform.SetAsLastSibling();
+    //    }
 
-        Observer.Notify(new UserInputHandlerObserverModel(null, card));
-    }
+    //    Observer.Notify(new CardMovementObserverModel(null, card, null));
+    //}
 }
 
 
