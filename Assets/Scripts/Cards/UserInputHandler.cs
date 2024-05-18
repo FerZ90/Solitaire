@@ -8,10 +8,9 @@ public class UserInputHandler : IObservable<CardMovementObserverModel>, IObserve
 
     public Observer<CardMovementObserverModel> Observer { get; set; } = new();
 
-    public UserInputHandler(IObservable<CardsObjectCreatorObserverModel> observable, GameObject cardsParent)
+    public UserInputHandler(GameObject cardsParent)
     {
         _cardsParent = cardsParent;
-        observable.Observer.Subscribe(this);
     }
 
     public void UpdateEvent(DropPileObserverModel parameter)

@@ -5,7 +5,6 @@ public class CardTranslator : ICardTranslator, IObserver<CardAnimatorObserverMod
     public CardTranslator(ICardAnimator cardAnimator)
     {
         _cardAnimator = cardAnimator;
-        _cardAnimator.Observer.Subscribe(this);
     }
 
     public void UpdateEvent(CardAnimatorObserverModel parameter)
@@ -25,7 +24,7 @@ public class CardTranslator : ICardTranslator, IObserver<CardAnimatorObserverMod
 
     public void MoveCard(IPile deck, CardView cardView)
     {
-        cardView.CardModel.LogCard();
+        //cardView.CardModel.LogCard();
 
         ChangeCardDeck(deck, cardView);
         _cardAnimator.AnimateCardToPosition(cardView, cardView.CardModel.deck.GetNewCardPosition(cardView));

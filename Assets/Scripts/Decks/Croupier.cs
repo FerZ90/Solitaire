@@ -7,11 +7,9 @@ public class Croupier : ICroupier, IObserver<CardsObjectCreatorObserverModel>, I
     private DeckModel _deckModel;
     private ICardTranslator _cardTranslator;
 
-    public Croupier(DeckModel deckModel, IObservable<CardsObjectCreatorObserverModel> cardsCreatorObservable, IObservable<CardMovementObserverModel> cardMovementObserverModel, ICardTranslator cardTranslator)
+    public Croupier(DeckModel deckModel, ICardTranslator cardTranslator)
     {
         _deckModel = deckModel;
-        cardsCreatorObservable.Observer.Subscribe(this);
-        cardMovementObserverModel.Observer.Subscribe(this);
         _cardTranslator = cardTranslator;
     }
 
@@ -51,7 +49,7 @@ public class Croupier : ICroupier, IObserver<CardsObjectCreatorObserverModel>, I
         {
             DeliverCard(parameter.card);
         }
-        else if ()
+        else
         {
             _cardTranslator.MoveCard(parameter.deck, parameter.card);
         }

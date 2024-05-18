@@ -12,11 +12,6 @@ public class Blocker : MonoBehaviour, IObserver<CardAnimatorObserverModel>
         blockerImage.enabled = false;
     }
 
-    public void Setup(IObservable<CardAnimatorObserverModel> observable)
-    {
-        observable.Observer.Subscribe(this);
-    }
-
     public void UpdateEvent(CardAnimatorObserverModel parameter)
     {
         blockerImage.enabled = !parameter.animationFinish;
