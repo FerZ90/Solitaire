@@ -5,6 +5,7 @@ public interface IPile
 {
     Vector3 GetNewCardPosition(CardView card);
     void PutCardviewOnDeck(CardView card);
+    CardView GetLast();
     void AddLast(CardView card);
     CardView RemoveLast();
     List<CardView> GetNodeCards(CardView card);

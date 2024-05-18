@@ -2,7 +2,8 @@
 
 public class Listener<T>
 {
-    protected List<T> _listeners;
+    protected List<T> _listeners = new List<T>();
+
     public void AddListener(T listener)
     {
         _listeners.Add(listener);

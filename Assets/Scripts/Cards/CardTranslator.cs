@@ -28,7 +28,6 @@ public class CardTranslator : IUserInputHandlerListener, ICroupierListener, ICar
 
     public void OnAnimationEnd(CardView card)
     {
-        Debug.Log("CardTranslator OnAnimationEnd !!");
         card.CardModel.deck.PutCardviewOnDeck(card);
     }
 

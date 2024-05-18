@@ -89,7 +89,7 @@ public class Croupier : IUserInputHandlerListener, IDoubleTapListener, ICardsObj
 
     public void OnDoubleTap(CardView card)
     {
-        if (card.CardModel.deck is FinishedDeck || card.Reverse)
+        if (card.CardModel.deck is FinishedDeck || card.Reverse || card.CardModel.deck.GetLast() != card)
             return;
 
         if (card != null)
