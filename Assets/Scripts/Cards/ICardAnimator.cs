@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public interface ICardAnimator : IObservable<CardAnimatorObserverModel>
+public interface ICardAnimator
 {
     void AnimateCardToPosition(CardView card, Vector3 to);
 }

@@ -1,34 +1,47 @@
-public class CardTranslator : ICardTranslator, IObserver<CardAnimatorObserverModel>
+using UnityEngine;
+using UnityEngine.EventSystems;
+
+public class CardTranslator : IUserInputHandlerListener
 {
-    private ICardAnimator _cardAnimator;
+    private ICardTranslatorListener _listener;
 
-    public CardTranslator(ICardAnimator cardAnimator)
+    public CardTranslator(ICardTranslatorListener listener)
     {
-        _cardAnimator = cardAnimator;
-        _cardAnimator.Observer.Subscribe(this);
+        _listener = listener;
     }
 
-    public void UpdateEvent(CardAnimatorObserverModel parameter)
-    {
-        CardView card = parameter.card;
 
-        if (!parameter.animationFinish)
-        {
-            card.transform.SetParent(card.transform.root);
-            card.transform.SetAsLastSibling();
-        }
-        else
-        {
-            card.CardModel.deck.PutCardviewOnDeck(card);
-        }
+    public void OnEndDragCard(IPile pile, CardView card, PointerEventData eventData)
+    {
+        MoveCard(pile, card);
     }
+
+    public void OnDropCard(IPile pile, CardView card, PointerEventData eventData)
+    {
+        //
+    }
+
+    //public void UpdateEvent(CardAnimatorObserverModel parameter)
+    //{
+    //    CardView card = parameter.card;
+
+    //    if (!parameter.animationFinish)
+    //    {
+    //        card.transform.SetParent(card.transform.root);
+    //        card.transform.SetAsLastSibling();
+    //    }
+    //    else
+    //    {
+    //        card.CardModel.deck.PutCardviewOnDeck(card);
+    //    }
+    //}
 
     public void MoveCard(IPile deck, CardView cardView)
     {
         cardView.CardModel.LogCard();
 
         ChangeCardDeck(deck, cardView);
-        _cardAnimator.AnimateCardToPosition(cardView, cardView.CardModel.deck.GetNewCardPosition(cardView));
+        _listener.AnimateCardToPosition(cardView, cardView.CardModel.deck.GetNewCardPosition(cardView));
     }
 
     private void ChangeCardDeck(IPile newDeck, CardView cardView)
@@ -50,7 +63,9 @@ public class CardTranslator : ICardTranslator, IObserver<CardAnimatorObserverMod
 
 }
 
-public interface ICardTranslator
+
+public interface ICardTranslatorListener
 {
-    void MoveCard(IPile deck, CardView cardView);
+    void AnimateCardToPosition(CardView card, Vector3 to);
 }
+

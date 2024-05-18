@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHandler, IObservable<CardViewObserverModel>
+public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHandler
 {
     private CardModel _cardModel;
     private bool _reverse = true;
@@ -11,15 +11,19 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
     public CardModel CardModel => _cardModel;
     public bool Reverse => _reverse;
 
-    public Observer<CardViewObserverModel> Observer { get; set; } = new();
-
+    private ICardViewListener _listener;
 
     private void Awake()
     {
         _image = GetComponent<Image>();
     }
 
-    public void Setup(CardModel cardModel)
+    public void Setup(ICardViewListener listener)
+    {
+        _listener = listener;
+    }
+
+    public void SetupModel(CardModel cardModel)
     {
         _cardModel = cardModel;
         _image.sprite = _cardModel.backgroundImg;
@@ -41,17 +45,17 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Observer.Notify(new CardViewObserverModel(CardInputState.OnBeginDrag, eventData, this));
+        _listener.OnBeginDrag(this, eventData);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        Observer.Notify(new CardViewObserverModel(CardInputState.OnDrag, eventData, this));
+        _listener.OnDrag(this, eventData);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        Observer.Notify(new CardViewObserverModel(CardInputState.OnEndDrag, eventData, this));
+        _listener.OnEndDrag(this, eventData);
     }
 
     public void SetReverse(bool reverse)
@@ -61,11 +65,11 @@ public class CardView : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
     }
 }
 
-public enum CardInputState
+public interface ICardViewListener
 {
-    OnBeginDrag,
-    OnDrag,
-    OnEndDrag
+    void OnBeginDrag(CardView card, PointerEventData eventData);
+    void OnDrag(CardView card, PointerEventData eventData);
+    void OnEndDrag(CardView card, PointerEventData eventData);
 }
 
 

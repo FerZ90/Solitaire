@@ -2,10 +2,19 @@ using UnityEngine.EventSystems;
 
 public class DropPile : Pile, IDropHandler
 {
-    public Observer<CardMovementObserverModel> Observer { get; set; } = new();
+    private IDropPileListener _listener;
+    public void Setup(IDropPileListener listener)
+    {
+        _listener = listener;
+    }
 
     public void OnDrop(PointerEventData eventData)
     {
-        Observer.Notify(new CardMovementObserverModel(this, null, eventData));
+        _listener.OnDrop(this, eventData);
     }
+}
+
+public interface IDropPileListener
+{
+    void OnDrop(IPile pile, PointerEventData eventData);
 }

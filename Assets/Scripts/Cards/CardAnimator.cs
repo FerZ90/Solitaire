@@ -1,15 +1,26 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class CardAnimator : ICardAnimator, IObservable<CardAnimatorObserverModel>
+public class CardAnimator : ICardTranslatorListener
 {
-    public Observer<CardAnimatorObserverModel> Observer { get; set; } = new();
+    private ICardAnimatorListener _listener;
+
+    public CardAnimator(ICardAnimatorListener listener)
+    {
+        _listener = listener;
+    }
 
     public async void AnimateCardToPosition(CardView card, Vector3 to)
     {
-        Observer.Notify(new CardAnimatorObserverModel(card, false));
+        _listener.OnAnimationStart(card);
         await card.GetComponent<RectTransform>().DOMove(to, 0.3f).AsyncWaitForCompletion();
-        Observer.Notify(new CardAnimatorObserverModel(card, true));
+        _listener.OnAnimationEnd(card);
     }
 
+}
+
+public interface ICardAnimatorListener
+{
+    void OnAnimationStart(CardView card);
+    void OnAnimationEnd(CardView card);
 }

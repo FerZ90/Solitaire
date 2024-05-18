@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-public class Blocker : MonoBehaviour, IObserver<CardAnimatorObserverModel>
+public class Blocker : MonoBehaviour, ICardAnimatorListener
 {
     private Image blockerImage;
 
@@ -12,16 +12,18 @@ public class Blocker : MonoBehaviour, IObserver<CardAnimatorObserverModel>
         blockerImage.enabled = false;
     }
 
-    public void Setup(IObservable<CardAnimatorObserverModel> observable)
+    public void OnAnimationStart(CardView card)
     {
-        observable.Observer.Subscribe(this);
+        blockerImage.enabled = true;
     }
 
-    public void UpdateEvent(CardAnimatorObserverModel parameter)
+    public void OnAnimationEnd(CardView card)
     {
-        blockerImage.enabled = !parameter.animationFinish;
+        blockerImage.enabled = false;
     }
 }
+
+
 
 
 

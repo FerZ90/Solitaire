@@ -1,20 +1,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardsObjectCreator : MonoBehaviour, IObservable<CardsObjectCreatorObserverModel>
+public class CardsObjectCreator : MonoBehaviour
 {
     [SerializeField] private CardsCreatorInspectorData cardsCreatorInspectorData;
     [SerializeField] private CardTextureDistributor cardTextureDistributor;
 
     private ICardsCreatorData _cardsCreator;
     private List<CardView> _cardsViews = new List<CardView>();
-
-    public Observer<CardsObjectCreatorObserverModel> Observer { get; set; } = new();
+    private ICardsObjectCreatorListener _listener;
 
     private void Awake()
     {
         _cardsViews = new List<CardView>();
         _cardsCreator = new DeckCreator();
+    }
+
+    public void Setup(ICardsObjectCreatorListener listener)
+    {
+        _listener = listener;
     }
 
     public void CreateCards()
@@ -30,11 +34,11 @@ public class CardsObjectCreator : MonoBehaviour, IObservable<CardsObjectCreatorO
 
             var cardImg = cardTextureDistributor.GetCardTexture(deckCard);
             var cardModel = new CardModel(deckCard, cardImg, cardBackgroundImg);
-            currentCard.Setup(cardModel);
+            currentCard.SetupModel(cardModel);
             _cardsViews.Add(currentCard);
         }
 
-        Observer.Notify(new CardsObjectCreatorObserverModel(_cardsViews));
+        _listener.OnCreateCards(_cardsViews);
     }
 
     public void Reset()
@@ -45,6 +49,11 @@ public class CardsObjectCreator : MonoBehaviour, IObservable<CardsObjectCreatorO
         _cardsViews.Clear();
     }
 
+}
+
+public interface ICardsObjectCreatorListener
+{
+    void OnCreateCards(List<CardView> cardsViews);
 }
 
 

@@ -2,24 +2,24 @@ public class GameScore
 {
     private DeckModel _deckModel;
     private int score;
+    private IGameScoreListener _listener;
 
-    public Observer<GameScoreObserverModel> Observer { get; set; } = new Observer<GameScoreObserverModel>();
-
-    public GameScore(DeckModel deckModel)
+    public GameScore(IGameScoreListener listener, DeckModel deckModel)
     {
+        _listener = listener;
         _deckModel = deckModel;
         score = 0;
     }
 
-    public void UpdateEvent(PileObserverModel parameter)
-    {
-        if (parameter.finishAnimation)
-        {
-            score++;
-            CheckIfGameIfFinished();
-        }
+    //public void UpdateEvent(PileObserverModel parameter)
+    //{
+    //    if (parameter.finishAnimation)
+    //    {
+    //        score++;
+    //        CheckIfGameIfFinished();
+    //    }
 
-    }
+    //}
 
     private void CheckIfGameIfFinished()
     {
@@ -29,16 +29,11 @@ public class GameScore
                 return;
         }
 
-        Observer.Notify(new GameScoreObserverModel(score));
+        _listener.GameOver(score);
     }
 }
 
-public class GameScoreObserverModel
+public interface IGameScoreListener
 {
-    public int score;
-
-    public GameScoreObserverModel(int score)
-    {
-        this.score = score;
-    }
+    void GameOver(int score);
 }

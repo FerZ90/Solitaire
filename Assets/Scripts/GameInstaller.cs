@@ -17,20 +17,21 @@ public class GameInstaller : MonoBehaviour
 
     private void Awake()
     {
-        _cardAnimator = new CardAnimator();
+
+        _cardAnimator = new CardAnimator(blocker);
         _cardTranslator = new CardTranslator(_cardAnimator);
-        _gameScore = new GameScore(deckIspectorData);
-        _cardsInputHandler = new UserInputHandler(cardsObjectCreator, draggingCardsParent);
-        _croupier = new Croupier(deckIspectorData, cardsObjectCreator, _cardsInputHandler, _cardTranslator);
-        blocker.Setup(_cardAnimator);
-        doubleTapInput.Setup(_cardsInputHandler);
+        _gameScore = new GameScore(null, deckIspectorData);
+        //_cardsInputHandler = new UserInputHandler(cardsObjectCreator, draggingCardsParent);
+        //_croupier = new Croupier(deckIspectorData, cardsObjectCreator, _cardsInputHandler, _cardTranslator);
+        //blocker.Setup(_cardAnimator);
+        //doubleTapInput.Setup(_cardsInputHandler);
     }
 
     private IEnumerator Start()
     {
         yield return new WaitForEndOfFrame();
-        deckIspectorData.PrepareDecks(_croupier/*, _cardsInputHandler*/);
-        cardsObjectCreator.CreateCards();
+        //deckIspectorData.PrepareDecks(_croupier);
+        //cardsObjectCreator.CreateCards();
     }
 
 }

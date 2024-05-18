@@ -10,7 +10,7 @@ public class DoubleTap : MonoBehaviour
     private bool hasFirstTap;
     private PointerEventData _pointerEventData;
     private List<RaycastResult> _raycastResults;
-    private IObservable<CardMovementObserverModel> _cardMovementObserverModel;
+    private IDoubleTapListener _listener;
 
     private void Awake()
     {
@@ -18,9 +18,9 @@ public class DoubleTap : MonoBehaviour
         _raycastResults = new List<RaycastResult>();
     }
 
-    public void Setup(IObservable<CardMovementObserverModel> cardMovementObserverModel)
+    public void Setup(IDoubleTapListener listener)
     {
-        _cardMovementObserverModel = cardMovementObserverModel;
+        _listener = listener;
     }
 
     void Update()
@@ -61,10 +61,15 @@ public class DoubleTap : MonoBehaviour
         {
             if (result.gameObject.TryGetComponent<CardView>(out var cardview))
             {
-                _cardMovementObserverModel?.Observer.Notify(new CardMovementObserverModel(null, cardview, _pointerEventData));
+                _listener.OnDoubleTap(cardview);
                 break;
             }
         }
     }
 
+}
+
+public interface IDoubleTapListener
+{
+    void OnDoubleTap(CardView card);
 }
