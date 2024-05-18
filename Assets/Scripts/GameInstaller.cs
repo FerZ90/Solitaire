@@ -27,10 +27,8 @@ public class GameInstaller : MonoBehaviour
         _croupier = new Croupier(_cardTranslator, deckIspectorData);
         _cardsInputHandler = new UserInputHandler(_croupier, draggingCardsParent);
 
-        cardsObjectsCreatorListener.AddListener(_croupier);
-        cardsObjectsCreatorListener.AddListener(_cardsInputHandler);
-        cardAnimatorListener.AddListener(_cardTranslator);
-        cardAnimatorListener.AddListener(blocker);
+        cardsObjectsCreatorListener.AddListeners(_croupier, _cardsInputHandler);
+        cardAnimatorListener.AddListeners(_cardTranslator, blocker);
 
         _gameScore = new GameScore(null, deckIspectorData);
         doubleTapInput.Setup(_croupier);
