@@ -9,15 +9,15 @@ public class DeckModel
     public List<InGameDeck> inGameDecks = new List<InGameDeck>();
     public List<FinishedDeck> finishedDecks = new List<FinishedDeck>();
 
-    public void PrepareDecks()
+    public void PrepareDecks(IDeliveryPileListener pileClickListener, IDropPileListener dropPileListener)
     {
-        //deliveryDeck.Observer.Subscribe(cardMovementObserver);
+        deliveryDeck.Setup(pileClickListener);
 
-        //foreach (var gameDeck in inGameDecks)
-        //    gameDeck.Observer.Subscribe(cardMovementObserver);
+        foreach (var gameDeck in inGameDecks)
+            gameDeck.Setup(dropPileListener);
 
-        //foreach (var finishedDeck in finishedDecks)
-        //    finishedDeck.Observer.Subscribe(cardMovementObserver);
+        foreach (var finishedDeck in finishedDecks)
+            finishedDeck.Setup(dropPileListener);
     }
 
 }

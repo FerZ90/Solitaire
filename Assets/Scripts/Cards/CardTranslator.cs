@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CardTranslator : IUserInputHandlerListener
+public class CardTranslator : IUserInputHandlerListener, ICroupierListener, ICardAnimatorListener
 {
     private ICardTranslatorListener _listener;
 
@@ -9,7 +9,6 @@ public class CardTranslator : IUserInputHandlerListener
     {
         _listener = listener;
     }
-
 
     public void OnEndDragCard(IPile pile, CardView card, PointerEventData eventData)
     {
@@ -21,20 +20,17 @@ public class CardTranslator : IUserInputHandlerListener
         //
     }
 
-    //public void UpdateEvent(CardAnimatorObserverModel parameter)
-    //{
-    //    CardView card = parameter.card;
+    public void OnAnimationStart(CardView card)
+    {
+        card.transform.SetParent(card.transform.root);
+        card.transform.SetAsLastSibling();
+    }
 
-    //    if (!parameter.animationFinish)
-    //    {
-    //        card.transform.SetParent(card.transform.root);
-    //        card.transform.SetAsLastSibling();
-    //    }
-    //    else
-    //    {
-    //        card.CardModel.deck.PutCardviewOnDeck(card);
-    //    }
-    //}
+    public void OnAnimationEnd(CardView card)
+    {
+        Debug.Log("CardTranslator OnAnimationEnd !!");
+        card.CardModel.deck.PutCardviewOnDeck(card);
+    }
 
     public void MoveCard(IPile deck, CardView cardView)
     {
@@ -60,7 +56,6 @@ public class CardTranslator : IUserInputHandlerListener
             cardView.CardModel.deck.AddLast(cardView);
         }
     }
-
 }
 
 

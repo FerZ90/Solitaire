@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Croupier : ICroupier
+public class Croupier : IUserInputHandlerListener, IDoubleTapListener, ICardsObjectCreatorListener, IDeliveryPileListener
 {
     private DeckModel _deckModel;
     private ICroupierListener _listener;
@@ -12,7 +14,7 @@ public class Croupier : ICroupier
         _deckModel = deckModel;
     }
 
-    public async void DealCards()
+    public async void DealFirstCards()
     {
         int count = 1;
 
@@ -42,38 +44,9 @@ public class Croupier : ICroupier
 
     }
 
-    //public void UpdateEvent(CardMovementObserverModel parameter)
-    //{
-    //    if (parameter.deck is DeliveryPile)
-    //    {
-    //        DeliverCard(parameter.card);
-    //    }
-    //    else
-    //    {
-    //        _listener.MoveCard(parameter.deck, parameter.card);
-    //    }
-    //}
-
-
-    //public async void UpdateEvent(CardsObjectCreatorObserverModel parameter)
-    //{
-    //    List<Task> allTasks = new List<Task>();
-
-    //    foreach (var cardView in parameter.cardsViews)
-    //    {
-    //        _listener.MoveCard(_deckModel.deliveryDeck, cardView);
-    //        allTasks.Add(Task.Delay(100));
-    //    }
-
-    //    await Task.WhenAll(allTasks);
-
-    //    DealCards();
-    //}
-
-
-    public async void DeliverCard(CardView cardView)
+    public async void DeliverCard(CardView card)
     {
-        if (cardView == null)
+        if (card == null)
         {
             var lastCard = _deckModel.discardDeck.GetLast();
 
@@ -86,10 +59,51 @@ public class Croupier : ICroupier
         }
         else
         {
-            _listener.MoveCard(_deckModel.discardDeck, cardView);
+            _listener.MoveCard(_deckModel.discardDeck, card);
         }
     }
 
+    public async void OnCreateCards(List<CardView> cardsViews)
+    {
+        List<Task> allTasks = new List<Task>();
+
+        foreach (var cardView in cardsViews)
+        {
+            _listener.MoveCard(_deckModel.deliveryDeck, cardView);
+            allTasks.Add(Task.Delay(100));
+        }
+
+        await Task.WhenAll(allTasks);
+        DealFirstCards();
+    }
+
+    public void OnDropCard(IPile pile, CardView card, PointerEventData eventData)
+    {
+        _listener.MoveCard(pile, card);
+    }
+
+    public void OnEndDragCard(IPile pile, CardView card, PointerEventData eventData)
+    {
+        _listener.MoveCard(pile, card);
+    }
+
+    public void OnDoubleTap(CardView card)
+    {
+        if (card.CardModel.deck is FinishedDeck || card.Reverse)
+            return;
+
+        if (card != null)
+        {
+            foreach (var finishedDeck in _deckModel.finishedDecks)
+            {
+                if (finishedDeck.TryInsertCard(card))
+                {
+                    _listener.MoveCard(finishedDeck, card);
+                    break;
+                }
+            }
+        }
+    }
 }
 
 public interface ICroupierListener

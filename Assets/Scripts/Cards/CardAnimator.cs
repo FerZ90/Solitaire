@@ -12,9 +12,9 @@ public class CardAnimator : ICardTranslatorListener
 
     public async void AnimateCardToPosition(CardView card, Vector3 to)
     {
-        _listener.OnAnimationStart(card);
+        _listener?.OnAnimationStart(card);
         await card.GetComponent<RectTransform>().DOMove(to, 0.3f).AsyncWaitForCompletion();
-        _listener.OnAnimationEnd(card);
+        _listener?.OnAnimationEnd(card);
     }
 
 }

@@ -17,21 +17,31 @@ public class GameInstaller : MonoBehaviour
 
     private void Awake()
     {
-
-        _cardAnimator = new CardAnimator(blocker);
-        _cardTranslator = new CardTranslator(_cardAnimator);
         _gameScore = new GameScore(null, deckIspectorData);
-        //_cardsInputHandler = new UserInputHandler(cardsObjectCreator, draggingCardsParent);
-        //_croupier = new Croupier(deckIspectorData, cardsObjectCreator, _cardsInputHandler, _cardTranslator);
-        //blocker.Setup(_cardAnimator);
-        //doubleTapInput.Setup(_cardsInputHandler);
+
+        var cardsObjectsCreatorListener = new CardsObjectCreatorListener();
+        var cardAnimatorListener = new CardAnimatorListener();
+
+        _cardAnimator = new CardAnimator(cardAnimatorListener);
+        _cardTranslator = new CardTranslator(_cardAnimator);
+        _croupier = new Croupier(_cardTranslator, deckIspectorData);
+        _cardsInputHandler = new UserInputHandler(_croupier, draggingCardsParent);
+
+        cardsObjectsCreatorListener.AddListener(_croupier);
+        cardsObjectsCreatorListener.AddListener(_cardsInputHandler);
+        cardAnimatorListener.AddListener(_cardTranslator);
+        cardAnimatorListener.AddListener(blocker);
+
+        _gameScore = new GameScore(null, deckIspectorData);
+        doubleTapInput.Setup(_croupier);
+        cardsObjectCreator.Setup(cardsObjectsCreatorListener);
     }
 
     private IEnumerator Start()
     {
         yield return new WaitForEndOfFrame();
-        //deckIspectorData.PrepareDecks(_croupier);
-        //cardsObjectCreator.CreateCards();
+        deckIspectorData.PrepareDecks(_croupier, _cardsInputHandler);
+        cardsObjectCreator.CreateCards();
     }
 
 }

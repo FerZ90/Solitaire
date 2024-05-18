@@ -2,9 +2,9 @@ using UnityEngine.EventSystems;
 
 public class DeliveryPile : Pile, IPointerClickHandler
 {
-    private IClickPileListener _listener;
+    private IDeliveryPileListener _listener;
 
-    public void Setup(IClickPileListener listener)
+    public void Setup(IDeliveryPileListener listener)
     {
         _listener = listener;
     }
@@ -12,7 +12,7 @@ public class DeliveryPile : Pile, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         var lastCard = GetLast();
-        _listener.OnPileClick(this, lastCard, eventData);
+        _listener.DeliverCard(lastCard);
     }
 
     public override void AddLast(CardView card)
@@ -23,9 +23,9 @@ public class DeliveryPile : Pile, IPointerClickHandler
 
 }
 
-public interface IClickPileListener
+public interface IDeliveryPileListener
 {
-    void OnPileClick(IPile pile, CardView card, PointerEventData eventData);
+    void DeliverCard(CardView card);
 }
 
 

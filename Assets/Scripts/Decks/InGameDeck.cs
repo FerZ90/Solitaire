@@ -29,7 +29,7 @@ public class InGameDeck : DropPile
 
     public override Vector3 GetNewCardPosition(CardView card)
     {
-        int positionsIndex = _cards.Elements.Count - 1;
+        int positionsIndex = _cards.GetItemIndex(card);
         return new Vector3(transform.position.x, transform.position.y - (positionsIndex * 40), transform.position.z);
     }
 

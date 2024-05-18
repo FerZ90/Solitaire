@@ -1,7 +1,8 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UserInputHandler : ICardViewListener
+public class UserInputHandler : ICardViewListener, IDropPileListener, ICardsObjectCreatorListener
 {
     private CardView _draggingCard;
     private GameObject _cardsParent;
@@ -13,34 +14,11 @@ public class UserInputHandler : ICardViewListener
         _cardsParent = cardsParent;
     }
 
-    //public void UpdateEvent(DropPileObserverModel parameter)
-    //{
-    //    OnDropCardInDeck(parameter.deck, parameter.eventData);
-    //}
-
-    //public void UpdateEvent(CardsObjectCreatorObserverModel parameter)
-    //{
-    //    foreach (var card in parameter.cardsViews)
-    //        card.Observer.Subscribe(this);
-    //}
-
-    //public void UpdateEvent(CardViewObserverModel parameter)
-    //{
-    //    switch (parameter.inputState)
-    //    {
-    //        case CardInputState.OnBeginDrag:
-    //            OnBeginDragCard(parameter.card);
-    //            break;
-    //        case CardInputState.OnDrag:
-    //            OnDragCard(parameter.eventData, parameter.card);
-    //            break;
-    //        case CardInputState.OnEndDrag:
-    //            OnEndDragCard(parameter.eventData, parameter.card);
-    //            break;
-    //        default:
-    //            break;
-    //    }
-    //}
+    public void OnCreateCards(List<CardView> cardsViews)
+    {
+        foreach (var card in cardsViews)
+            card.Setup(this);
+    }
 
     public void OnBeginDrag(CardView card, PointerEventData eventData)
     {

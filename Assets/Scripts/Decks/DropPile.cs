@@ -10,11 +10,11 @@ public class DropPile : Pile, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        _listener.OnDrop(this, eventData);
+        _listener.OnDropCardInDeck(this, eventData);
     }
 }
 
 public interface IDropPileListener
 {
-    void OnDrop(IPile pile, PointerEventData eventData);
+    void OnDropCardInDeck(IPile pile, PointerEventData eventData);
 }
