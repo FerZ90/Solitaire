@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class CardTranslator : IUserInputHandlerListener, ICroupierListener, ICardAnimatorListener
 {
@@ -10,12 +9,12 @@ public class CardTranslator : IUserInputHandlerListener, ICroupierListener, ICar
         _listener = listener;
     }
 
-    public void OnEndDragCard(IPile pile, CardView card, PointerEventData eventData)
+    public void OnEndDragCard(IPile pile, CardView card, MovementType movementType)
     {
-        MoveCard(pile, card);
+        MoveCard(pile, card, movementType);
     }
 
-    public void OnDropCard(IPile pile, CardView card, PointerEventData eventData)
+    public void OnDropCard(IPile pile, CardView card, MovementType movementType)
     {
         //
     }
@@ -31,15 +30,15 @@ public class CardTranslator : IUserInputHandlerListener, ICroupierListener, ICar
         card.CardModel.deck.PutCardviewOnDeck(card);
     }
 
-    public void MoveCard(IPile deck, CardView cardView)
+    public void MoveCard(IPile deck, CardView cardView, MovementType movementType)
     {
         cardView.CardModel.LogCard();
 
-        ChangeCardDeck(deck, cardView);
-        _listener.AnimateCardToPosition(cardView, cardView.CardModel.deck.GetNewCardPosition(cardView));
+        ChangeCardDeck(deck, cardView, movementType);
+        _listener?.AnimateCardToPosition(cardView, cardView.CardModel.deck.GetNewCardPosition(cardView));
     }
 
-    private void ChangeCardDeck(IPile newDeck, CardView cardView)
+    private void ChangeCardDeck(IPile newDeck, CardView cardView, MovementType movementType)
     {
         var newCardDeck = newDeck;
 
@@ -52,14 +51,21 @@ public class CardTranslator : IUserInputHandlerListener, ICroupierListener, ICar
                 cardView.CardModel.deck.RemoveLast();
 
             cardView.CardModel.deck = newCardDeck;
-            cardView.CardModel.deck.AddLast(cardView);
+            cardView.CardModel.deck.AddLast(cardView, movementType);
         }
     }
+
 }
 
 
 public interface ICardTranslatorListener
 {
     void AnimateCardToPosition(CardView card, Vector3 to);
+}
+
+public enum MovementType
+{
+    User,
+    Croupier
 }
 

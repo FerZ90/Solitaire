@@ -15,7 +15,7 @@ public class Pile : MonoBehaviour, IPile
         return transform.position;
     }
 
-    public virtual void AddLast(CardView card)
+    public virtual void AddLast(CardView card, MovementType movementType)
     {
         _cards.AddLast(card);
     }

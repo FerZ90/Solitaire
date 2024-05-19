@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class Croupier : IUserInputHandlerListener, IDoubleTapListener, ICardsObjectCreatorListener, IDeliveryPileListener
 {
@@ -29,7 +28,7 @@ public class Croupier : IUserInputHandlerListener, IDoubleTapListener, ICardsObj
                     if (i == count - 1)
                         card.SetReverse(false);
 
-                    _listener.MoveCard(inGameDeck, card);
+                    _listener.MoveCard(inGameDeck, card, MovementType.Croupier);
                 }
                 else
                 {
@@ -52,14 +51,14 @@ public class Croupier : IUserInputHandlerListener, IDoubleTapListener, ICardsObj
 
             while (lastCard != null)
             {
-                _listener.MoveCard(_deckModel.deliveryDeck, lastCard);
+                _listener.MoveCard(_deckModel.deliveryDeck, lastCard, MovementType.Croupier);
                 lastCard = _deckModel.discardDeck.GetLast();
                 await Task.Delay(7);
             }
         }
         else
         {
-            _listener.MoveCard(_deckModel.discardDeck, card);
+            _listener.MoveCard(_deckModel.discardDeck, card, MovementType.Croupier);
         }
     }
 
@@ -69,7 +68,7 @@ public class Croupier : IUserInputHandlerListener, IDoubleTapListener, ICardsObj
 
         foreach (var cardView in cardsViews)
         {
-            _listener.MoveCard(_deckModel.deliveryDeck, cardView);
+            _listener.MoveCard(_deckModel.deliveryDeck, cardView, MovementType.Croupier);
             allTasks.Add(Task.Delay(100));
         }
 
@@ -77,14 +76,14 @@ public class Croupier : IUserInputHandlerListener, IDoubleTapListener, ICardsObj
         DealFirstCards();
     }
 
-    public void OnDropCard(IPile pile, CardView card, PointerEventData eventData)
+    public void OnDropCard(IPile pile, CardView card, MovementType movementType)
     {
-        _listener.MoveCard(pile, card);
+        _listener.MoveCard(pile, card, movementType);
     }
 
-    public void OnEndDragCard(IPile pile, CardView card, PointerEventData eventData)
+    public void OnEndDragCard(IPile pile, CardView card, MovementType movementType)
     {
-        _listener.MoveCard(pile, card);
+        _listener.MoveCard(pile, card, movementType);
     }
 
     public void OnDoubleTap(CardView card)
@@ -98,7 +97,7 @@ public class Croupier : IUserInputHandlerListener, IDoubleTapListener, ICardsObj
             {
                 if (finishedDeck.TryInsertCard(card))
                 {
-                    _listener.MoveCard(finishedDeck, card);
+                    _listener.MoveCard(finishedDeck, card, MovementType.User);
                     break;
                 }
             }
@@ -108,7 +107,7 @@ public class Croupier : IUserInputHandlerListener, IDoubleTapListener, ICardsObj
 
 public interface ICroupierListener
 {
-    void MoveCard(IPile deck, CardView card);
+    void MoveCard(IPile deck, CardView card, MovementType movementType);
 
 }
 

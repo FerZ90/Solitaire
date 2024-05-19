@@ -15,9 +15,9 @@ public class DeliveryPile : Pile, IPointerClickHandler
         _listener.DeliverCard(lastCard);
     }
 
-    public override void AddLast(CardView card)
+    public override void AddLast(CardView card, MovementType movementType)
     {
-        base.AddLast(card);
+        base.AddLast(card, movementType);
         card.SetReverse(true);
     }
 

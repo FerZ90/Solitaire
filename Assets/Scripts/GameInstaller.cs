@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameInstaller : MonoBehaviour
@@ -15,8 +17,12 @@ public class GameInstaller : MonoBehaviour
     private Croupier _croupier;
     private UserInputHandler _cardsInputHandler;
 
+    private List<IDisposable> _disposables;
+
     private void Awake()
     {
+        _disposables = new List<IDisposable>();
+
         _gameScore = new GameScore(null, deckIspectorData);
 
         var cardsObjectsCreatorListener = new CardsObjectCreatorListener();
@@ -33,13 +39,22 @@ public class GameInstaller : MonoBehaviour
         _gameScore = new GameScore(null, deckIspectorData);
         doubleTapInput.Setup(_croupier);
         cardsObjectCreator.Setup(cardsObjectsCreatorListener);
+
+        _disposables.Add(cardsObjectsCreatorListener);
+        _disposables.Add(cardAnimatorListener);
     }
 
     private IEnumerator Start()
     {
         yield return new WaitForEndOfFrame();
-        deckIspectorData.PrepareDecks(_croupier, _cardsInputHandler);
+        deckIspectorData.PrepareDecks(_croupier, _cardsInputHandler, _gameScore);
         cardsObjectCreator.CreateCards();
+    }
+
+    private void OnDestroy()
+    {
+        foreach (var disposable in _disposables)
+            disposable.Dispose();
     }
 
 }

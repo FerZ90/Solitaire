@@ -2,12 +2,12 @@ public class FinishedDeck : DropPile
 {
     public bool IsComplete { get; private set; }
 
-    public override void AddLast(CardView card)
+    public override void AddLast(CardView card, MovementType movementType)
     {
         if (IsComplete)
             return;
 
-        base.AddLast(card);
+        base.AddLast(card, movementType);
         CheckIfComplete();
     }
 

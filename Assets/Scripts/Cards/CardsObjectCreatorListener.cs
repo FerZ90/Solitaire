@@ -7,4 +7,5 @@ public class CardsObjectCreatorListener : Listener<ICardsObjectCreatorListener>,
         foreach (var listener in _listeners)
             listener?.OnCreateCards(cardsViews);
     }
+
 }

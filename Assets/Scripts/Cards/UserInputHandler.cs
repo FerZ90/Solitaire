@@ -60,14 +60,14 @@ public class UserInputHandler : ICardViewListener, IDropPileListener, ICardsObje
         foreach (var nodeCard in nodeCards)
         {
             if (_draggingCard.CardModel.deck == nodeCard.CardModel.deck)
-                _listener.OnEndDragCard(nodeCard.CardModel.deck, nodeCard, eventData);
+                _listener.OnEndDragCard(nodeCard.CardModel.deck, nodeCard, MovementType.User);
         }
 
         _draggingCard = null;
 
     }
 
-    public void OnDropCardInDeck(IPile deck, PointerEventData eventData)
+    public void OnDropCardInDeck(IPile deck, PointerEventData eventData, MovementType movementType)
     {
         if (eventData.pointerDrag.TryGetComponent<CardView>(out var cardView))
         {
@@ -81,9 +81,9 @@ public class UserInputHandler : ICardViewListener, IDropPileListener, ICardsObje
             foreach (var nodeCard in nodeCards)
             {
                 if (canInsertCards)
-                    _listener.OnDropCard(deck, nodeCard, eventData);
+                    _listener.OnDropCard(deck, nodeCard, movementType);
                 else
-                    _listener.OnDropCard(nodeCard.CardModel.deck, nodeCard, eventData);
+                    _listener.OnDropCard(nodeCard.CardModel.deck, nodeCard, movementType);
             }
 
             _draggingCard = null;
@@ -95,8 +95,8 @@ public class UserInputHandler : ICardViewListener, IDropPileListener, ICardsObje
 
 public interface IUserInputHandlerListener
 {
-    void OnEndDragCard(IPile pile, CardView card, PointerEventData eventData);
-    void OnDropCard(IPile pile, CardView card, PointerEventData eventData);
+    void OnEndDragCard(IPile pile, CardView card, MovementType movementType);
+    void OnDropCard(IPile pile, CardView card, MovementType movementType);
 }
 
 

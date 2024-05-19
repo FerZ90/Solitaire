@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-public class Listener<T>
+public class Listener<T> : IDisposable
 {
     protected List<T> _listeners = new List<T>();
 
@@ -18,5 +19,13 @@ public class Listener<T>
     {
         foreach (var listener in listeners)
             _listeners.Add(listener);
+    }
+
+    public void Dispose()
+    {
+        for (int i = 0; i < _listeners.Count; i++)
+            _listeners.Remove(_listeners[i]);
+
+        _listeners.Clear();
     }
 }

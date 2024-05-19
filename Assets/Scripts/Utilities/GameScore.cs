@@ -1,4 +1,4 @@
-public class GameScore
+public class GameScore : InGameDeckListener
 {
     private DeckModel _deckModel;
     private int score;
@@ -11,15 +11,11 @@ public class GameScore
         score = 0;
     }
 
-    //public void UpdateEvent(PileObserverModel parameter)
-    //{
-    //    if (parameter.finishAnimation)
-    //    {
-    //        score++;
-    //        CheckIfGameIfFinished();
-    //    }
-
-    //}
+    public void OnUserMovement()
+    {
+        score++;
+        UnityEngine.Debug.Log($"Score: {score}");
+    }
 
     private void CheckIfGameIfFinished()
     {
@@ -29,7 +25,7 @@ public class GameScore
                 return;
         }
 
-        _listener.GameOver(score);
+        _listener?.GameOver(score);
     }
 }
 

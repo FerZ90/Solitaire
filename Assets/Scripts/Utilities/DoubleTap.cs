@@ -28,9 +28,7 @@ public class DoubleTap : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             if (hasFirstTap && Time.time - lastTapTime > doubleTapTimeThreshold)
-            {
                 hasFirstTap = false;
-            }
 
             if (!hasFirstTap)
             {
@@ -42,9 +40,7 @@ public class DoubleTap : MonoBehaviour
                 hasFirstTap = false;
 
                 if (Time.time - firstTapTime <= doubleTapTimeThreshold)
-                {
                     FindCardView();
-                }
 
             }
 
