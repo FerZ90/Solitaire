@@ -51,7 +51,7 @@ public class Croupier : ICroupier, IObserver<CardsObjectCreatorObserverModel>, I
         {
             DeliverCard(parameter.card);
         }
-        else if ()
+        else
         {
             _cardTranslator.MoveCard(parameter.deck, parameter.card);
         }
