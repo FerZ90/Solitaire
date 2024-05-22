@@ -14,7 +14,8 @@ public class GameScore : InGameDeckListener
     public void OnUserMovement()
     {
         score++;
-        UnityEngine.Debug.Log($"Score: {score}");
+        _listener?.OnScore(score);
+        CheckIfGameIfFinished();
     }
 
     private void CheckIfGameIfFinished()
@@ -31,5 +32,6 @@ public class GameScore : InGameDeckListener
 
 public interface IGameScoreListener
 {
+    void OnScore(int score);
     void GameOver(int score);
 }

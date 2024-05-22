@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameInstaller : MonoBehaviour
 {
     [SerializeField] private DeckModel deckIspectorData;
+    [SerializeField] private GameView gameView;
     [SerializeField] private Blocker blocker;
     [SerializeField] private DoubleTap doubleTapInput;
     [SerializeField] private CardsObjectCreator cardsObjectCreator;
@@ -36,7 +37,7 @@ public class GameInstaller : MonoBehaviour
         cardsObjectsCreatorListener.AddListeners(_croupier, _cardsInputHandler);
         cardAnimatorListener.AddListeners(_cardTranslator, blocker);
 
-        _gameScore = new GameScore(null, deckIspectorData);
+        _gameScore = new GameScore(gameView, deckIspectorData);
         doubleTapInput.Setup(_croupier);
         cardsObjectCreator.Setup(cardsObjectsCreatorListener);
 
